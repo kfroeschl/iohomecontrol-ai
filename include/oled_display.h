@@ -14,7 +14,7 @@
 #define OLED_ADDRESS 0x3c
 #define OLED_SDA     I2C_SDA_PIN
 #define OLED_SCL     I2C_SCL_PIN
-#define OLED_RST     16
+#define OLED_RST     I2C_SCL_RST
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
 

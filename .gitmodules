@@ -1,0 +1,3 @@
+[submodule "iown-homecontrol"]
+	path = iown-homecontrol
+	url = https://github.com/Velocet/iown-homecontrol.git

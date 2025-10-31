@@ -1,0 +1,1543 @@
+17:37:34.802 > TX: TX-RX DONE detected, flag set
+17:37:34.802 > State: PREAMBLE
+17:37:43.360 > TX: TX-RX DONE detected, flag set
+17:37:43.361 > State: PREAMBLE
+17:37:43.366 > TX: TX-RX DONE detected, flag set
+17:37:43.367 > State: PAYLOAD
+17:37:43.376 > [1528639][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:28 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:43.387 > TX: TX-RX DONE detected, flag set
+17:37:43.393 > State: PREAMBLE
+17:37:43.393 > TX: TX-RX DONE detected, flag set
+17:37:43.395 > State: PAYLOAD
+17:37:43.402 > [1528665][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:43.407 > MAC: 2DA0884CC275
+17:37:43.408 >
+17:37:43.413 > (17) 1W S 1 E 1  FROM F153FA TO 00003F CMD 39 +0.000      >  DATA(09)  000bd12da0884cc275        DATA 0  SEQ 0bd1 MAC 2da0884cc275  Type All
+17:37:43.426 > [1528678][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=103): <134>Jan  1 00:25:28 MIOPENIO MIOPENIO: (17) 1W FROM F153FA TO 003F CMD 39 DATA(9) 000bd12da0884cc275 >
+17:37:43.444 > [1528706][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:43.454 > [1528717][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:28 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:43.470 > [1528734][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:43.476 > MAC: 2DA0884CC275
+17:37:43.482 > (17) 1W S 1 E 1  FROM F153FA TO 00003F CMD 39 +84.218     >  DATA(09)  000bd12da0884cc275        DATA 0  SEQ 0bd1 MAC 2da0884cc275  Type All
+17:37:43.494 > [1528748][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=103): <134>Jan  1 00:25:28 MIOPENIO MIOPENIO: (17) 1W FROM F153FA TO 003F CMD 39 DATA(9) 000bd12da0884cc275 >
+17:37:43.510 > TX: TX-RX DONE detected, flag set
+17:37:43.510 > State: PREAMBLE
+17:37:43.510 > TX: TX-RX DONE detected, flag set
+17:37:43.514 > State: PAYLOAD
+17:37:43.523 > [1528785][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:43.533 > [1528796][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:28 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:43.550 > [1528813][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:43.556 > TX: TX-RX DONE detected, flag set
+17:37:43.556 > State: PREAMBLE
+17:37:43.562 > CLEAR KEY: 44F0753D42D8E2B052712C98B64E8576
+17:37:43.563 > TX: TX-RX DONE detected, flag set
+17:37:43.568 > State: PAYLOAD
+17:37:43.568 > (28) 1W S 1 E 1  FROM F153FA TO 00003F CMD 30 +79.117     >  DATA(20)  249f715fcae888525b615d2af19dac4802010bd2  MANU 2 DATA 1   KEY 249f715fcae888525b615d2af19dac48 SEQ 0bd2  Type All
+17:37:43.585 > [1528840][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=126): <134>Jan  1 00:25:28 MIOPENIO MIOPENIO: (28) 1W FROM F153FA TO 003F CMD 30 DATA(20) 249f715fcae888525b615d2af19dac4802010bd2 >
+17:37:43.608 > [1528871][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:43.619 > [1528882][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:28 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:43.635 > [1528899][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:43.644 > CLEAR KEY: 44F0753D42D8E2B052712C98B64E8576
+17:37:43.644 > (28) 1W S 1 E 1  FROM F153FA TO 00003F CMD 30 +85.588     >  DATA(20)  249f715fcae888525b615d2af19dac4802010bd2  MANU 2 DATA 1   KEY 249f715fcae888525b615d2af19dac48 SEQ 0bd2  Type All
+17:37:43.661 > TX: TX-RX DONE detected, flag set
+17:37:43.666 > State: PREAMBLE
+17:37:43.666 > [1528917][D][syslog_helper.cpp:162] seTX: TX-RX DONE detected, flag set
+17:37:43.673 > State: PAYLOAD
+17:37:43.673 > ndSyslog(): [SYSLOG] Sending syslog (len=126): <134>Jan  1 00:25:28 MIOPENIO MIOPENIO: (28) 1W FROM F153FA TO 003F CMD 30 DATA(20) 249f715fcae888525b615d2af19dac4802010bd2 >
+17:37:43.694 > [1528957][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:43.704 > TX: TX-RX DONE detected, flag set
+17:37:43.706 > State: PREAMBLE
+17:37:43.706 > [1528968][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:28 MIOPENIO MIOPENIO: Command received from f15TX: TX-RX DONE detected, flag set
+17:37:43.721 > State: PAYLOAD
+17:37:43.721 > 3fa (Unknown device)
+17:37:43.730 > [1528993][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:43.741 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +86.065     >  DATA(13)  02030e00000bd356f42faa9fbf        SEQ 0bd3 MAC 56f42faa9fbf  Manuf 2 Acei 3 Main E00 fp1 0  Type All
+17:37:43.752 > [1529008][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:29 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 02030e00000bd356f42faa9fbf >
+17:37:43.774 > [1529038][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:43.785 > [1529048][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:29 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:43.802 > [1529065][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:43.813 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +80.403     >  DATA(13)  02030e00000bd356f42faa9fbf        SEQ 0bd3 MAC 56f42faa9fbf  Manuf 2 Acei 3 Main E00 fp1 0  Type All
+17:37:43.824 > [1529080][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:29 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 02030e00000bd356f42faa9fbf >
+17:37:43.846 > [1529109][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:43.852 > TX: TX-RX DONE detected, flag set
+17:37:43.852 > State: PREAMBLE
+17:37:43.923 > TX: TX-RX DONE detected, flag set
+17:37:43.923 > State: PREAMBLE
+17:37:44.287 > TX: TX-RX DONE detected, flag set
+17:37:44.287 > State: PREAMBLE
+17:37:44.287 > TX: TX-RX DONE detected, flag set
+17:37:44.293 > State: PAYLOAD
+17:37:44.293 > [1529556][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:29 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:37:44.314 > [1529577][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:44.318 > 1W Learning mode
+17:37:44.318 >
+17:37:44.324 > (09) 2W S 1 E 1 [LPM]    FROM AA9BFA TO 00003F CMD 2E +0.000         DATA(01)  00
+17:37:44.330 > [1529589][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=87): <134>Jan  1 00:25:29 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO 003F CMD 2E DATA(1) 00 <
+17:37:44.348 > [1529611][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:44.363 > TX: TX-RX DONE detected, flag set
+17:37:44.363 > State: PREAMBLE
+17:37:44.370 > TX: TX-RX DONE detected, flag set
+17:37:44.370 > State: PAYLOAD
+17:37:44.370 > [1529636][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:29 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:44.387 > TX: TX-RX DONE detected, flag set
+17:37:44.389 > State: PREAMBLE
+17:37:44.395 > TX: TX-RX DONE detected, flag set
+17:37:44.395 > State: PAYLOAD
+17:37:44.395 > [1529661][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:44.410 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +80.074     >  DATA(13)  02030504000bd5a92b337b0489        SEQ 0bd5 MAC a92b337b0489  Manuf 2 Acei 3 Main 504 fp1 0  Type All
+17:37:44.421 > [1529678][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:29 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 02030504000bd5a92b337b0489 >
+17:37:44.444 > [1529707][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:44.455 > [1529718][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:29 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:44.472 > [1529735][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:44.485 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +81.611     >  DATA(13)  02030504000bd5a92b337b0489        SEQ 0bd5 MAC a92b337b0489  Manuf 2 Acei 3 Main 504 fp1 0  Type All
+17:37:44.496 > [1529752][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:29 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 02030504000bd5a92b337b0489 >
+17:37:44.519 > [1529782][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:44.618 > TX: TX-RX DONE detected, flag set
+17:37:44.618 > State: PREAMBLE
+17:37:44.625 > TX: TX-RX DONE detected, flag set
+17:37:44.625 > State: PAYLOAD
+17:37:44.625 > [1529892][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:29 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:44.643 > TX: TX-RX DONE detected, flag set
+17:37:44.644 > State: PREAMBLE
+17:37:44.651 > TX: TX-RX DONE detected, flag set
+17:37:44.651 > State: PAYLOAD
+17:37:44.651 > [1529917][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:44.666 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +174.172    >  DATA(13)  02030505000bd667b51b951fd9        SEQ 0bd6 MAC 67b51b951fd9  Manuf 2 Acei 3 Main 505 fp1 0  Type All
+17:37:44.678 > [1529934][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:29 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 02030505000bd667b51b951fd9 >
+17:37:44.700 > [1529963][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:44.711 > [1529974][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:29 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:44.729 > [1529991][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:44.739 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +82.086     >  DATA(13)  02030505000bd667b51b951fd9        SEQ 0bd6 MAC 67b51b951fd9  Manuf 2 Acei 3 Main 505 fp1 0  Type All
+17:37:44.750 > [1530007][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 02030505000bd667b51b951fd9 >
+17:37:44.773 > [1530036][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:44.874 > TX: TX-RX DONE detected, flag set
+17:37:44.874 > State: PREAMBLE
+17:37:44.881 > TX: TX-RX DONE detected, flag set
+17:37:44.881 > State: PAYLOAD
+17:37:44.881 > [1530147][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:44.898 > TX: TX-RX DONE detected, flag set
+17:37:44.899 > State: PREAMBLE
+17:37:44.907 > TX: TX-RX DONE detected, flag set
+17:37:44.907 > State: PAYLOAD
+17:37:44.907 > [1530173][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:44.921 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +173.467    >  DATA(13)  02030506000bd76785d10b1533        SEQ 0bd7 MAC 6785d10b1533  Manuf 2 Acei 3 Main 506 fp1 0  Type All
+17:37:44.932 > [1530190][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 02030506000bd76785d10b1533 >
+17:37:44.956 > [1530219][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:44.967 > [1530230][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:44.983 > [1530246][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:44.994 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +81.967     >  DATA(13)  02030506000bd76785d10b1533        SEQ 0bd7 MAC 6785d10b1533  Manuf 2 Acei 3 Main 506 fp1 0  Type All
+17:37:45.006 > [1530262][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 02030506000bd76785d10b1533 >
+17:37:45.029 > [1530292][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.151 > TX: TX-RX DONE detected, flag set
+17:37:45.151 > State: PREAMBLE
+17:37:45.158 > TX: TX-RX DONE detected, flag set
+17:37:45.158 > State: PAYLOAD
+17:37:45.158 > [1530424][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:45.175 > TX: TX-RX DONE detected, flag set
+17:37:45.176 > State: PREAMBLE
+17:37:45.183 > TX: TX-RX DONE detected, flag set
+17:37:45.184 > State: PAYLOAD
+17:37:45.184 > [1530447][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.198 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +194.535    >  DATA(13)  02030507000bd82d69c8ad9518        SEQ 0bd8 MAC 2d69c8ad9518  Manuf 2 Acei 3 Main 507 fp1 0  Type All
+17:37:45.210 > [1530466][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 02030507000bd82d69c8ad9518 >
+17:37:45.233 > [1530496][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.243 > [1530506][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:45.261 > [1530524][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.271 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +82.468     >  DATA(13)  02030507000bd82d69c8ad9518        SEQ 0bd8 MAC 2d69c8ad9518  Manuf 2 Acei 3 Main 507 fp1 0  Type All
+17:37:45.283 > [1530539][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 02030507000bd82d69c8ad9518 >
+17:37:45.305 > [1530568][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.310 > TX: TX-RX DONE detected, flag set
+17:37:45.310 > State: PREAMBLE
+17:37:45.316 > TX: TX-RX DONE detected, flag set
+17:37:45.316 > State: PAYLOAD
+17:37:45.324 > [1530587][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:37:45.341 > [1530605][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.346 > 2W Actuator Ack Asked
+17:37:45.352 > (08) 2W S 1 E 0  FROM AA9BFA TO CA5321 CMD 2C +81.158     >  DATA(00)
+17:37:45.357 > [1530616][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=87): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO CA5321 CMD 2C DATA(0)  >
+17:37:45.375 > [1530638][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.386 > TX: TX-RX DONE detected, flag set
+17:37:45.387 > State: PREAMBLE
+17:37:45.394 > TX: TX-RX DONE detected, flag set
+17:37:45.394 > State: PAYLOAD
+17:37:45.394 > [1530660][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:45.410 > TX: TX-RX DONE detected, flag set
+17:37:45.412 > State: PREAMBLE
+17:37:45.418 > TX: TX-RX DONE detected, flag set
+17:37:45.418 > State: PAYLOAD
+17:37:45.418 > [1530684][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.433 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +72.091     >  DATA(13)  02030508000bd939ef6c746d17        SEQ 0bd9 MAC 39ef6c746d17  Manuf 2 Acei 3 Main 508 fp1 0  Type All
+17:37:45.444 > [1530702][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 02030508000bd939ef6c746d17 >
+17:37:45.467 > [1530730][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.478 > [1530741][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:45.496 > [1530758][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.506 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +81.456     >  DATA(13)  02030508000bd939ef6c746d17        SEQ 0bd9 MAC 39ef6c746d17  Manuf 2 Acei 3 Main 508 fp1 0  Type All
+17:37:45.518 > [1530774][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 02030508000bd939ef6c746d17 >
+17:37:45.534 > TX: TX-RX DONE detected, flag set
+17:37:45.539 > State: PREAMBLE
+17:37:45.539 > TX: TX-RX DONE detected, flag set
+17:37:45.542 > State: PAYLOAD
+17:37:45.549 > [1530813][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.560 > [1530823][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:45.577 > [1530840][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.583 > TX: TX-RX DONE detected, flag set
+17:37:45.583 > State: PREAMBLE
+17:37:45.589 > TX: TX-RX DONE detected, flag set
+17:37:45.589 > State: PAYLOAD
+17:37:45.589 > 1W Learning mode
+17:37:45.597 > (17) 1W S 1 E 1  FROM F153FA TO 00003F CMD 2E +82.227     >  DATA(09)  000bdae4f452d40081        DATA 0  SEQ 0bda MAC e4f452d40081  Type All
+17:37:45.608 > [1530862][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=103): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: (17) 1W FROM F153FA TO 003F CMD 2E DATA(9) 000bdae4f452d40081 >
+17:37:45.628 > [1530891][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.638 > [1530901][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:45.655 > [1530918][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.660 > 1W Learning mode
+17:37:45.666 > (17) 1W S 1 E 1  FROM F153FA TO 00003F CMD 2E +78.149     >  DATA(09)  000bdae4f452d40081        DATA 0  SEQ 0bda MAC e4f452d40081  Type All
+17:37:45.677 > [1530931][D][syslog_helper.cpp:162] sendSyslog(TX: TX-RX DONE detected, flag set
+17:37:45.683 > State: PREAMBLE
+17:37:45.683 > ): [SYSLOG] Sending TX: TX-RX DONE detected, flag set
+17:37:45.688 > State: PAYLOAD
+17:37:45.688 > syslog (len=103): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: (17) 1W FROM F153FA TO 003F CMD 2E DATA(9) 000bdae4f452d40081 >
+17:37:45.704 > [1530968][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.715 > [1530979][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:30 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:45.728 > TX: TX-RX DONE detected, flag set
+17:37:45.733 > State: PREAMBLE
+17:37:45.733 > TX: TX-RX DONE detected, flag set
+17:37:45.735 > State: PAYLOAD
+17:37:45.743 > [1531006][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.753 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +77.394     >  DATA(13)  02030509000bdb4cb3d92ef9f0        SEQ 0bdb MAC 4cb3d92ef9f0  Manuf 2 Acei 3 Main 509 fp1 0  Type All
+17:37:45.765 > [1531021][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 02030509000bdb4cb3d92ef9f0 >
+17:37:45.787 > [1531050][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.798 > [1531061][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:45.809 > TX: TX-RX DONE detected, flag set
+17:37:45.815 > State: PREAMBLE
+17:37:45.815 > TX: TX-RX DONE detected, flag set
+17:37:45.817 > State: PAYLOAD
+17:37:45.824 > [1531087][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.835 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +82.024     >  DATA(13)  02030509000bdb4cb3d92ef9f0        SEQ 0bdb MAC 4cb3d92ef9f0  Manuf 2 Acei 3 Main 509 fp1 0  Type All
+17:37:45.846 > [1531103][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 02030509000bdb4cb3d92ef9f0 >
+17:37:45.869 > [1531132][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.879 > [1531142][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:37:45.896 > [1531159][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.902 > TX: TX-RX DONE detected, flag set
+17:37:45.902 > State: PREAMBLE
+17:37:45.907 > TX: TX-RX DONE detected, flag set
+17:37:45.907 > State: PAYLOAD
+17:37:45.907 > 2W Actuator Ack Asked
+17:37:45.915 > (08) 2W S 1 E 0  FROM AA9BFA TO 06F483 CMD 2C +81.566     >  DATA(00)
+17:37:45.920 > [1531180][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=86): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO 6F483 CMD 2C DATA(0)  >
+17:37:45.938 > [1531202][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.949 > [1531212][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: Command received from f153fa TX: TX-RX DONE detected, flag set
+17:37:45.961 > State: PREAMBLE
+17:37:45.966 > (Unknown device)
+17:37:45.966 > TX: TX-RX DONE detected, flag set
+17:37:45.968 > State: PAYLOAD
+17:37:45.975 > [1531238][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:45.988 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +69.875     >  DATA(13)  0203050a000bdc17156eab1ca2        SEQ 0bdc MAC 17156eab1ca2  Manuf 2 Acei 3 Main 50A fp1 0  Type All
+17:37:45.998 > [1531256][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 0203050a000bdc17156eab1ca2 >
+17:37:46.024 > [1531286][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:46.035 > [1531298][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:46.052 > [1531316][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:46.063 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +84.568     >  DATA(13)  0203050a000bdc17156eab1ca2        SEQ 0bdc MAC 17156eab1ca2  Manuf 2 Acei 3 Main 50A fp1 0  Type All
+17:37:46.075 > [1531332][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 0203050a000bdc17156eab1ca2 >
+17:37:46.098 > [1531360][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:46.156 > TX: TX-RX DONE detected, flag set
+17:37:46.156 > State: PREAMBLE
+17:37:46.163 > TX: TX-RX DONE detected, flag set
+17:37:46.163 > State: PAYLOAD
+17:37:46.163 > [1531429][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:46.180 > TX: TX-RX DONE detected, flag set
+17:37:46.181 > State: PREAMBLE
+17:37:46.188 > TX: TX-RX DONE detected, flag set
+17:37:46.189 > State: PAYLOAD
+17:37:46.189 > [1531454][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:46.203 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +132.309    >  DATA(13)  0203050b000bdda03b743dac0b        SEQ 0bdd MAC a03b743dac0b  Manuf 2 Acei 3 Main 50B fp1 0  Type All
+17:37:46.214 > [1531472][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 0203050b000bdda03b743dac0b >
+17:37:46.239 > [1531502][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:46.250 > [1531513][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:46.268 > [1531531][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:46.279 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +83.911     >  DATA(13)  0203050b000bdda03b743dac0b        SEQ 0bdd MAC a03b743dac0b  Manuf 2 Acei 3 Main 50B fp1 0  Type All
+17:37:46.290 > [1531546][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 0203050b000bdda03b743dac0b >
+17:37:46.312 > [1531575][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:46.387 > TX: TX-RX DONE detected, flag set
+17:37:46.387 > State: PREAMBLE
+17:37:46.387 > TX: TX-RX DONE detected, flag set
+17:37:46.394 > State: PAYLOAD
+17:37:46.394 > [1531656][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:37:46.412 > TX: TX-RX DONE detected, flag set
+17:37:46.412 > State: PREAMBLE
+17:37:46.412 > [1531678][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:46.424 > TX: TX-RX DONE detected, flag set
+17:37:46.424 > State: PAYLOAD
+17:37:46.424 > 2W Actuator Ack Asked
+17:37:46.431 > (08) 2W S 1 E 0  FROM AA9BFA TO 8B133C CMD 2C +143.537    >  DATA(00)
+17:37:46.438 > [1531696][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=87): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO 8B133C CMD 2C DATA(0)  >
+17:37:46.455 > [1531718][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:46.466 > [1531729][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:46.482 > [1531746][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:46.490 > TX: TX-RX DONE detected, flag set
+17:37:46.490 > State: PREAMBLE
+17:37:46.494 > TX: TX-RX DONE detected, flag set
+17:37:46.494 > State: PAYLOAD
+17:37:46.494 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +72.217     >  DATA(13)  0203050c000bde33431ce1e86d        SEQ 0bde MAC 33431ce1e86d  Manuf 2 Acei 3 Main 50C fp1 0  Type All
+17:37:46.511 > [1531767][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 0203050c000bde33431ce1e86d >
+17:37:46.533 > [1531796][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:46.545 > [1531807][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:46.561 > [1531824][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:46.571 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +78.176     >  DATA(13)  0203050c000bde33431ce1e86d        SEQ 0bde MAC 33431ce1e86d  Manuf 2 Acei 3 Main 50C fp1 0  Type All
+17:37:46.583 > [1531840][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 0203050c000bde33431ce1e86d >
+17:37:46.606 > [1531869][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:46.678 > TX: TX-RX DONE detected, flag set
+17:37:46.678 > State: PREAMBLE
+17:37:46.685 > TX: TX-RX DONE detected, flag set
+17:37:46.685 > State: PAYLOAD
+17:37:46.685 > [1531951][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:46.705 > TX: TX-RX DONE detected, flag set
+17:37:46.705 > State: PREAMBLE
+17:37:46.710 > TX: TX-RX DONE detected, flag set
+17:37:46.710 > State: PAYLOAD
+17:37:46.710 > [1531976][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:46.725 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +144.195    >  DATA(13)  0203050d000bdf2369105eab0b        SEQ 0bdf MAC 2369105eab0b  Manuf 2 Acei 3 Main 50D fp1 0  Type All
+17:37:46.736 > TX: TX-RX DONE detected, flag set
+17:37:46.743 > State: PREAMBLE
+17:37:46.743 > [1531998][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:31 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 0203050d000bdf2369105eab0b >
+17:37:46.759 > TX: TX-RX DONE detected, flag set
+17:37:46.764 > State: PREAMBLE
+17:37:46.764 > TX: TX-RX DONE detected, flag set
+17:37:46.764 > State: PAYLOAD
+17:37:46.774 > [1532038][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:46.786 > [1532048][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:46.802 > [1532065][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:46.813 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +96.996     >  DATA(13)  0203050d000bdf2369105eab0b        SEQ 0bdf MAC 2369105eab0b  Manuf 2 Acei 3 Main 50D fp1 0  Type All
+17:37:46.825 > [1532081][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 0203050d000bdf2369105eab0b >
+17:37:46.846 > [1532110][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:46.914 > TX: TX-RX DONE detected, flag set
+17:37:46.914 > State: PREAMBLE
+17:37:46.920 > TX: TX-RX DONE detected, flag set
+17:37:46.920 > State: PAYLOAD
+17:37:46.920 > [1532187][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:46.937 > TX: TX-RX DONE detected, flag set
+17:37:46.939 > State: PREAMBLE
+17:37:46.946 > TX: TX-RX DONE detected, flag set
+17:37:46.946 > State: PAYLOAD
+17:37:46.946 > [1532210][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:46.962 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +138.443    >  DATA(13)  0203050e000be09da81829c3ca        SEQ 0be0 MAC 9da81829c3ca  Manuf 2 Acei 3 Main 50E fp1 0  Type All
+17:37:46.973 > [1532230][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 0203050e000be09da81829c3ca >
+17:37:46.996 > [1532259][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.007 > [1532270][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:47.024 > [1532287][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.035 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +83.394     >  DATA(13)  0203050e000be09da81829c3ca        SEQ 0be0 MAC 9da81829c3ca  Manuf 2 Acei 3 Main 50E fp1 0  Type All
+17:37:47.046 > [1532303][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 0203050e000be09da81829c3ca >
+17:37:47.063 > TX: TX-RX DONE detected, flag set
+17:37:47.069 > State: PREAMBLE
+17:37:47.069 > TX: TX-RX DONE detected, flag set
+17:37:47.074 > State: PAYLOAD
+17:37:47.074 > TX: TX-RX DONE detected, flag set
+17:37:47.074 > State: PREAMBLE
+17:37:47.079 > TX: TX-RX DONE detected, flag set
+17:37:47.079 > State: PAYLOAD
+17:37:47.089 > [1532351][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.099 > [1532362][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: Command received from 1229c1 (Unknown device)
+17:37:47.116 > [1532379][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.125 > (08) 2W S 0 E 1  FROM 1229C1 TO AA9BFA CMD 2D +91.855     <  DATA(00)
+17:37:47.131 > [1532390][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=87): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: (08) 2W FROM 1229C1 TO AA9BFA CMD 2D DATA(0)  <
+17:37:47.150 > [1532413][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.180 > TX: TX-RX DONE detected, flag set
+17:37:47.180 > State: PREAMBLE
+17:37:47.185 > TX: TX-RX DONE detected, flag set
+17:37:47.187 > State: PAYLOAD
+17:37:47.187 > [1532453][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:47.203 > TX: TX-RX DONE detected, flag set
+17:37:47.209 > State: PREAMBLE
+17:37:47.211 > TX: TX-RX DONE detected, flag set
+17:37:47.212 > State: PAYLOAD
+17:37:47.212 > [1532477][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.227 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +90.537     >  DATA(13)  0203050f000be19fb7a7eccfbf        SEQ 0be1 MAC 9fb7a7eccfbf  Manuf 2 Acei 3 Main 50F fp1 0  Type All
+17:37:47.238 > [1532495][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 0203050f000be19fb7a7eccfbf >
+17:37:47.263 > [1532526][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.272 > ERROR: Too many messages queued
+17:37:47.272 > [1532537][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:47.292 > [1532555][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.303 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +83.846     >  DATA(13)  0203050f000be19fb7a7eccfbf        SEQ 0be1 MAC 9fb7a7eccfbf  Manuf 2 Acei 3 Main 50F fp1 0  Type All
+17:37:47.315 > [1532571][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 0203050f000be19fb7a7eccfbf >
+17:37:47.331 > TX: TX-RX DONE detected, flag set
+17:37:47.337 > State: PREAMBLE
+17:37:47.337 > TX: TX-RX DONE detected, flag set
+17:37:47.338 > State: PAYLOAD
+17:37:47.345 > [1532609][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.355 > ERROR: Too many messages queued
+17:37:47.355 > [1532620][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:47.374 > TX: TX-RX DONE detected, flag set
+17:37:47.374 > State: PREAMBLE
+17:37:47.374 > [1532639][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.386 > TX: TX-RX DONE detected, flag set
+17:37:47.386 > State: PAYLOAD
+17:37:47.394 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +83.210     >  DATA(13)  020305ff000be241a97a79d64a        SEQ 0be2 MAC 41a97a79d64a  Manuf 2 Acei 3 Main 5FF fp1 0  Type All
+17:37:47.406 > [1532662][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 020305ff000be241a97a79d64a >
+17:37:47.430 > [1532692][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.438 > ERROR: Too many messages queued
+17:37:47.438 > [1532703][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: Command received from f153fa (Unknown device)
+17:37:47.459 > [1532722][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.470 > (21) 1W S 1 E 1  FROM F153FA TO 00003F CMD 20 +83.437     >  DATA(13)  020305ff000be241a97a79d64a        SEQ 0be2 MAC 41a97a79d64a  Manuf 2 Acei 3 Main 5FF fp1 0  Type All
+17:37:47.481 > [1532737][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=112): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: (21) 1W FROM F153FA TO 003F CMD 20 DATA(13) 020305ff000be241a97a79d64a >
+17:37:47.505 > [1532768][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.525 > TX: TX-RX DONE detected, flag set
+17:37:47.526 > State: PREAMBLE
+17:37:47.526 > TX: TX-RX DONE detected, flag set
+17:37:47.531 > State: PAYLOAD
+17:37:47.531 > [1532794][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: Command received from aa9bfa TX: TX-RX DONE detected, flag set
+17:37:47.547 > State: PREAMBLE
+17:37:47.547 > TX: TX-RX DONE detected, flag set
+17:37:47.553 > State: PAYLOAD
+17:37:47.553 > (Unknown device)
+17:37:47.560 > [1532823][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.565 > 2W Actuator Ack Asked
+17:37:47.571 > (08) 2W S 1 E 0  FROM AA9BFA TO BC7374 CMD 2C +91.645     >  DATA(00)
+17:37:47.578 > [1532835][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=87): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO BC7374 CMD 2C DATA(0)  >
+17:37:47.594 > [1532857][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.603 > [1532867][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: Command received from bc7374 (Unknown device)
+17:37:47.621 > [1532884][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.631 > (08) 2W S 0 E 1  FROM BC7374 TO AA9BFA CMD 2D +72.662     <  DATA(00)
+17:37:47.636 > [1532895][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=87): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: (08) 2W FROM BC7374 TO AA9BFA CMD 2D DATA(0)  <
+17:37:47.654 > [1532917][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.711 > TX: TX-RX DONE detected, flag set
+17:37:47.711 > State: PREAMBLE
+17:37:47.711 > TX: TX-RX DONE detected, flag set
+17:37:47.717 > State: PAYLOAD
+17:37:47.717 > ERROR: Too many messages queued
+17:37:47.722 > [1532980][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:32 MIOPENIO MIOPENIO: Command received TX: TX-RX DONE detected, flag set
+17:37:47.734 > State: PREAMBLE
+17:37:47.739 > TX: TX-RX DONE detected, flag set
+17:37:47.739 > State: PAYLOAD
+17:37:47.739 > from aa9bfa (Unknown device)
+17:37:47.752 > [1533015][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.757 > 2W Actuator Ack Asked
+17:37:47.762 > (08) 2W S 1 E 0  FROM AA9BFA TO BAD662 CMD 2C +113.351    >  DATA(00)
+17:37:47.768 > [1533027][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=87): <134>Jan  1 00:25:33 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO BAD662 CMD 2C DATA(0)  >
+17:37:47.786 > [1533049][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.795 > ERROR: Too many messages queued
+17:37:47.795 > [1533059][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:33 MIOPENIO MIOPENIO: Command received from bad662 (Unknown device)
+17:37:47.814 > [1533077][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:47.824 > (08) 2W S 0 E 1  FROM BAD662 TO AA9BFA CMD 2D +78.806     <  DATA(00)
+17:37:47.830 > [1533089][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=87): <134>Jan  1 00:25:33 MIOPENIO MIOPENIO: (08) 2W FROM BAD662 TO AA9BFA CMD 2D DATA(0)  <
+17:37:47.847 > [1533110][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:48.132 > TX: TX-RX DONE detected, flag set
+17:37:48.133 > State: PREAMBLE
+17:37:48.133 > TX: TX-RX DONE detected, flag set
+17:37:48.138 > State: PAYLOAD
+17:37:48.138 > ERROR: Too many messages queued
+17:37:48.144 > [1533401][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:33 MIOPENIO MIOPENIO: ComTX: TX-RX DONE detected, flag set
+17:37:48.156 > State: PREAMBLE
+17:37:48.156 > TX: TX-RX DONE detected, flag set
+17:37:48.161 > State: PAYLOAD
+17:37:48.161 > mand received from aa9bfa (Unknown device)
+17:37:48.172 > [1533435][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:48.176 > 2W Actuator Ack Asked
+17:37:48.182 > (08) 2W S 1 E 0  FROM AA9BFA TO 9375C0 CMD 2C +342.254    >  DATA(00)
+17:37:48.189 > [1533448][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=87): <134>Jan  1 00:25:33 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO 9375C0 CMD 2C DATA(0)  >
+17:37:48.206 > [1533469][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:48.215 > ERROR: Too many messages queued
+17:37:48.215 > [1533479][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:33 MIOPENIO MIOPENIO: Command received from 9375c0 (Unknown device)
+17:37:48.234 > [1533498][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:48.245 > (08) 2W S 0 E 1  FROM 9375C0 TO AA9BFA CMD 2D +78.121     <  DATA(00)
+17:37:48.251 > [1533509][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=87): <134>Jan  1 00:25:33 MIOPENIO MIOPENIO: (08) 2W FROM 9375C0 TO AA9BFA CMD 2D DATA(0)  <
+17:37:48.267 > [1533531][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:48.480 > TX: TX-RX DONE detected, flag set
+17:37:48.480 > State: PREAMBLE
+17:37:48.480 > TX: TX-RX DONE detected, flag set
+17:37:48.485 > State: PAYLOAD
+17:37:48.485 > ERROR: Too many messages queued
+17:37:48.490 > [1533748][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:33 MIOPENIO MIOPENIO: CommTX: TX-RX DONE detected, flag set
+17:37:48.502 > State: PREAMBLE
+17:37:48.502 > TX: TX-RX DONE detected, flag set
+17:37:48.508 > State: PAYLOAD
+17:37:48.508 > and received from aa9bfa (Unknown device)
+17:37:48.519 > [1533782][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:48.523 > 2W Actuator Ack Asked
+17:37:48.530 > (08) 2W S 1 E 0  FROM AA9BFA TO AD9F09 CMD 2C +268.801    >  DATA(00)
+17:37:48.535 > [1533794][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=86): <134>Jan  1 00:25:33 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO AD9F9 CMD 2C DATA(0)  >
+17:37:48.553 > [1533816][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:48.562 > ERROR: Too many messages queued
+17:37:48.562 > [1533826][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:33 MIOPENIO MIOPENIO: Command received from ad9f09 (Unknown device)
+17:37:48.581 > [1533844][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:48.591 > (08) 2W S 0 E 1  FROM AD9F09 TO AA9BFA CMD 2D +77.920     <  DATA(00)
+17:37:48.597 > [1533857][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=86): <134>Jan  1 00:25:33 MIOPENIO MIOPENIO: (08) 2W FROM AD9F9 TO AA9BFA CMD 2D DATA(0)  <
+17:37:48.614 > [1533878][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:48.723 > TX: TX-RX DONE detected, flag set
+17:37:48.723 > State: PREAMBLE
+17:37:48.723 > TX: TX-RX DONE detected, flag set
+17:37:48.729 > State: PAYLOAD
+17:37:48.729 > ERROR: Too many messages queued
+17:37:48.734 > [1533991][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:33 MIOPENIO MIOPENIOTX: TX-RX DONE detected, flag set
+17:37:48.746 > State: PREAMBLE
+17:37:48.746 > TX: TX-RX DONE detected, flag set
+17:37:48.751 > State: PAYLOAD
+17:37:48.751 > : Command received from aa9bfa (Unknown device)
+17:37:48.762 > [1534025][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:48.766 > 2W Actuator Ack Asked
+17:37:48.772 > (08) 2W S 1 E 0  FROM AA9BFA TO 065183 CMD 2C +165.100    >  DATA(00)
+17:37:48.777 > [1534037][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=86): <134>Jan  1 00:25:34 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO 65183 CMD 2C DATA(0)  >
+17:37:48.796 > [1534059][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:48.805 > ERROR: Too many messages queued
+17:37:48.805 > [1534069][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:34 MIOPENIO MIOPENIO: Command received from 065183 (Unknown device)
+17:37:48.825 > [1534088][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:48.834 > (08) 2W S 0 E 1  FROM 065183 TO AA9BFA CMD 2D +77.659     <  DATA(00)
+17:37:48.840 > [1534099][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=87): <134>Jan  1 00:25:34 MIOPENIO MIOPENIO: (08) 2W FROM 065183 TO AA9BFA CMD 2D DATA(0)  <
+17:37:48.857 > [1534121][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:48.961 > TX: TX-RX DONE detected, flag set
+17:37:48.961 > State: PREAMBLE
+17:37:48.961 > TX: TX-RX DONE detected, flag set
+17:37:48.967 > State: PAYLOAD
+17:37:48.967 > ERROR: Too many messages queued
+17:37:48.972 > [1534229][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:34 MIOPENIO MIOPENTX: TX-RX DONE detected, flag set
+17:37:48.983 > State: PREAMBLE
+17:37:48.983 > TX: TX-RX DONE detected, flag set
+17:37:48.988 > State: PAYLOAD
+17:37:48.988 > IO: Command received from aa9bfa (Unknown device)
+17:37:48.998 > [1534261][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:49.002 > 2W Actuator Ack Asked
+17:37:49.008 > (08) 2W S 1 E 0  FROM AA9BFA TO 9DAF6F CMD 2C +160.236    >  DATA(00)
+17:37:49.015 > [1534274][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=87): <134>Jan  1 00:25:34 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO 9DAF6F CMD 2C DATA(0)  >
+17:37:49.032 > [1534295][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:49.043 > [1534306][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:34 MIOPENIO MIOPENIO: Command received from 9daf6f (Unknown device)
+17:37:49.059 > [1534323][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:49.070 > (08) 2W S 0 E 1  FROM 9DAF6F TO AA9BFA CMD 2D +76.693     <  DATA(00)
+17:37:49.075 > [1534334][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=87): <134>Jan  1 00:25:34 MIOPENIO MIOPENIO: (08) 2W FROM 9DAF6F TO AA9BFA CMD 2D DATA(0)  <
+17:37:49.092 > [1534356][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:49.197 > TX: TX-RX DONE detected, flag set
+17:37:49.197 > State: PREAMBLE
+17:37:49.197 > TX: TX-RX DONE detected, flag set
+17:37:49.202 > State: PAYLOAD
+17:37:49.202 > [1534465][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:34 MIOPENIO MIOPENIO: Command received from aa9bfa TX: TX-RX DONE detected, flag set
+17:37:49.219 > State: PREAMBLE
+17:37:49.219 > TX: TX-RX DONE detected, flag set
+17:37:49.224 > State: PAYLOAD
+17:37:49.224 > (Unknown device)
+17:37:49.233 > [1534496][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:49.237 > 2W Actuator Ack Asked
+17:37:49.243 > (08) 2W S 1 E 0  FROM AA9BFA TO 03E784 CMD 2C +159.287    >  DATA(00)
+17:37:49.249 > [1534508][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=86): <134>Jan  1 00:25:34 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO 3E784 CMD 2C DATA(0)  >
+17:37:49.267 > [1534530][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:49.275 > ERROR: Too many messages queued
+17:37:49.275 > [1534540][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:34 MIOPENIO MIOPENIO: Command received from 03e784 (Unknown device)
+17:37:49.295 > [1534558][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:49.305 > (08) 2W S 0 E 1  FROM 03E784 TO AA9BFA CMD 2D +74.743     <  DATA(00)
+17:37:49.312 > [1534570][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=87): <134>Jan  1 00:25:34 MIOPENIO MIOPENIO: (08) 2W FROM 03E784 TO AA9BFA CMD 2D DATA(0)  <
+17:37:49.328 > [1534592][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:49.463 > TX: TX-RX DONE detected, flag set
+17:37:49.463 > State: PREAMBLE
+17:37:49.463 > TX: TX-RX DONE detected, flag set
+17:37:49.468 > State: PAYLOAD
+17:37:49.468 > ERROR: Too many messages queued
+17:37:49.473 > [1534731][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:34 MIOPENIO MIOPENIOTX: TX-RX DONE detected, flag set
+17:37:49.485 > State: PREAMBLE
+17:37:49.485 > TX: TX-RX DONE detected, flag set
+17:37:49.491 > State: PAYLOAD
+17:37:49.491 > : Command received from aa9bfa (Unknown device)
+17:37:49.502 > [1534765][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:49.507 > 2W Actuator Ack Asked
+17:37:49.512 > (08) 2W S 1 E 0  FROM AA9BFA TO 765393 CMD 2C +191.368    >  DATA(00)
+17:37:49.518 > [1534777][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=87): <134>Jan  1 00:25:34 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO 765393 CMD 2C DATA(0)  >
+17:37:49.536 > [1534799][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:49.545 > ERROR: Too many messages queued
+17:37:49.546 > [1534810][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:34 MIOPENIO MIOPENIO: Command received from 765393 (Unknown device)
+17:37:49.564 > [1534828][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:49.574 > (08) 2W S 0 E 1  FROM 765393 TO AA9BFA CMD 2D +78.389     <  DATA(00)
+17:37:49.581 > [1534839][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=87): <134>Jan  1 00:25:34 MIOPENIO MIOPENIO: (08) 2W FROM 765393 TO AA9BFA CMD 2D DATA(0)  <
+17:37:49.598 > [1534861][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:49.727 > TX: TX-RX DONE detected, flag set
+17:37:49.727 > State: PREAMBLE
+17:37:49.727 > TX: TX-RX DONE detected, flag set
+17:37:49.733 > State: PAYLOAD
+17:37:49.733 > ERROR: Too many messages queued
+17:37:49.738 > [1534996][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:34 MIOPENIO MIOPENIO: CommaTX: TX-RX DONE detected, flag set
+17:37:49.750 > State: PREAMBLE
+17:37:49.750 > TX: TX-RX DONE detected, flag set
+17:37:49.755 > State: PAYLOAD
+17:37:49.755 > nd received from aa9bfa (Unknown device)
+17:37:49.767 > [1535030][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:49.771 > 2W Actuator Ack Asked
+17:37:49.777 > (08) 2W S 1 E 0  FROM AA9BFA TO 2BA90D CMD 2C +186.583    >  DATA(00)
+17:37:49.783 > [1535042][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=86): <134>Jan  1 00:25:35 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO 2BA9D CMD 2C DATA(0)  >
+17:37:49.801 > [1535063][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:49.809 > ERROR: Too many messages queued
+17:37:49.810 > [1535074][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:35 MIOPENIO MIOPENIO: Command received from 2ba90d (Unknown device)
+17:37:49.829 > [1535093][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:49.839 > (08) 2W S 0 E 1  FROM 2BA90D TO AA9BFA CMD 2D +77.372     <  DATA(00)
+17:37:49.845 > [1535104][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=86): <134>Jan  1 00:25:35 MIOPENIO MIOPENIO: (08) 2W FROM 2BA9D TO AA9BFA CMD 2D DATA(0)  <
+17:37:49.863 > [1535125][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:50.517 > TX: TX-RX DONE detected, flag set
+17:37:50.518 > State: PREAMBLE
+17:37:50.524 > TX: TX-RX DONE detected, flag set
+17:37:50.525 > State: PAYLOAD
+17:37:50.525 > [1535790][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:35 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:37:50.546 > [1535809][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:50.553 > Received Unknown command 2A
+17:37:50.553 > (20) 2W S 1 E 1 [LPM]    FROM AA9BFA TO 00003B CMD 2A +0.000         DATA(12)  e710346b4d59b87d14098fd8
+17:37:50.564 > [1535819][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=110): <134>Jan  1 00:25:35 MIOPENIO MIOPENIO: (20) 2W FROM AA9BFA TO 003B CMD 2A DATA(12) e710346b4d59b87d14098fd8 <
+17:37:50.583 > [1535847][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:52.395 > TX: TX-RX DONE detected, flag set
+17:37:52.395 > State: PREAMBLE
+17:37:52.402 > TX: TX-RX DONE detected, flag set
+17:37:52.402 > State: PAYLOAD
+17:37:52.402 > [1537668][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:37 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:37:52.424 > [1537688][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:52.432 > Received Unknown command 2A
+17:37:52.432 > (20) 2W S 1 E 1 [LPM]    FROM AA9BFA TO 00003B CMD 2A +0.000         DATA(12)  e710346b4d59b87d14098fd8
+17:37:52.444 > [1537698][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=110): <134>Jan  1 00:25:37 MIOPENIO MIOPENIO: (20) 2W FROM AA9BFA TO 003B CMD 2A DATA(12) e710346b4d59b87d14098fd8 <
+17:37:52.463 > [1537726][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:54.238 > TX: TX-RX DONE detected, flag set
+17:37:54.239 > State: PREAMBLE
+17:37:54.245 > TX: TX-RX DONE detected, flag set
+17:37:54.245 > State: PAYLOAD
+17:37:54.245 > [1539511][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:39 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:37:54.268 > [1539531][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:54.275 > Received Unknown command 2A
+17:37:54.275 > (20) 2W S 1 E 1 [LPM]    FROM AA9BFA TO 00003B CMD 2A +0.000         DATA(12)  e710346b4d59b87d14098fd8
+17:37:54.287 > [1539541][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=110): <134>Jan  1 00:25:39 MIOPENIO MIOPENIO: (20) 2W FROM AA9BFA TO 003B CMD 2A DATA(12) e710346b4d59b87d14098fd8 <
+17:37:54.306 > [1539569][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:55.761 > TX: TX-RX DONE detected, flag set
+17:37:55.761 > State: PREAMBLE
+17:37:55.761 > TX: TX-RX DONE detected, flag set
+17:37:55.767 > State: PAYLOAD
+17:37:55.767 > [1541030][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:41 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:37:55.788 > [1541052][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:55.795 > 2W Actuator Ack Asked
+17:37:55.795 >
+17:37:55.795 > (08) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 2C +0.000      >  DATA(00)
+17:37:55.801 > [1541064][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=86): <134>Jan  1 00:25:41 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO 1C9F9 CMD 2C DATA(0)  >
+17:37:55.823 > [1541085][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:56.391 > TX: TX-RX DONE detected, flag set
+17:37:56.391 > State: PREAMBLE
+17:37:56.397 > TX: TX-RX DONE detected, flag set
+17:37:56.398 > State: PAYLOAD
+17:37:56.398 > [1541664][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:41 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:37:56.420 > [1541683][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:56.428 > Received Unknown command 2A
+17:37:56.429 > (20) 2W S 1 E 1 [LPM]    FROM AA9BFA TO 00003B CMD 2A +0.000         DATA(12)  e710346b4d59b87d14098fd8
+17:37:56.438 > [1541694][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=110): <134>Jan  1 00:25:41 MIOPENIO MIOPENIO: (20) 2W FROM AA9BFA TO 003B CMD 2A DATA(12) e710346b4d59b87d14098fd8 <
+17:37:56.458 > [1541721][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:58.235 > TX: TX-RX DONE detected, flag set
+17:37:58.235 > State: PREAMBLE
+17:37:58.241 > TX: TX-RX DONE detected, flag set
+17:37:58.242 > State: PAYLOAD
+17:37:58.242 > [1543508][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:43 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:37:58.264 > [1543528][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:37:58.272 > Received Unknown command 2A
+17:37:58.273 > (20) 2W S 1 E 1 [LPM]    FROM AA9BFA TO 00003B CMD 2A +0.000         DATA(12)  e710346b4d59b87d14098fd8
+17:37:58.283 > [1543538][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=110): <134>Jan  1 00:25:43 MIOPENIO MIOPENIO: (20) 2W FROM AA9BFA TO 003B CMD 2A DATA(12) e710346b4d59b87d14098fd8 <
+17:37:58.303 > [1543566][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:00.078 > TX: TX-RX DONE detected, flag set
+17:38:00.078 > State: PREAMBLE
+17:38:00.085 > TX: TX-RX DONE detected, flag set
+17:38:00.085 > State: PAYLOAD
+17:38:00.085 > [1545351][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:45 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:00.107 > [1545371][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:00.115 > Received Unknown command 2A
+17:38:00.115 > (20) 2W S 1 E 1 [LPM]    FROM AA9BFA TO 00003B CMD 2A +0.000         DATA(12)  e710346b4d59b87d14098fd8
+17:38:00.126 > [1545381][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=110): <134>Jan  1 00:25:45 MIOPENIO MIOPENIO: (20) 2W FROM AA9BFA TO 003B CMD 2A DATA(12) e710346b4d59b87d14098fd8 <
+17:38:00.146 > [1545409][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:01.537 > TX: TX-RX DONE detected, flag set
+17:38:01.537 > State: PREAMBLE
+17:38:01.537 > TX: TX-RX DONE detected, flag set
+17:38:01.542 > State: PAYLOAD
+17:38:01.542 > [1546805][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:46 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:01.558 > TX: TX-RX DONE detected, flag set
+17:38:01.558 > State: PREAMBLE
+17:38:01.564 > TX: TX-RX DONE detected, flag set
+17:38:01.564 > State: PAYLOAD
+17:38:01.573 > [1546836][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:01.577 > 1W Learning mode
+17:38:01.577 >
+17:38:01.583 > (09) 2W S 1 E 0  FROM AA9BFA TO 57F505 CMD 2E +0.000      >  DATA(01)  02
+17:38:01.589 > [1546848][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=88): <134>Jan  1 00:25:46 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO 57F55 CMD 2E DATA(1) 02 >
+17:38:01.607 > [1546870][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:01.617 > [1546881][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:46 MIOPENIO MIOPENIO: Command received from 57f505 (Unknown device)
+17:38:01.634 > [1546898][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:01.645 > (14) 2W S 0 E 0  FROM 57F505 TO AA9BFA CMD 3C +75.355        DATA(06)  09f998a784d5
+17:38:01.651 > [1546910][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:25:46 MIOPENIO MIOPENIO: (14) 2W FROM 57F55 TO AA9BFA CMD 3C DATA(6) 09f998a784d5 <
+17:38:01.670 > [1546933][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:01.772 > TX: TX-RX DONE detected, flag set
+17:38:01.772 > State: PREAMBLE
+17:38:01.772 > TX: TX-RX DONE detected, flag set
+17:38:01.777 > State: PAYLOAD
+17:38:01.777 > [1547040][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:47 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)TX: TX-RX DONE detected, flag set
+17:38:01.793 > State: PREAMBLE
+17:38:01.799 > TX: TX-RX DONE detected, flag set
+17:38:01.799 > State: PAYLOAD
+17:38:01.799 >
+17:38:01.799 > TX: TX-RX DONE detected, flag set
+17:38:01.805 > State: PREAMBLE
+17:38:01.805 > TX: TX-RX DONE detected, flag set
+17:38:01.808 > State: PAYLOAD
+17:38:01.817 > [1547080][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:01.821 > 1W Learning mode
+17:38:01.827 > (09) 2W S 1 E 0  FROM AA9BFA TO CA5321 CMD 2E +159.656    >  DATA(01)  02
+17:38:01.833 > [1547092][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=89): <134>Jan  1 00:25:47 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO CA5321 CMD 2E DATA(1) 02 >
+17:38:01.851 > [1547114][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:01.862 > [1547125][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:47 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:01.879 > [1547142][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:01.888 > (14) 2W S 0 E 0  FROM AA9BFA TO CA5321 CMD 3D +84.128        DATA(06)  8bb71663e820
+17:38:01.894 > [1547153][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=99): <134>Jan  1 00:25:47 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO CA5321 CMD 3D DATA(6) 8bb71663e820 <
+17:38:01.915 > [1547178][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:02.298 > TX: TX-RX DONE detected, flag set
+17:38:02.298 > State: PREAMBLE
+17:38:02.298 > TX: TX-RX DONE detected, flag set
+17:38:02.303 > State: PAYLOAD
+17:38:02.303 > [1547566][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:47 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown deviceTX: TX-RX DONE detected, flag set
+17:38:02.320 > State: PREAMBLE
+17:38:02.325 > TX: TX-RX DONE detected, flag set
+17:38:02.325 > State: PAYLOAD
+17:38:02.325 > )
+17:38:02.325 > TX: TX-RX DONE detected, flag set
+17:38:02.331 > State: PREAMBLE
+17:38:02.331 > TX: TX-RX DONE detected, flag set
+17:38:02.334 > State: PAYLOAD
+17:38:02.343 > [1547606][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:02.347 > 1W Learning mode
+17:38:02.354 > (09) 2W S 1 E 0  FROM AA9BFA TO 780A9C CMD 2E +441.751    >  DATA(01)  02
+17:38:02.359 > [1547618][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=88): <134>Jan  1 00:25:47 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO 78A9C CMD 2E DATA(1) 02 >
+17:38:02.377 > [1547640][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:02.388 > [1547651][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:47 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:02.405 > [1547668][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:02.415 > (14) 2W S 0 E 0  FROM AA9BFA TO 780A9C CMD 3D +84.275        DATA(06)  c54323241600
+17:38:02.420 > [1547680][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:25:47 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 78A9C CMD 3D DATA(6) c54323241600 <
+17:38:02.440 > [1547704][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:02.553 > TX: TX-RX DONE detected, flag set
+17:38:02.553 > State: PREAMBLE
+17:38:02.553 > TX: TX-RX DONE detected, flag set
+17:38:02.558 > State: PAYLOAD
+17:38:02.558 > [1547821][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:47 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:02.575 > TX: TX-RX DONE detected, flag set
+17:38:02.575 > State: PREAMBLE
+17:38:02.580 > TX: TX-RX DONE detected, flag set
+17:38:02.580 > State: PAYLOAD
+17:38:02.580 > TX: TX-RX DONE detected, flag set
+17:38:02.586 > State: PREAMBLE
+17:38:02.586 > TX: TX-RX DONE detected, flag set
+17:38:02.588 > State: PAYLOAD
+17:38:02.597 > [1547860][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:02.601 > 1W Learning mode
+17:38:02.607 > (09) 2W S 1 E 0  FROM AA9BFA TO 8B133C CMD 2E +170.754    >  DATA(01)  02
+17:38:02.613 > [1547872][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=89): <134>Jan  1 00:25:47 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO 8B133C CMD 2E DATA(1) 02 >
+17:38:02.632 > [1547895][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:02.642 > [1547905][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:47 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:02.660 > [1547922][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:02.669 > (14) 2W S 0 E 0  FROM AA9BFA TO 8B133C CMD 3D +83.885        DATA(06)  2f5f28329747
+17:38:02.675 > [1547934][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=99): <134>Jan  1 00:25:47 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 8B133C CMD 3D DATA(6) 2f5f28329747 <
+17:38:02.695 > [1547958][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:02.805 > TX: TX-RX DONE detected, flag set
+17:38:02.805 > State: PREAMBLE
+17:38:02.805 > TX: TX-RX DONE detected, flag set
+17:38:02.811 > State: PAYLOAD
+17:38:02.811 > [1548074][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:48 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:02.828 > TX: TX-RX DONE detected, flag set
+17:38:02.828 > State: PREAMBLE
+17:38:02.833 > TX: TX-RX DONE detected, flag set
+17:38:02.833 > State: PAYLOAD
+17:38:02.833 > TX: TX-RX DONE detected, flag set
+17:38:02.839 > State: PREAMBLE
+17:38:02.839 > TX: TX-RX DONE detected, flag set
+17:38:02.842 > State: PAYLOAD
+17:38:02.852 > [1548115][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:02.855 > 1W Learning mode
+17:38:02.862 > (09) 2W S 1 E 0  FROM AA9BFA TO DFEB64 CMD 2E +169.171    >  DATA(01)  02
+17:38:02.868 > [1548127][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=89): <134>Jan  1 00:25:48 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO DFEB64 CMD 2E DATA(1) 02 >
+17:38:02.886 > [1548149][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:02.896 > [1548160][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:48 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:02.913 > [1548176][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:02.923 > (14) 2W S 0 E 0  FROM AA9BFA TO DFEB64 CMD 3D +85.013        DATA(06)  8b71bd343872
+17:38:02.930 > [1548188][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=99): <134>Jan  1 00:25:48 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO DFEB64 CMD 3D DATA(6) 8b71bd343872 <
+17:38:02.950 > [1548212][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:03.187 > TX: TX-RX DONE detected, flag set
+17:38:03.187 > State: PREAMBLE
+17:38:03.187 > TX: TX-RX DONE detected, flag set
+17:38:03.193 > State: PAYLOAD
+17:38:03.193 > [1548456][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:48 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown devicTX: TX-RX DONE detected, flag set
+17:38:03.210 > State: PREAMBLE
+17:38:03.215 > TX: TX-RX DONE detected, flag set
+17:38:03.215 > State: PAYLOAD
+17:38:03.215 > e)
+17:38:03.215 > TX: TX-RX DONE detected, flag set
+17:38:03.221 > State: PREAMBLE
+17:38:03.221 > TX: TX-RX DONE detected, flag set
+17:38:03.223 > State: PAYLOAD
+17:38:03.232 > [1548495][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:03.236 > 1W Learning mode
+17:38:03.243 > (09) 2W S 1 E 0  FROM AA9BFA TO 1651A8 CMD 2E +296.914    >  DATA(01)  02
+17:38:03.250 > [1548508][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=89): <134>Jan  1 00:25:48 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO 1651A8 CMD 2E DATA(1) 02 >
+17:38:03.267 > [1548530][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:03.276 > ERROR: Too many messages queued
+17:38:03.276 > [1548541][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:48 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:03.296 > [1548559][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:03.306 > (14) 2W S 0 E 0  FROM AA9BFA TO 1651A8 CMD 3D +84.097        DATA(06)  8f1af1af8f35
+17:38:03.311 > [1548571][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=99): <134>Jan  1 00:25:48 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1651A8 CMD 3D DATA(6) 8f1af1af8f35 <
+17:38:03.332 > [1548595][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:03.601 > TX: TX-RX DONE detected, flag set
+17:38:03.601 > State: PREAMBLE
+17:38:03.601 > TX: TX-RX DONE detected, flag set
+17:38:03.606 > State: PAYLOAD
+17:38:03.606 > ERROR: Too many messages queued
+17:38:03.612 > [1548870][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:48 MIOPENIO MIOPENIO: Command receivTX: TX-RX DONE detected, flag set
+17:38:03.623 > State: PREAMBLE
+17:38:03.628 > TX: TX-RX DONE detected, flag set
+17:38:03.628 > State: PAYLOAD
+17:38:03.628 > ed from aa9bfa (Unknown device)
+17:38:03.639 > [1548902][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:03.643 > 1W Learning mode
+17:38:03.648 > (09) 2W S 1 E 0  FROM AA9BFA TO BC7374 CMD 2E +329.085    >  DATA(01)  02
+17:38:03.655 > [1548914][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=89): <134>Jan  1 00:25:48 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO BC7374 CMD 2E DATA(1) 02 >
+17:38:03.673 > [1548936][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:03.682 > ERROR: Too many messages queued
+17:38:03.683 > [1548947][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:48 MIOPENIO MIOPENIO: Command received from bc7374 (Unknown device)
+17:38:03.702 > [1548965][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:03.712 > (14) 2W S 0 E 0  FROM BC7374 TO AA9BFA CMD 3C +77.185        DATA(06)  9a561d8eb9de
+17:38:03.718 > [1548977][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=99): <134>Jan  1 00:25:48 MIOPENIO MIOPENIO: (14) 2W FROM BC7374 TO AA9BFA CMD 3C DATA(6) 9a561d8eb9de <
+17:38:03.739 > [1549002][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:03.843 > TX: TX-RX DONE detected, flag set
+17:38:03.844 > State: PREAMBLE
+17:38:03.844 > TX: TX-RX DONE detected, flag set
+17:38:03.849 > State: PAYLOAD
+17:38:03.849 > ERROR: Too many messages queued
+17:38:03.855 > [1549112][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:49 MIOPENIO MIOPENIO: Command received from TX: TX-RX DONE detected, flag set
+17:38:03.866 > State: PREAMBLE
+17:38:03.871 > TX: TX-RX DONE detected, flag set
+17:38:03.871 > State: PAYLOAD
+17:38:03.877 > aa9bfa (Unknown device)
+17:38:03.877 > TX: TX-RX DONE detected, flag set
+17:38:03.877 > State: PREAMBLE
+17:38:03.882 > TX: TX-RX DONE detected, flag set
+17:38:03.882 > State: PAYLOAD
+17:38:03.892 > [1549155][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:03.896 > 1W Learning mode
+17:38:03.902 > (09) 2W S 1 E 0  FROM AA9BFA TO BAD662 CMD 2E +165.627    >  DATA(01)  02
+17:38:03.907 > [1549167][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=89): <134>Jan  1 00:25:49 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO BAD662 CMD 2E DATA(1) 02 >
+17:38:03.926 > [1549189][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:03.935 > ERROR: Too many messages queued
+17:38:03.935 > [1549200][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:49 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:03.955 > [1549219][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:03.966 > (14) 2W S 0 E 0  FROM AA9BFA TO BAD662 CMD 3D +87.131        DATA(06)  f2896847c1e0
+17:38:03.971 > [1549231][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=99): <134>Jan  1 00:25:49 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO BAD662 CMD 3D DATA(6) f2896847c1e0 <
+17:38:03.991 > [1549254][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:04.110 > TX: TX-RX DONE detected, flag set
+17:38:04.111 > State: PREAMBLE
+17:38:04.116 > TX: TX-RX DONE detected, flag set
+17:38:04.116 > State: PAYLOAD
+17:38:04.116 > [1549383][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:49 MIOPENIO MIOPENIO: Command received from 8f07af (Unknown device)
+17:38:04.139 > [1549402][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:04.148 > Received Unknown command 86 (16) 2W S 1 E 0      FROM 8F07AF TO AA9BFA CMD 86 +182.722    >  DATA(08)  0004000000100322
+17:38:04.154 > [1549413][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=102): <134>Jan  1 00:25:49 MIOPENIO MIOPENIO: (16) 2W FROM 8F7AF TO AA9BFA CMD 86 DATA(8) 0004000000100322 >
+17:38:04.178 > [1549441][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:04.395 > TX: TX-RX DONE detected, flag set
+17:38:04.396 > State: PREAMBLE
+17:38:04.396 > TX: TX-RX DONE detected, flag set
+17:38:04.401 > State: PAYLOAD
+17:38:04.401 > [1549664][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:49 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown deviTX: TX-RX DONE detected, flag set
+17:38:04.418 > State: PREAMBLE
+17:38:04.423 > TX: TX-RX DONE detected, flag set
+17:38:04.423 > State: PAYLOAD
+17:38:04.423 > ce)
+17:38:04.423 > TX: TX-RX DONE detected, flag set
+17:38:04.429 > State: PREAMBLE
+17:38:04.429 > TX: TX-RX DONE detected, flag set
+17:38:04.437 > State: PAYLOAD
+17:38:04.441 > [1549704][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:04.449 > 1W Learning mode
+17:38:04.452 > (09) 2W S 1 E 0  FROM AA9BFA TO 9375C0 CMD 2E +282.171    >  DATA(01)  02
+17:38:04.457 > [1549716][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=89): <134>Jan  1 00:25:49 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO 9375C0 CMD 2E DATA(1) 02 >
+17:38:04.476 > [1549739][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:04.484 > ERROR: Too many messages queued
+17:38:04.485 > [1549749][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:49 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:04.505 > [1549768][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:04.515 > (14) 2W S 0 E 0  FROM AA9BFA TO 9375C0 CMD 3D +84.780        DATA(06)  ea349c0c7cba
+17:38:04.520 > [1549780][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=99): <134>Jan  1 00:25:49 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 9375C0 CMD 3D DATA(6) ea349c0c7cba <
+17:38:04.541 > [1549804][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:04.619 > TX: TX-RX DONE detected, flag set
+17:38:04.619 > State: PREAMBLE
+17:38:04.619 > TX: TX-RX DONE detected, flag set
+17:38:04.625 > State: PAYLOAD
+17:38:04.625 > ERROR: Too many messages queued
+17:38:04.631 > [1549888][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:49 MIOPENIO MIOPENIO: CommandTX: TX-RX DONE detected, flag set
+17:38:04.641 > State: PREAMBLE
+17:38:04.641 > TX: TX-RX DONE detected, flag set
+17:38:04.647 > State: PAYLOAD
+17:38:04.647 >  received from aa9bfa (Unknown device)
+17:38:04.658 > [1549922][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:04.663 > 1W Learning mode
+17:38:04.669 > (09) 2W S 1 E 0  FROM AA9BFA TO 7DA3E0 CMD 2E +139.213    >  DATA(01)  02
+17:38:04.675 > [1549935][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=89): <134>Jan  1 00:25:49 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO 7DA3E0 CMD 2E DATA(1) 02 >
+17:38:04.693 > [1549957][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:04.703 > ERROR: Too many messages queued
+17:38:04.703 > [1549967][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:49 MIOPENIO MIOPENIO: Command received from 7da3e0 (Unknown device)
+17:38:04.723 > [1549985][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:04.732 > (14) 2W S 0 E 0  FROM 7DA3E0 TO AA9BFA CMD 3C +78.611        DATA(06)  b52ecce511fb
+17:38:04.738 > [1549997][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=99): <134>Jan  1 00:25:49 MIOPENIO MIOPENIO: (14) 2W FROM 7DA3E0 TO AA9BFA CMD 3C DATA(6) b52ecce511fb <
+17:38:04.757 > [1550021][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:04.847 > TX: TX-RX DONE detected, flag set
+17:38:04.847 > State: PREAMBLE
+17:38:04.847 > TX: TX-RX DONE detected, flag set
+17:38:04.852 > State: PAYLOAD
+17:38:04.852 > ERROR: Too many messages queued
+17:38:04.858 > [1550116][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:50 MIOPENIO MIOPENIO: Command receivedTX: TX-RX DONE detected, flag set
+17:38:04.870 > State: PREAMBLE
+17:38:04.875 > TX: TX-RX DONE detected, flag set
+17:38:04.875 > State: PAYLOAD
+17:38:04.875 >  from aa9bfa (Unknown deviTX: TX-RX DONE detected, flag set
+17:38:04.881 > State: PREAMBLE
+17:38:04.887 > TX: TX-RX DONE detected, flag set
+17:38:04.887 > State: PAYLOAD
+17:38:04.887 > ce)
+17:38:04.895 > [1550159][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:04.900 > 1W Learning mode
+17:38:04.906 > (09) 2W S 1 E 0  FROM AA9BFA TO 02FC9E CMD 2E +149.341    >  DATA(01)  02
+17:38:04.911 > [1550171][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=88): <134>Jan  1 00:25:50 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO 2FC9E CMD 2E DATA(1) 02 >
+17:38:04.930 > [1550193][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:04.939 > ERROR: Too many messages queued
+17:38:04.939 > [1550203][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:50 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:04.958 > [1550221][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:04.969 > (14) 2W S 0 E 0  FROM AA9BFA TO 02FC9E CMD 3D +86.676        DATA(06)  1ded70c58e88
+17:38:04.974 > [1550234][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:25:50 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 2FC9E CMD 3D DATA(6) 1ded70c58e88 <
+17:38:04.995 > [1550258][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:05.150 > TX: TX-RX DONE detected, flag set
+17:38:05.151 > State: PREAMBLE
+17:38:05.151 > TX: TX-RX DONE detected, flag set
+17:38:05.156 > State: PAYLOAD
+17:38:05.156 > ERROR: Too many messages queued
+17:38:05.161 > [1550419][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:50 MIOPENIO MIOPENIO: Command received TX: TX-RX DONE detected, flag set
+17:38:05.173 > State: PREAMBLE
+17:38:05.178 > TX: TX-RX DONE detected, flag set
+17:38:05.178 > State: PAYLOAD
+17:38:05.178 > from aa9bfa (Unknown device)
+17:38:05.189 > [1550453][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:05.194 > 1W Learning mode
+17:38:05.200 > (09) 2W S 1 E 0  FROM AA9BFA TO 35A09C CMD 2E +216.326    >  DATA(01)  02
+17:38:05.206 > [1550465][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=89): <134>Jan  1 00:25:50 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO 35A09C CMD 2E DATA(1) 02 >
+17:38:05.224 > [1550487][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:05.233 > ERROR: Too many messages queued
+17:38:05.233 > [1550497][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:50 MIOPENIO MIOPENIO: Command received from 35a09c (Unknown device)
+17:38:05.252 > [1550516][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:05.263 > (14) 2W S 0 E 0  FROM 35A09C TO AA9BFA CMD 3C +77.930        DATA(06)  8165d51a9749
+17:38:05.269 > [1550528][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=99): <134>Jan  1 00:25:50 MIOPENIO MIOPENIO: (14) 2W FROM 35A09C TO AA9BFA CMD 3C DATA(6) 8165d51a9749 <
+17:38:05.288 > [1550551][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:05.415 > TX: TX-RX DONE detected, flag set
+17:38:05.415 > State: PREAMBLE
+17:38:05.415 > TX: TX-RX DONE detected, flag set
+17:38:05.420 > State: PAYLOAD
+17:38:05.420 > ERROR: Too many messages queued
+17:38:05.426 > [1550683][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:50 MIOPENIO MIOPENIO: Command receivTX: TX-RX DONE detected, flag set
+17:38:05.437 > State: PREAMBLE
+17:38:05.442 > TX: TX-RX DONE detected, flag set
+17:38:05.442 > State: PAYLOAD
+17:38:05.442 > ed from aa9bfa (Unknown devTX: TX-RX DONE detected, flag set
+17:38:05.447 > State: PREAMBLE
+17:38:05.453 > TX: TX-RX DONE detected, flag set
+17:38:05.453 > State: PAYLOAD
+17:38:05.453 > ice)
+17:38:05.462 > [1550726][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:05.469 > 1W Learning mode
+17:38:05.473 > (09) 2W S 1 E 0  FROM AA9BFA TO BD5020 CMD 2E +186.088    >  DATA(01)  02
+17:38:05.480 > [1550738][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=89): <134>Jan  1 00:25:50 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO BD5020 CMD 2E DATA(1) 02 >
+17:38:05.498 > [1550760][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:05.507 > ERROR: Too many messages queued
+17:38:05.507 > [1550771][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:50 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:05.526 > [1550789][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:05.537 > (14) 2W S 0 E 0  FROM AA9BFA TO BD5020 CMD 3D +87.562        DATA(06)  02c6bb92751c
+17:38:05.543 > [1550802][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=99): <134>Jan  1 00:25:50 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO BD5020 CMD 3D DATA(6) 02c6bb92751c <
+17:38:05.564 > [1550827][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:05.688 > TX: TX-RX DONE detected, flag set
+17:38:05.688 > State: PREAMBLE
+17:38:05.688 > TX: TX-RX DONE detected, flag set
+17:38:05.694 > State: PAYLOAD
+17:38:05.694 > [1550958][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:50 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:05.712 > TX: TX-RX DONE detected, flag set
+17:38:05.712 > State: PREAMBLE
+17:38:05.716 > TX: TX-RX DONE detected, flag set
+17:38:05.716 > State: PAYLOAD
+17:38:05.716 > TX: TX-RX DONE detected, flag set
+17:38:05.722 > State: PREAMBLE
+17:38:05.722 > TX: TX-RX DONE detected, flag set
+17:38:05.725 > State: PAYLOAD
+17:38:05.734 > [1550997][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:05.738 > 1W Learning mode
+17:38:05.744 > (09) 2W S 1 E 0  FROM AA9BFA TO 7FC15D CMD 2E +186.412    >  DATA(01)  02
+17:38:05.750 > [1551009][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=89): <134>Jan  1 00:25:51 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO 7FC15D CMD 2E DATA(1) 02 >
+17:38:05.768 > [1551031][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:05.779 > [1551042][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:51 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:05.797 > [1551061][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:05.808 > (14) 2W S 0 E 0  FROM AA9BFA TO 7FC15D CMD 3D +84.358        DATA(06)  9d6d425bd46a
+17:38:05.814 > [1551073][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=99): <134>Jan  1 00:25:51 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 7FC15D CMD 3D DATA(6) 9d6d425bd46a <
+17:38:05.834 > [1551097][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:05.908 > TX: TX-RX DONE detected, flag set
+17:38:05.908 > State: PREAMBLE
+17:38:05.908 > TX: TX-RX DONE detected, flag set
+17:38:05.914 > State: PAYLOAD
+17:38:05.914 > ERROR: Too many messages queued
+17:38:05.919 > [1551179][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:51 MIOPENIO MIOPENIO: Command receTX: TX-RX DONE detected, flag set
+17:38:05.931 > State: PREAMBLE
+17:38:05.936 > TX: TX-RX DONE detected, flag set
+17:38:05.936 > State: PAYLOAD
+17:38:05.936 > ived from aa9bfa (Unknown device)
+17:38:05.947 > [1551211][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:05.957 > (14) 2W S 1 E 0  FROM AA9BFA TO 35D345 CMD 3D +136.923    >  DATA(06)  d1916c1f16da
+17:38:05.968 > [1551223][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=99): <134>Jan  1 00:25:51 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 35D345 CMD 3D DATA(6) d1916c1f16da >
+17:38:05.983 > [1551247][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:05.993 > ERROR: Too many messages queued
+17:38:05.993 > [1551257][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:51 MIOPENIO MIOPENIO: Command received from 35d345 (Unknown device)
+17:38:06.013 > [1551276][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:06.023 > (09) 2W S 0 E 1  FROM 35D345 TO AA9BFA CMD FE +78.453     <  DATA(01)  76
+17:38:06.029 > [1551288][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=89): <134>Jan  1 00:25:51 MIOPENIO MIOPENIO: (09) 2W FROM 35D345 TO AA9BFA CMD FE DATA(1) 76 <
+17:38:06.047 > [1551310][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:06.302 > TX: TX-RX DONE detected, flag set
+17:38:06.302 > State: PREAMBLE
+17:38:06.302 > TX: TX-RX DONE detected, flag set
+17:38:06.308 > State: PAYLOAD
+17:38:06.308 > ERROR: Too many messages queued
+17:38:06.313 > [1551572][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:51 MIOPENIO MIOPENIO: Command reTX: TX-RX DONE detected, flag set
+17:38:06.325 > State: PREAMBLE
+17:38:06.330 > TX: TX-RX DONE detected, flag set
+17:38:06.330 > State: PAYLOAD
+17:38:06.330 > ceived from aa9bfa (Unknown devTX: TX-RX DONE detected, flag set
+17:38:06.336 > State: PREAMBLE
+17:38:06.341 > TX: TX-RX DONE detected, flag set
+17:38:06.341 > State: PAYLOAD
+17:38:06.341 > ice)
+17:38:06.352 > [1551615][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:06.355 > 1W Learning mode
+17:38:06.362 > (09) 2W S 1 E 0  FROM AA9BFA TO 2BA90D CMD 2E +314.282    >  DATA(01)  02
+17:38:06.368 > [1551627][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=88): <134>Jan  1 00:25:51 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO 2BA9D CMD 2E DATA(1) 02 >
+17:38:06.386 > [1551649][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:06.395 > ERROR: Too many messages queued
+17:38:06.396 > [1551659][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:51 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:06.415 > [1551678][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:06.426 > (14) 2W S 0 E 0  FROM AA9BFA TO 2BA90D CMD 3D +87.925        DATA(06)  05fb84c72f5b
+17:38:06.432 > [1551690][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:25:51 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 2BA9D CMD 3D DATA(6) 05fb84c72f5b <
+17:38:06.451 > [1551714][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:06.793 > TX: TX-RX DONE detected, flag set
+17:38:06.794 > State: PREAMBLE
+17:38:06.794 > TX: TX-RX DONE detected, flag set
+17:38:06.799 > State: PAYLOAD
+17:38:06.799 > ERROR: Too many messages queued
+17:38:06.805 > [1552062][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:52 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:06.816 > TX: TX-RX DONE detected, flag set
+17:38:06.821 > State: PREAMBLE
+17:38:06.821 > TX: TX-RX DONE detected, flag set
+17:38:06.824 > State: PAYLOAD
+17:38:06.832 > [1552095][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:06.840 > Received Unknown command 36 (08) 2W S 1 E 0 [PRIO]       FROM AA9BFA TO 01C9F9 CMD 36 +402.809    >  DATA(00)
+17:38:06.847 > [1552105][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=86): <134>Jan  1 00:25:52 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO 1C9F9 CMD 36 DATA(0)  >
+17:38:06.866 > [1552129][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:06.875 > ERROR: Too many messages queued
+17:38:06.875 > [1552140][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:52 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:06.895 > [1552158][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:06.905 > (14) 2W S 0 E 0  FROM AA9BFA TO 01C9F9 CMD 3C +77.514        DATA(06)  0c7d1fc6f6d4
+17:38:06.911 > [1552170][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:25:52 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD 3C DATA(6) 0c7d1fc6f6d4 <
+17:38:06.931 > [1552194][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:08.489 > TX: TX-RX DONE detected, flag set
+17:38:08.489 > State: PREAMBLE
+17:38:08.489 > TX: TX-RX DONE detected, flag set
+17:38:08.494 > State: PAYLOAD
+17:38:08.494 > [1553758][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:53 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:08.514 > TX: TX-RX DONE detected, flag set
+17:38:08.514 > State: PREAMBLE
+17:38:08.514 > [1553780][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:08.525 > TX: TX-RX DONE detected, flag set
+17:38:08.525 > State: PAYLOAD
+17:38:08.525 > 1W Learning mode
+17:38:08.527 >
+17:38:08.533 > (09) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 2E +0.000      >  DATA(01)  02
+17:38:08.538 > [1553798][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=88): <134>Jan  1 00:25:53 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO 1C9F9 CMD 2E DATA(1) 02 >
+17:38:08.557 > [1553821][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:08.569 > [1553832][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:53 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:08.586 > [1553849][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:08.596 > (14) 2W S 0 E 0  FROM AA9BFA TO 01C9F9 CMD 3D +72.639        DATA(06)  d3c1b06c4f60
+17:38:08.602 > [1553861][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:25:53 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD 3D DATA(6) d3c1b06c4f60 <
+17:38:08.622 > [1553885][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:08.734 > TX: TX-RX DONE detected, flag set
+17:38:08.736 > State: PREAMBLE
+17:38:08.736 > TX: TX-RX DONE detected, flag set
+17:38:08.741 > State: PAYLOAD
+17:38:08.741 > [1554004][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:54 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:08.757 > TX: TX-RX DONE detected, flag set
+17:38:08.757 > State: PREAMBLE
+17:38:08.764 > TX: TX-RX DONE detected, flag set
+17:38:08.764 > State: PAYLOAD
+17:38:08.772 > [1554035][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:08.780 > Received Unknown command 54 (08) 2W S 1 E 0      FROM AA9BFA TO 01C9F9 CMD 54 +173.086    >  DATA(00)
+17:38:08.786 > [1554045][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=86): <134>Jan  1 00:25:54 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO 1C9F9 CMD 54 DATA(0)  >
+17:38:08.806 > [1554069][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:08.817 > [1554079][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:54 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:08.833 > [1554096][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:08.843 > (14) 2W S 0 E 0  FROM AA9BFA TO 01C9F9 CMD 3D +75.273        DATA(06)  eafc70a5e235
+17:38:08.849 > [1554108][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:25:54 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD 3D DATA(6) eafc70a5e235 <
+17:38:08.871 > [1554134][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:08.980 > TX: TX-RX DONE detected, flag set
+17:38:08.980 > State: PREAMBLE
+17:38:08.980 > TX: TX-RX DONE detected, flag set
+17:38:08.986 > State: PAYLOAD
+17:38:08.986 > ERROR: Too many messages queued
+17:38:08.991 > [1554249][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:54 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:09.002 > TX: TX-RX DONE detected, flag set
+17:38:09.007 > State: PREAMBLE
+17:38:09.007 > TX: TX-RX DONE detected, flag set
+17:38:09.011 > State: PAYLOAD
+17:38:09.018 > [1554282][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:09.026 > Received Unknown command 56 (08) 2W S 1 E 0      FROM AA9BFA TO 01C9F9 CMD 56 +169.762    >  DATA(00)
+17:38:09.033 > [1554292][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=86): <134>Jan  1 00:25:54 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO 1C9F9 CMD 56 DATA(0)  >
+17:38:09.053 > [1554316][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:09.063 > ERROR: Too many messages queued
+17:38:09.063 > [1554326][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:54 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:09.082 > [1554345][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:09.092 > (14) 2W S 0 E 0  FROM AA9BFA TO 01C9F9 CMD 3D +77.084        DATA(06)  1137f4ddcf61
+17:38:09.098 > [1554357][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:25:54 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD 3D DATA(6) 1137f4ddcf61 <
+17:38:09.118 > [1554381][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:09.313 > TX: TX-RX DONE detected, flag set
+17:38:09.314 > State: PREAMBLE
+17:38:09.314 > TX: TX-RX DONE detected, flag set
+17:38:09.319 > State: PAYLOAD
+17:38:09.319 > ERROR: Too many messages queued
+17:38:09.324 > [1554584][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:54 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:09.344 > [1554607][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:09.354 > (14) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 3D +257.406    >  DATA(06)  1137f4ddcf61
+17:38:09.360 > [1554619][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:25:54 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD 3D DATA(6) 1137f4ddcf61 >
+17:38:09.382 > [1554645][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:09.793 > TX: TX-RX DONE detected, flag set
+17:38:09.793 > State: PREAMBLE
+17:38:09.793 > TX: TX-RX DONE detected, flag set
+17:38:09.799 > State: PAYLOAD
+17:38:09.799 > ERROR: Too many messages queued
+17:38:09.805 > [1555062][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:55 MIOPENIO MIOPENIO: CoTX: TX-RX DONE detected, flag set
+17:38:09.815 > State: PREAMBLE
+17:38:09.815 > TX: TX-RX DONE detected, flag set
+17:38:09.822 > State: PAYLOAD
+17:38:09.822 > mmand received from aa9bfa (TX: TX-RX DONE detected, flag set
+17:38:09.827 > State: PREAMBLE
+17:38:09.827 > TX: TX-RX DONE detected, flag set
+17:38:09.832 > State: PAYLOAD
+17:38:09.832 > Unknown device)
+17:38:09.841 > [1555105][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:09.846 > 1W Learning mode
+17:38:09.851 > (09) 2W S 1 E 0  FROM AA9BFA TO E468A9 CMD 2E +478.697    >  DATA(01)  02
+17:38:09.858 > [1555117][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=89): <134>Jan  1 00:25:55 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO E468A9 CMD 2E DATA(1) 02 >
+17:38:09.876 > [1555139][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:09.885 > ERROR: Too many messages queued
+17:38:09.885 > [1555149][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:55 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:09.905 > [1555168][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:09.916 > (14) 2W S 0 E 0  FROM AA9BFA TO E468A9 CMD 3D +87.036        DATA(06)  6832c78c4c24
+17:38:09.921 > [1555180][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=99): <134>Jan  1 00:25:55 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO E468A9 CMD 3D DATA(6) 6832c78c4c24 <
+17:38:09.941 > [1555204][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:10.386 > TX: TX-RX DONE detected, flag set
+17:38:10.386 > State: PREAMBLE
+17:38:10.386 > TX: TX-RX DONE detected, flag set
+17:38:10.391 > State: PAYLOAD
+17:38:10.391 > [1555655][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:55 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:10.413 > [1555677][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:10.418 > 2W Pairing Asked
+17:38:10.418 >
+17:38:10.424 > (08) 2W S 1 E 1  FROM AA9BFA TO 00003B CMD 28 +0.000         DATA(00)
+17:38:10.429 > [1555688][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:25:55 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO 003B CMD 28 DATA(0)  <
+17:38:10.447 > [1555710][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:14.810 > TX: TX-RX DONE detected, flag set
+17:38:14.810 > State: PREAMBLE
+17:38:14.810 > TX: TX-RX DONE detected, flag set
+17:38:14.815 > State: PAYLOAD
+17:38:14.815 > [1560079][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:00 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:14.837 > [1560101][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:14.842 >
+17:38:14.848 > (09) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 19 +0.000      >  DATA(01)  02
+17:38:14.853 > [1560112][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=88): <134>Jan  1 00:26:00 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO 1C9F9 CMD 19 DATA(1) 02 >
+17:38:14.871 > [1560134][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:15.155 > TX: TX-RX DONE detected, flag set
+17:38:15.155 > State: PREAMBLE
+17:38:15.155 > TX: TX-RX DONE detected, flag set
+17:38:15.160 > State: PAYLOAD
+17:38:15.160 > [1560424][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:00 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:15.177 > TX: TX-RX DONE detected, flag set
+17:38:15.177 > State: PREAMBLE
+17:38:15.184 > [1560446][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:15.189 > TX: TX-RX DONE detected, flag set
+17:38:15.189 > State: PAYLOAD
+17:38:15.198 > (09) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 19 +344.968    >  DATA(01)  02
+17:38:15.204 > [1560463][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=88): <134>Jan  1 00:26:00 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO 1C9F9 CMD 19 DATA(1) 02 >
+17:38:15.222 > [1560485][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:15.232 > [1560495][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:00 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:15.250 > [1560512][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:15.259 > (14) 2W S 0 E 0  FROM AA9BFA TO 01C9F9 CMD 3D +71.267        DATA(06)  b8f6d2350799
+17:38:15.265 > [1560524][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:26:00 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD 3D DATA(6) b8f6d2350799 <
+17:38:15.284 > [1560548][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:15.529 > TX: TX-RX DONE detected, flag set
+17:38:15.530 > State: PREAMBLE
+17:38:15.530 > TX: TX-RX DONE detected, flag set
+17:38:15.535 > State: PAYLOAD
+17:38:15.535 > [1560798][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:00 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:15.556 > [1560820][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:15.567 > (09) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 19 +302.768    >  DATA(01)  03
+17:38:15.573 > [1560832][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=88): <134>Jan  1 00:26:00 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO 1C9F9 CMD 19 DATA(1) 03 >
+17:38:15.591 > [1560854][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:16.009 > TX: TX-RX DONE detected, flag set
+17:38:16.009 > State: PREAMBLE
+17:38:16.009 > TX: TX-RX DONE detected, flag set
+17:38:16.015 > State: PAYLOAD
+17:38:16.015 > [1561278][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:01 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:16.031 > TX: TX-RX DONE detected, flag set
+17:38:16.031 > State: PREAMBLE
+17:38:16.037 > [1561300][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:16.042 > TX: TX-RX DONE detected, flag set
+17:38:16.042 > State: PAYLOAD
+17:38:16.052 > (09) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 19 +479.994    >  DATA(01)  03
+17:38:16.058 > [1561317][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=88): <134>Jan  1 00:26:01 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO 1C9F9 CMD 19 DATA(1) 03 >
+17:38:16.077 > [1561340][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:16.088 > [1561350][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:01 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:16.104 > [1561367][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:16.114 > (14) 2W S 0 E 0  FROM AA9BFA TO 01C9F9 CMD 3D +71.851        DATA(06)  5eecbb6ee169
+17:38:16.119 > [1561379][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:26:01 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD 3D DATA(6) 5eecbb6ee169 <
+17:38:16.141 > [1561405][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:16.219 > TX: TX-RX DONE detected, flag set
+17:38:16.220 > State: PREAMBLE
+17:38:16.220 > TX: TX-RX DONE detected, flag set
+17:38:16.225 > State: PAYLOAD
+17:38:16.225 > [1561488][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:01 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:16.241 > TX: TX-RX DONE detected, flag set
+17:38:16.241 > State: PREAMBLE
+17:38:16.247 > [1561510][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:16.253 > TX: TX-RX DONE detected, flag set
+17:38:16.253 > State: PAYLOAD
+17:38:16.262 > (09) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 19 +138.158    >  DATA(01)  04
+17:38:16.267 > [1561527][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=88): <134>Jan  1 00:26:01 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO 1C9F9 CMD 19 DATA(1) 04 >
+17:38:16.286 > [1561549][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:16.296 > [1561559][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:01 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:16.314 > [1561576][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:16.323 > (14) 2W S 0 E 0  FROM AA9BFA TO 01C9F9 CMD 3D +71.182        DATA(06)  54b55ff83f05
+17:38:16.329 > [1561588][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:26:01 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD 3D DATA(6) 54b55ff83f05 <
+17:38:16.349 > [1561612][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:16.450 > TX: TX-RX DONE detected, flag set
+17:38:16.450 > State: PREAMBLE
+17:38:16.450 > TX: TX-RX DONE detected, flag set
+17:38:16.456 > State: PAYLOAD
+17:38:16.456 > [1561719][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:01 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:16.472 > TX: TX-RX DONE detected, flag set
+17:38:16.472 > State: PREAMBLE
+17:38:16.478 > [1561741][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:16.484 > TX: TX-RX DONE detected, flag set
+17:38:16.484 > State: PAYLOAD
+17:38:16.493 > (09) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 19 +159.783    >  DATA(01)  07
+17:38:16.499 > [1561758][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=88): <134>Jan  1 00:26:01 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO 1C9F9 CMD 19 DATA(1) 07 >
+17:38:16.517 > [1561780][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:16.526 > ERROR: Too many messages queued
+17:38:16.526 > [1561791][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:01 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:16.546 > [1561809][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:16.556 > (14) 2W S 0 E 0  FROM AA9BFA TO 01C9F9 CMD 3D +71.252        DATA(06)  accc7959012b
+17:38:16.563 > [1561822][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:26:01 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD 3D DATA(6) accc7959012b <
+17:38:16.582 > [1561846][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:18.077 > TX: TX-RX DONE detected, flag set
+17:38:18.078 > State: PREAMBLE
+17:38:18.078 > TX: TX-RX DONE detected, flag set
+17:38:18.083 > State: PAYLOAD
+17:38:18.083 > [1563348][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:03 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:18.102 > TX: TX-RX DONE detected, flag set
+17:38:18.102 > State: PREAMBLE
+17:38:18.102 > [1563368][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:18.113 > TX: TX-RX DONE detected, flag set
+17:38:18.113 > State: PAYLOAD
+17:38:18.115 >
+17:38:18.121 > (12) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 03 +0.000      >  DATA(04)  03200100
+17:38:18.127 > [1563386][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=93): <134>Jan  1 00:26:03 MIOPENIO MIOPENIO: (12) 2W FROM AA9BFA TO 1C9F9 CMD 3 DATA(4) 03200100 >
+17:38:18.145 > [1563409][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:18.156 > [1563419][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:03 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:18.173 > [1563436][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:18.183 > (14) 2W S 0 E 0  FROM AA9BFA TO 01C9F9 CMD 3D +72.166        DATA(06)  bd40cd4cb45b
+17:38:18.189 > [1563448][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:26:03 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD 3D DATA(6) bd40cd4cb45b <
+17:38:18.209 > [1563472][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:18.279 > TX: TX-RX DONE detected, flag set
+17:38:18.280 > State: PREAMBLE
+17:38:18.280 > TX: TX-RX DONE detected, flag set
+17:38:18.285 > State: PAYLOAD
+17:38:18.285 > ERROR: Too many messages queued
+17:38:18.291 > [1563548][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:03 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:18.310 > [1563573][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:18.319 > (08) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 50 +128.776    >  DATA(00)
+17:38:18.325 > [1563584][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=86): <134>Jan  1 00:26:03 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO 1C9F9 CMD 50 DATA(0)  >
+17:38:18.343 > [1563606][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:18.504 > TX: TX-RX DONE detected, flag set
+17:38:18.505 > State: PREAMBLE
+17:38:18.505 > TX: TX-RX DONE detected, flag set
+17:38:18.510 > State: PAYLOAD
+17:38:18.510 > ERROR: Too many messages queued
+17:38:18.515 > [1563773][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:03 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:18.527 > TX: TX-RX DONE detected, flag set
+17:38:18.532 > State: PREAMBLE
+17:38:18.532 > TX: TX-RX DONE detected, flag set
+17:38:18.535 > State: PAYLOAD
+17:38:18.544 > [1563807][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:18.554 > (08) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 50 +225.022    >  DATA(00)
+17:38:18.559 > [1563818][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=86): <134>Jan  1 00:26:03 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO 1C9F9 CMD 50 DATA(0)  >
+17:38:18.577 > [1563840][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:18.586 > ERROR: Too many messages queued
+17:38:18.586 > [1563851][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:03 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:18.607 > [1563870][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:18.617 > (14) 2W S 0 E 0  FROM AA9BFA TO 01C9F9 CMD 3D +77.806        DATA(06)  2fa007966d60
+17:38:18.623 > [1563882][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:26:03 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD 3D DATA(6) 2fa007966d60 <
+17:38:18.642 > [1563905][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:18.739 > TX: TX-RX DONE detected, flag set
+17:38:18.739 > State: PREAMBLE
+17:38:18.739 > TX: TX-RX DONE detected, flag set
+17:38:18.744 > State: PAYLOAD
+17:38:18.744 > ERROR: Too many messages queued
+17:38:18.750 > [1564010][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:04 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:18.770 > [1564033][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:18.780 > (14) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 3D +158.763    >  DATA(06)  2fa007966d60
+17:38:18.786 > [1564045][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:26:04 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD 3D DATA(6) 2fa007966d60 >
+17:38:18.806 > [1564069][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:19.467 > TX: TX-RX DONE detected, flag set
+17:38:19.467 > State: PREAMBLE
+17:38:19.467 > TX: TX-RX DONE detected, flag set
+17:38:19.473 > State: PAYLOAD
+17:38:19.473 > [1564736][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:04 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:19.490 > TX: TX-RX DONE detected, flag set
+17:38:19.490 > State: PREAMBLE
+17:38:19.495 > TX: TX-RX DONE detected, flag set
+17:38:19.495 > State: PAYLOAD
+17:38:19.504 > [1564767][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:19.507 >
+17:38:19.514 > (08) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 50 +0.000      >  DATA(00)
+17:38:19.519 > [1564778][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=86): <134>Jan  1 00:26:04 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO 1C9F9 CMD 50 DATA(0)  >
+17:38:19.538 > [1564800][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:19.548 > [1564811][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:04 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:19.565 > [1564828][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:19.575 > (14) 2W S 0 E 0  FROM AA9BFA TO 01C9F9 CMD 3D +74.958        DATA(06)  3c3b16038b9b
+17:38:19.581 > [1564840][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:26:04 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD 3D DATA(6) 3c3b16038b9b <
+17:38:19.600 > [1564864][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:20.259 > TX: TX-RX DONE detected, flag set
+17:38:20.259 > State: PREAMBLE
+17:38:20.259 > TX: TX-RX DONE detected, flag set
+17:38:20.264 > State: PAYLOAD
+17:38:20.264 > ERROR: Too many messages queued
+17:38:20.271 > [1565529][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:05 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:20.282 > TX: TX-RX DONE detected, flag set
+17:38:20.287 > State: PREAMBLE
+17:38:20.287 > TX: TX-RX DONE detected, flag set
+17:38:20.290 > State: PAYLOAD
+17:38:20.298 > [1565562][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:20.305 > Received Unknown command 0C
+17:38:20.307 > (12) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 0C +0.000      >  DATA(04)  d8000000
+17:38:20.312 > [1565572][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=93): <134>Jan  1 00:26:05 MIOPENIO MIOPENIO: (12) 2W FROM AA9BFA TO 1C9F9 CMD C DATA(4) d8000000 >
+17:38:20.334 > [1565597][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:20.343 > ERROR: Too many messages queued
+17:38:20.343 > [1565608][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:05 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:20.363 > [1565626][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:20.374 > (14) 2W S 0 E 0  FROM AA9BFA TO 01C9F9 CMD 3D +78.018        DATA(06)  5fd9c22c2616
+17:38:20.380 > [1565638][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:26:05 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD 3D DATA(6) 5fd9c22c2616 <
+17:38:20.399 > [1565662][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:20.767 > TX: TX-RX DONE detected, flag set
+17:38:20.767 > State: PREAMBLE
+17:38:20.767 > TX: TX-RX DONE detected, flag set
+17:38:20.772 > State: PAYLOAD
+17:38:20.772 > [1566037][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:06 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:20.793 > [1566056][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:20.801 > Received Unknown command 0C (14) 2W S 1 E 0      FROM AA9BFA TO 01C9F9 CMD 0C +429.437    >  DATA(06)  d40020d80000
+17:38:20.810 > [1566066][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=97): <134>Jan  1 00:26:06 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD C DATA(6) d40020d80000 >
+17:38:20.830 > [1566092][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:21.114 > TX: TX-RX DONE detected, flag set
+17:38:21.115 > State: PREAMBLE
+17:38:21.115 > TX: TX-RX DONE detected, flag set
+17:38:21.120 > State: PAYLOAD
+17:38:21.120 > [1566385][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:06 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:21.138 > TX: TX-RX DONE detected, flag set
+17:38:21.139 > State: PREAMBLE
+17:38:21.139 > [1566405][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:21.151 > TX: TX-RX DONE detected, flag set
+17:38:21.151 > State: PAYLOAD
+17:38:21.157 > Received Unknown command 0C (14) 2W S 1 E 0      FROM AA9BFA TO 01C9F9 CMD 0C +347.989    >  DATA(06)  d40020d80000
+17:38:21.163 > [1566422][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=97): <134>Jan  1 00:26:06 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD C DATA(6) d40020d80000 >
+17:38:21.186 > [1566449][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:21.195 > ERROR: Too many messages queued
+17:38:21.195 > [1566459][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:06 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:21.215 > [1566478][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:21.225 > (14) 2W S 0 E 0  FROM AA9BFA TO 01C9F9 CMD 3D +74.924        DATA(06)  19411f329695
+17:38:21.231 > [1566490][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:26:06 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD 3D DATA(6) 19411f329695 <
+17:38:21.250 > [1566513][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:21.935 > TX: TX-RX DONE detected, flag set
+17:38:21.935 > State: PREAMBLE
+17:38:21.935 > TX: TX-RX DONE detected, flag set
+17:38:21.940 > State: PAYLOAD
+17:38:21.940 > ERROR: Too many messages queued
+17:38:21.947 > [1567205][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:07 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:21.957 > TX: TX-RX DONE detected, flag set
+17:38:21.963 > State: PREAMBLE
+17:38:21.963 > TX: TX-RX DONE detected, flag set
+17:38:21.966 > State: PAYLOAD
+17:38:21.974 > [1567237][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:21.981 > Received Unknown command 0C
+17:38:21.982 > (12) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 0C +0.000      >  DATA(04)  d80a0000
+17:38:21.987 > [1567247][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=93): <134>Jan  1 00:26:07 MIOPENIO MIOPENIO: (12) 2W FROM AA9BFA TO 1C9F9 CMD C DATA(4) d80a0000 >
+17:38:22.009 > [1567272][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:22.018 > ERROR: Too many messages queued
+17:38:22.018 > [1567282][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:07 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:22.038 > [1567301][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:22.047 > (14) 2W S 0 E 0  FROM AA9BFA TO 01C9F9 CMD 3D +77.329        DATA(06)  e3e912524b65
+17:38:22.053 > [1567313][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:26:07 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD 3D DATA(6) e3e912524b65 <
+17:38:22.073 > [1567336][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:22.163 > TX: TX-RX DONE detected, flag set
+17:38:22.164 > State: PREAMBLE
+17:38:22.169 > TX: TX-RX DONE detected, flag set
+17:38:22.169 > State: PAYLOAD
+17:38:22.169 > [1567436][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:07 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:22.190 > TX: TX-RX DONE detected, flag set
+17:38:22.190 > State: PREAMBLE
+17:38:22.190 > [1567456][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:22.201 > TX: TX-RX DONE detected, flag set
+17:38:22.201 > State: PAYLOAD
+17:38:22.208 > Received Unknown command 46 (17) 2W S 1 E 0      FROM AA9BFA TO 01C9F9 CMD 46 +153.005    >  DATA(09)  080200a60300000000
+17:38:22.213 > [1567473][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=104): <134>Jan  1 00:26:07 MIOPENIO MIOPENIO: (17) 2W FROM AA9BFA TO 1C9F9 CMD 46 DATA(9) 080200a60300000000 >
+17:38:22.237 > [1567500][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:22.247 > [1567510][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:07 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:22.264 > [1567527][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:22.274 > (14) 2W S 0 E 0  FROM AA9BFA TO 01C9F9 CMD 3D +75.183        DATA(06)  619af3a5e9ad
+17:38:22.280 > [1567539][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:26:07 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD 3D DATA(6) 619af3a5e9ad <
+17:38:22.300 > [1567563][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:22.406 > TX: TX-RX DONE detected, flag set
+17:38:22.407 > State: PREAMBLE
+17:38:22.407 > TX: TX-RX DONE detected, flag set
+17:38:22.412 > State: PAYLOAD
+17:38:22.412 > ERROR: Too many messages queued
+17:38:22.419 > [1567677][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:07 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:22.437 > [1567701][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:22.447 > (14) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 3D +166.934    >  DATA(06)  619af3a5e9ad
+17:38:22.454 > [1567713][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:26:07 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO 1C9F9 CMD 3D DATA(6) 619af3a5e9ad >
+17:38:22.473 > [1567736][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:23.305 > TX: TX-RX DONE detected, flag set
+17:38:23.307 > State: PREAMBLE
+17:38:23.307 > TX: TX-RX DONE detected, flag set
+17:38:23.312 > State: PAYLOAD
+17:38:23.312 > ERROR: Too many messages queued
+17:38:23.317 > [1568576][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:08 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:23.336 > [1568600][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:23.340 >
+17:38:23.347 > (11) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 4A +0.000      >  DATA(03)  020001
+17:38:23.352 > [1568612][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=92): <134>Jan  1 00:26:08 MIOPENIO MIOPENIO: (11) 2W FROM AA9BFA TO 1C9F9 CMD 4A DATA(3) 020001 >
+17:38:23.372 > [1568635][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:23.506 > TX: TX-RX DONE detected, flag set
+17:38:23.506 > State: PREAMBLE
+17:38:23.506 > TX: TX-RX DONE detected, flag set
+17:38:23.511 > State: PAYLOAD
+17:38:23.511 > ERROR: Too many messages queued
+17:38:23.517 > [1568776][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:08 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:23.535 > [1568799][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:23.546 > (11) 2W S 1 E 0  FROM AA9BFA TO 01C9F9 CMD 4A +199.972    >  DATA(03)  020000
+17:38:23.554 > [1568811][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=92): <134>Jan  1 00:26:08 MIOPENIO MIOPENIO: (11) 2W FROM AA9BFA TO 1C9F9 CMD 4A DATA(3) 020000 >
+17:38:23.570 > [1568833][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:23.760 > TX: TX-RX DONE detected, flag set
+17:38:23.760 > State: PREAMBLE
+17:38:23.760 > TX: TX-RX DONE detected, flag set
+17:38:23.765 > State: PAYLOAD
+17:38:23.765 > [1569029][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:09 MIOPENIO MIOPENIO: Command received from aaTX: TX-RX DONE detected, flag set
+17:38:23.782 > State: PREAMBLE
+17:38:23.782 > 9bfa (Unknown device)
+17:38:23.788 > TX: TX-RX DONE detected, flag set
+17:38:23.788 > State: PAYLOAD
+17:38:23.795 > [1569059][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:23.806 > (08) 2W S 1 E 0  FROM AA9BFA TO E468A9 CMD 50 +253.146    >  DATA(00)
+17:38:23.811 > [1569070][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=87): <134>Jan  1 00:26:09 MIOPENIO MIOPENIO: (08) 2W FROM AA9BFA TO E468A9 CMD 50 DATA(0)  >
+17:38:23.830 > [1569092][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:23.840 > [1569103][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:09 MIOPENIO MIOPENIO: Command received from e468a9 (Unknown device)
+17:38:23.858 > [1569120][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:23.861 > B�RO KARL
+17:38:23.868 > (24) 2W S 0 E 1  FROM E468A9 TO AA9BFA CMD 51 +73.970     <  DATA(16)  42fc726f204b61726c00000000000000
+17:38:23.875 > [1569133][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=120): <134>Jan  1 00:26:09 MIOPENIO MIOPENIO: (24) 2W FROM E468A9 TO AA9BFA CMD 51 DATA(16) 42fc726f204b61726c00000000000000 <
+17:38:23.897 > [1569160][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:54.551 > TX: TX-RX DONE detected, flag set
+17:38:54.551 > State: PREAMBLE
+17:38:54.551 > TX: TX-RX DONE detected, flag set
+17:38:54.554 > State: PAYLOAD
+17:38:54.561 > TX: TX-RX DONE detected, flag set
+17:38:54.561 > State: PREAMBLE
+17:38:54.561 > [1599825][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:39 MIOPENIOTX: TX-RX DONE detected, flag set
+17:38:54.578 > State: PAYLOAD
+17:38:54.578 >  MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:54.587 > [1599850][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:54.593 >
+17:38:54.597 > (09) 2W S 1 E 0  FROM AA9BFA TO E468A9 CMD 19 +0.000      >  DATA(01)  02
+17:38:54.603 > [1599862][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=89): <134>Jan  1 00:26:39 MIOPENIO MIOPENIO: (09) 2W FROM AA9BFA TO E468A9 CMD 19 DATA(1) 02 >
+17:38:54.620 > [1599883][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:54.630 > [1599894][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:39 MIOPENIO MIOPENIO: Command received from e468a9 (Unknown device)
+17:38:54.648 > [1599911][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:54.658 > (09) 2W S 0 E 1  FROM E468A9 TO AA9BFA CMD FE +74.277     <  DATA(01)  05
+17:38:54.664 > [1599923][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=89): <134>Jan  1 00:26:39 MIOPENIO MIOPENIO: (09) 2W FROM E468A9 TO AA9BFA CMD FE DATA(1) 05 <
+17:38:54.681 > [1599945][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:55.000 > TX: TX-RX DONE detected, flag set
+17:38:55.000 > State: PREAMBLE
+17:38:55.000 > TX: TX-RX DONE detected, flag set
+17:38:55.005 > State: PAYLOAD
+17:38:55.005 > [1600269][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:40 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)TX: TX-RX DONE detected, flag set
+17:38:55.022 > State: PREAMBLE
+17:38:55.027 >
+17:38:55.027 > TX: TX-RX DONE detected, flag set
+17:38:55.027 > State: PAYLOAD
+17:38:55.036 > [1600299][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:55.046 > (11) 2W S 1 E 0  FROM AA9BFA TO E468A9 CMD 03 +375.246    >  DATA(03)  030000
+17:38:55.052 > [1600311][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=92): <134>Jan  1 00:26:40 MIOPENIO MIOPENIO: (11) 2W FROM AA9BFA TO E468A9 CMD 3 DATA(3) 030000 >
+17:38:55.070 > [1600334][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:55.081 > [1600345][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:40 MIOPENIO MIOPENIO: Command received from e468a9 (Unknown device)
+17:38:55.098 > [1600361][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:55.108 > (22) 2W S 0 E 1  FROM E468A9 TO AA9BFA CMD 04 +75.222     <  DATA(14)  05000c000c530000f153fa010000
+17:38:55.116 > [1600373][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=115): <134>Jan  1 00:26:40 MIOPENIO MIOPENIO: (22) 2W FROM E468A9 TO AA9BFA CMD 4 DATA(14) 05000c000c530000f153fa010000 <
+17:38:55.137 > [1600400][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:58.944 > TX: TX-RX DONE detected, flag set
+17:38:58.944 > State: PREAMBLE
+17:38:58.944 > TX: TX-RX DONE detected, flag set
+17:38:58.947 > State: PAYLOAD
+17:38:58.956 > [1604219][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:44 MIOPENIO MIOPENIO: Command receiTX: TX-RX DONE detected, flag set
+17:38:58.967 > State: PREAMBLE
+17:38:58.967 > TX: TX-RX DONE detected, flag set
+17:38:58.973 > State: PAYLOAD
+17:38:58.973 > ved from aa9bfa (Unknown deviceTX: TX-RX DONE detected, flag set
+17:38:58.979 > State: PREAMBLE
+17:38:58.984 > TX: TX-RX DONE detected, flag set
+17:38:58.984 > State: PAYLOAD
+17:38:58.984 > )
+17:38:58.991 > [1604254][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:58.995 >
+17:38:59.001 > (14) 2W S 1 E 0  FROM AA9BFA TO E468A9 CMD 00 +0.000      >  DATA(06)  01e700000000 Org 1 Acei E7 Main 0 fp1 0 fp2 0  Acei 7 0 3 1
+17:38:59.012 > [1604266][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=98): <134>Jan  1 00:26:44 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO E468A9 CMD 0 DATA(6) 01e700000000 >
+17:38:59.030 > [1604293][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:59.041 > [1604304][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:44 MIOPENIO MIOPENIO: Command received from aa9bfa (Unknown device)
+17:38:59.058 > [1604321][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:38:59.068 > (14) 2W S 0 E 0  FROM AA9BFA TO E468A9 CMD 3D +89.814        DATA(06)  864dd51ccc7d
+17:38:59.073 > [1604332][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=99): <134>Jan  1 00:26:44 MIOPENIO MIOPENIO: (14) 2W FROM AA9BFA TO E468A9 CMD 3D DATA(6) 864dd51ccc7d <
+17:38:59.093 > [1604356][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:39:01.127 > TX: TX-RX DONE detected, flag set
+17:39:01.127 > State: PREAMBLE
+17:39:01.127 > TX: TX-RX DONE detected, flag set
+17:39:01.131 > State: PAYLOAD
+17:39:01.137 > [1606400][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:46 MIOPENIO MIOPENIO: Command received frTX: TX-RX DONE detected, flag set
+17:39:01.148 > State: PREAMBLE
+17:39:01.154 > om aa9bfa (Unknown deviTX: TX-RX DONE detected, flag set
+17:39:01.154 > State: PAYLOAD
+17:39:01.156 > ce)
+17:39:01.163 > [1606425][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:39:01.166 >
+17:39:01.172 > (11) 2W S 1 E 0  FROM AA9BFA TO E468A9 CMD 03 +0.000      >  DATA(03)  030000
+17:39:01.177 > [1606437][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=92): <134>Jan  1 00:26:46 MIOPENIO MIOPENIO: (11) 2W FROM AA9BFA TO E468A9 CMD 3 DATA(3) 030000 >
+17:39:01.197 > [1606461][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:39:01.208 > [1606471][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:46 MIOPENIO MIOPENIO: Command received from e468a9 (Unknown device)
+17:39:01.224 > [1606488][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:39:01.235 > (22) 2W S 0 E 1  FROM E468A9 TO AA9BFA CMD 04 +73.990     <  DATA(14)  0400000003980001aa9bfa010000
+17:39:01.241 > [1606500][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=115): <134>Jan  1 00:26:46 MIOPENIO MIOPENIO: (22) 2W FROM E468A9 TO AA9BFA CMD 4 DATA(14) 0400000003980001aa9bfa010000 <
+17:39:01.263 > [1606526][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:39:02.269 > TX: TX-RX DONE detected, flag set
+17:39:02.269 > State: PREAMBLE
+17:39:02.269 > TX: TX-RX DONE detected, flag set
+17:39:02.272 > State: PAYLOAD
+17:39:02.278 > TX: TX-RX DONE detected, flag set
+17:39:02.279 > State: PREAMBLE
+17:39:02.279 > [1607543][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:47 MIOPENIO MIOPENIO: Command received from aa9bfaTX: TX-RX DONE detected, flag set
+17:39:02.296 > State: PAYLOAD
+17:39:02.296 >  (Unknown device)
+17:39:02.305 > [1607568][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:39:02.309 >
+17:39:02.314 > (11) 2W S 1 E 0  FROM AA9BFA TO E468A9 CMD 03 +0.000      >  DATA(03)  030000
+17:39:02.320 > [1607580][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=92): <134>Jan  1 00:26:47 MIOPENIO MIOPENIO: (11) 2W FROM AA9BFA TO E468A9 CMD 3 DATA(3) 030000 >
+17:39:02.340 > [1607603][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:39:02.350 > [1607613][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=85): <134>Jan  1 00:26:47 MIOPENIO MIOPENIO: Command received from e468a9 (Unknown device)
+17:39:02.367 > [1607630][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
+17:39:02.378 > (22) 2W S 0 E 1  FROM E468A9 TO AA9BFA CMD 04 +75.036     <  DATA(14)  0500000000000000aa9bfa010000
+17:39:02.384 > [1607642][D][syslog_helper.cpp:162] sendSyslog(): [SYSLOG] Sending syslog (len=115): <134>Jan  1 00:26:47 MIOPENIO MIOPENIO: (22) 2W FROM E468A9 TO AA9BFA CMD 4 DATA(14) 0500000000000000aa9bfa010000 <
+17:39:02.406 > [1607669][D][syslog_helper.cpp:166] sendSyslog(): [SYSLOG] Message send result: 1
