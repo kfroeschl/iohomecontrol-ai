@@ -32,6 +32,7 @@
 #include <iohcPairingController.h>
 #include <iohcRemoteMap.h>
 #include <interact.h>
+#include <iohc2WResponseHandler.h>
 #if defined(MQTT)
 #include <mqtt_handler.h>
 #endif
@@ -89,6 +90,7 @@ IOHC::iohcRemoteMap *remoteMap;
 // New 2W device management
 Device2WManager *device2WManager;
 PairingController *pairingController;
+IOHC2WResponseHandler *responseHandler;
 
 uint32_t frequencies[] = FREQS2SCAN;
 
@@ -154,6 +156,10 @@ void setup() {
     // TODO: Load 2W system key from NVS or config
     // For now, using the global transfert_key
     pairingController->setSystemKey(transfert_key);
+    
+    // Initialize 2W response handler for automatic authentication
+    responseHandler = IOHC2WResponseHandler::getInstance();
+    responseHandler->setRadioInstance(radioInstance);
 
     //   AES_init_ctx(&ctx, transfert_key); // PreInit AES for cozy (1W use original version) TODO
 
@@ -250,20 +256,7 @@ bool msgRcvd(IOHC::iohcPacket *iohc) {
     
     // Handle CMD 0x3C (challenge) for device control (outside of pairing)
     if (iohc->payload.packet.header.cmd == 0x3C) {
-        auto* devMgr = Device2WManager::getInstance();
-        Device2W* device = devMgr->getDevice(iohc->payload.packet.header.source);
-        
-        if (device && device->pairingState == PairingState::PAIRED) {
-            // Store the challenge
-            if (iohc->payload.buffer[8] >= 6) {  // Check payload length
-                devMgr->storeChallenge(device->nodeAddress, &iohc->payload.buffer[9], 6);
-                Serial.printf("📝 Stored challenge from device %s: %02X%02X%02X%02X%02X%02X\n",
-                             device->addressStr.c_str(),
-                             device->lastChallenge[0], device->lastChallenge[1], 
-                             device->lastChallenge[2], device->lastChallenge[3],
-                             device->lastChallenge[4], device->lastChallenge[5]);
-                Serial.println("⚠️  Device requires authentication - use 'auth2W <address>' to respond");
-            }
+        if (responseHandler && responseHandler->handleChallenge(iohc)) {
             digitalWrite(RX_LED, digitalRead(RX_LED) ^ 1);
             return true;
         }
@@ -271,15 +264,8 @@ bool msgRcvd(IOHC::iohcPacket *iohc) {
     
     // Handle CMD 0x04 (status/confirmation) responses
     if (iohc->payload.packet.header.cmd == 0x04) {
-        auto* devMgr = Device2WManager::getInstance();
-        Device2W* device = devMgr->getDevice(iohc->payload.packet.header.source);
-        
-        if (device && device->pairingState == PairingState::PAIRED) {
-            Serial.printf("✅ CMD 0x04 response from %s: ", device->addressStr.c_str());
-            for (int i = 0; i < iohc->payload.buffer[8]; i++) {
-                Serial.printf("%02X", iohc->payload.buffer[9 + i]);
-            }
-            Serial.println();
+        if (responseHandler && responseHandler->handleConfirmation(iohc)) {
+            // Response was handled
         }
     }
     

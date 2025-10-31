@@ -66,7 +66,7 @@ namespace IOHC {
         bool preamble = digitalRead(RADIO_PREAMBLE_DETECTED);
         bool payload = digitalRead(RADIO_PACKET_AVAIL);
         iohcRadio::txComplete = true;
-        ets_printf("TX: TX-RX DONE detected, flag set\n");
+        // ets_printf("TX: TX-RX DONE detected, flag set\n");
 
 
         if (payload) {
@@ -122,7 +122,7 @@ namespace IOHC {
 
         // Stop de task als alles klaar is
         if (radio->txCounter >= radio->packets2send.size()) {
-            ets_printf("TX: Batch complete. Deleting TX task.\n");
+            // ets_printf("TX: Batch complete. Deleting TX task.\n");
             radio->txTaskHandle = nullptr;
             vTaskDelete(nullptr); // delete zichzelf
         }
@@ -337,7 +337,7 @@ void iohcRadio::send(std::vector<iohcPacket *> &iohcTx) {
     ets_printf("\n");
 
 
-    ets_printf("TX: Preparing %d packet(s)\n", packets2send.size());
+    // ets_printf("TX: Preparing %d packet(s)\n", packets2send.size());
     setRadioState(RadioState::TX);
 
     // 🟢 Set preamble length based on packet flag
@@ -358,7 +358,7 @@ void iohcRadio::send(std::vector<iohcPacket *> &iohcTx) {
     //iohc->decode(true); //false);
     //IOHC::lastSendCmd = iohc->payload.packet.header.cmd;
 
-    ets_printf("TX: Sent first packet at %llu us\n", esp_timer_get_time());
+    // ets_printf("TX: Sent first packet at %llu us\n", esp_timer_get_time());
 
     if (iohc->repeat > 0) iohc->repeat--;
 
@@ -432,7 +432,7 @@ void iohcRadio::onTxTicker(void *arg) {
 
     // 👇 Only go RX after all packets
     if (radio->txCounter >= radio->packets2send.size()) {
-        ets_printf("TX: All repeats done. Switching to RX\n");
+        // ets_printf("TX: All repeats done. Switching to RX\n");
         radio->Sender.detach();
         radio->iohc = nullptr;  // Prevent reading stale packet data
         radio->packets2send.clear();  // Clear queue to prevent stale packets
@@ -537,9 +537,9 @@ void iohcRadio::onTxTicker(void *arg) {
  */
  
 void IRAM_ATTR iohcRadio::packetSender(iohcRadio *radio) {
-    ets_printf("T1 packetSender() fired at %llu us\n", esp_timer_get_time());
+    // ets_printf("T1 packetSender() fired at %llu us\n", esp_timer_get_time());
     if (!radio || radio->packets2send.empty()) {
-        ets_printf("TX: No packets to send. Forcing cleanup.\n");
+        // ets_printf("TX: No packets to send. Forcing cleanup.\n");
         radio->packets2send.clear();
         Radio::setRx(); // Go back to RX only after stop
         radio->setRadioState(iohcRadio::RadioState::RX);
@@ -548,15 +548,15 @@ void IRAM_ATTR iohcRadio::packetSender(iohcRadio *radio) {
 
     // Check if all packets are sent
     if (radio->txCounter >= radio->packets2send.size()) {
-        ets_printf("TX: All packets sent in batch.\n");
+        // ets_printf("TX: All packets sent in batch.\n");
         if (!radio->iohc || !radio->iohc->lock) {
-            ets_printf("TX: Unlocking radio and switching to RX.\n");
+            // ets_printf("TX: Unlocking radio and switching to RX.\n");
             radio->Sender.detach();
             radio->packets2send.clear();
             Radio::setRx();
             radio->setRadioState(iohcRadio::RadioState::RX);
         } else {
-            ets_printf("TX: Lock is active, keeping radio in STANDBY.\n");
+            // ets_printf("TX: Lock is active, keeping radio in STANDBY.\n");
             radio->txCounter = 0; // Restart batch
         }
         return;
@@ -791,6 +791,6 @@ void IRAM_ATTR iohcRadio::packetSender(iohcRadio *radio) {
         radioState = newState;
         // Optional debug:
         //printf("State changed to: %d\n", static_cast<int>(newState));
-        ets_printf("State: %s\n", radioStateToString(newState));
+        // ets_printf("State: %s\n", radioStateToString(newState));
     }
 }
