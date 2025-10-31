@@ -363,6 +363,8 @@ void iohcRadio::send(std::vector<iohcPacket *> &iohcTx) {
     if (iohc->repeat > 0) iohc->repeat--;
 
     // Start ticker for repeats (short preamble)
+    // Detach first to ensure any previous ticker is stopped
+    Sender.detach();
     Sender.attach_ms(iohc->repeatTime, &iohcRadio::onTxTicker, (void*)this);
 }
 
@@ -383,6 +385,8 @@ void iohcRadio::onTxTicker(void *arg) {
     if (radio->txCounter >= radio->packets2send.size()) {
         ets_printf("TX: All packets sent. Stopping Ticker.\n");
         radio->Sender.detach();
+        radio->iohc = nullptr;  // Prevent reading stale packet data
+        radio->packets2send.clear();
         Radio::setRx();
         radio->setRadioState(RadioState::RX);
         return;
@@ -398,7 +402,18 @@ void iohcRadio::onTxTicker(void *arg) {
     radio->txComplete = false;
     ESP_LOGD("RADIO", "TXDONE flag set, ready to send repeat or next packet.\n");
 
-    // 🔁 Repeat logic
+    // 🛡️ Safety check: If iohc is null, we're done (ticker fired after cleanup)
+    if (radio->iohc == nullptr) {
+        ets_printf("TX: iohc is null (already cleaned up). Ignoring ticker callback.\n");
+        return;
+    }
+
+    // 🛡️ Validate iohc points to a packet in packets2send
+    // REMOVED: This validation was causing race conditions with RX path
+    // The RX path uses a different 'iohc' variable (local in receive())
+    // Don't validate or clear radio->iohc here - it's TX state only
+
+    // �🔁 Repeat logic
     if (radio->iohc->repeat > 0) {
         radio->iohc->repeat--;
         ets_printf("TX: Repeating current packet CMD=0x%02X (%d repeats left)\n", 
@@ -419,6 +434,8 @@ void iohcRadio::onTxTicker(void *arg) {
     if (radio->txCounter >= radio->packets2send.size()) {
         ets_printf("TX: All repeats done. Switching to RX\n");
         radio->Sender.detach();
+        radio->iohc = nullptr;  // Prevent reading stale packet data
+        radio->packets2send.clear();  // Clear queue to prevent stale packets
         Radio::setRx();
         radio->setRadioState(RadioState::RX);
         return;
@@ -617,32 +634,34 @@ void IRAM_ATTR iohcRadio::packetSender(iohcRadio *radio) {
     bool IRAM_ATTR iohcRadio::receive(bool stats = false) {
         digitalWrite(RX_LED, digitalRead(RX_LED) ^ 1);
         // bool frmErr = false;
-        iohc = new iohcPacket;
-        iohc->buffer_length = 0;
-        iohc->frequency = scan_freqs[currentFreqIdx];
+        // CRITICAL FIX: Use local variable for RX packet, not member variable
+        // The member variable 'iohc' is used by TX path and gets overwritten if send() is called from RX callback
+        iohcPacket* rxPacket = new iohcPacket;
+        rxPacket->buffer_length = 0;
+        rxPacket->frequency = scan_freqs[currentFreqIdx];
 
         _g_payload_millis = esp_timer_get_time();
         packetStamp = _g_payload_millis;
 #if defined(RADIO_SX127X)
         if (stats) {
-            iohc->rssi = static_cast<float>(Radio::readByte(REG_RSSIVALUE)) / -2.0f;
+            rxPacket->rssi = static_cast<float>(Radio::readByte(REG_RSSIVALUE)) / -2.0f;
             int16_t thres = Radio::readByte(REG_RSSITHRESH);
-            iohc->snr = iohc->rssi > thres ? 0 : (thres - iohc->rssi);
-            //            iohc->lna = RF96lnaMap[ (Radio::readByte(REG_LNA) >> 5) & 0x7 ];
+            rxPacket->snr = rxPacket->rssi > thres ? 0 : (thres - rxPacket->rssi);
+            //            rxPacket->lna = RF96lnaMap[ (Radio::readByte(REG_LNA) >> 5) & 0x7 ];
             int16_t f = (uint16_t) Radio::readByte(REG_AFCMSB);
             f = (f << 8) | (uint16_t) Radio::readByte(REG_AFCLSB);
-            //            iohc->afc = f * (32000000.0 / 524288.0); // static_cast<float>(1 << 19));
-            iohc->afc = /*(int32_t)*/f * 61.0;
-            //            iohc->rssiAt = micros();
+            //            rxPacket->afc = f * (32000000.0 / 524288.0); // static_cast<float>(1 << 19));
+            rxPacket->afc = /*(int32_t)*/f * 61.0;
+            //            rxPacket->rssiAt = micros();
         }
 #elif defined(CC1101)
         __g_preamble = false;
 
         uint8_t tmprssi=Radio::SPIgetRegValue(REG_RSSI);
         if (tmprssi>=128)
-            iohc->rssi = (float)((tmprssi-256)/2)-74;
+            rxPacket->rssi = (float)((tmprssi-256)/2)-74;
         else
-            iohc->rssi = (float)(tmprssi/2)-74;
+            rxPacket->rssi = (float)(tmprssi/2)-74;
 
         uint8_t bytesInFIFO = Radio::SPIgetRegValue(REG_RXBYTES, 6, 0);
         size_t readBytes = 0;
@@ -652,7 +671,7 @@ void IRAM_ATTR iohcRadio::packetSender(iohcRadio *radio) {
 #if defined(RADIO_SX127X)
 
         while (Radio::dataAvail()) {
-            iohc->payload.buffer[iohc->buffer_length++] = Radio::readByte(REG_FIFO);
+            rxPacket->payload.buffer[rxPacket->buffer_length++] = Radio::readByte(REG_FIFO);
         }
 
 #elif defined(CC1101)
@@ -695,8 +714,8 @@ void IRAM_ATTR iohcRadio::packetSender(iohcRadio *radio) {
             int8_t lenFuncDecodeFrame = Radio::decodeFrame(tmpBuffer, lenghtFrameCoded);
             if (lenFuncDecodeFrame>0 && lenFuncDecodeFrame<=MAX_FRAME_LEN){
                 if (iohcUtils::radioPacketComputeCrc(tmpBuffer, lenFuncDecodeFrame) == 0 ){
-                    iohc->buffer_length = lenFuncDecodeFrame;
-                    memcpy(iohc->payload.buffer, tmpBuffer, lenFuncDecodeFrame);  // volcamos el resultado al array de origen
+                    rxPacket->buffer_length = lenFuncDecodeFrame;
+                    memcpy(rxPacket->payload.buffer, tmpBuffer, lenFuncDecodeFrame);  // volcamos el resultado al array de origen
                     frmErr=false;
                 }
             }
@@ -714,11 +733,17 @@ void IRAM_ATTR iohcRadio::packetSender(iohcRadio *radio) {
 #endif
 
         // Radio::clearFlags();
-        if (rxCB) rxCB(iohc);
-        iohc->decode(true); //stats);
-        addLogMessage(String(iohc->decodeToString(true).c_str()));
-        //free(iohc); // correct Bug memory
-        delete iohc;
+        // Call RX callback with the rxPacket (NOT the member variable 'iohc' which is for TX)
+        if (rxCB) rxCB(rxPacket);
+        
+        // Decode and log the received packet
+        if (rxPacket != nullptr) {
+            rxPacket->decode(true); //stats);
+            addLogMessage(String(rxPacket->decodeToString(true).c_str()));
+            delete rxPacket;
+        } else {
+            Serial.println("[ERROR] rxPacket is NULL!");
+        }
         digitalWrite(RX_LED, false);
         return true;
     }

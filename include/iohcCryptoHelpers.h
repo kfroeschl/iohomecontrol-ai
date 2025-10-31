@@ -41,5 +41,6 @@ namespace iohcCrypto {
     uint16_t radioPacketComputeCrc(std::vector<uint8_t>& buffer);
     void encrypt_1W_key(const uint8_t *node_address, uint8_t *key);
     void create_1W_hmac(uint8_t *hmac, const uint8_t *seq_number, uint8_t *controller_key, const std::vector<uint8_t>& frame_data);
+    void create_2W_hmac(uint8_t *hmac, const uint8_t *challenge, uint8_t *system_key, const std::vector<uint8_t>& frame_data);
 }
 #endif

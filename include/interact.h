@@ -57,7 +57,7 @@ namespace IOHC {
 
 #if defined(ESP32)
   #include <TickerUsESP32.h>
-  #define MAXCMDS 50
+  #define MAXCMDS 80
 #endif
 
 #if defined(SSD1306_DISPLAY)

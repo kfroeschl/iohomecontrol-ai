@@ -98,15 +98,20 @@ public:
     bool isPairingActive() const { return pairingActive; }
     Device2W* getCurrentPairingDevice();
     
+    // Debug/testing: Verify crypto implementation with known test vectors
+    void verifyCryptoImplementation();
+    
 private:
-    // Pairing workflow steps (NEW PROTOCOL)
-    bool sendPairingBroadcast();        // CMD 0x28 - Discover Remote (broadcast, no payload)
+    // Pairing workflow steps (TaHoma Protocol)
+    bool sendPairingBroadcast();        // CMD 0x28 - Discovery (broadcast, no payload)
+    bool sendAliveCheck(Device2W* device);  // CMD 0x2C - Actuator alive check
     bool sendLearningMode(Device2W* device);  // CMD 0x2E - 1W Learning mode
-    bool sendAskChallenge(Device2W* device);  // CMD 0x31 - Ask for challenge
     bool handleDeviceChallenge(iohcPacket* packet);  // CMD 0x3C from device
-    bool sendChallengeResponse(Device2W* device, const uint8_t* deviceChallenge); // CMD 0x3D to device
+    bool sendChallengeResponse(Device2W* device); // CMD 0x3D to device (using stored challenge)
     bool handlePairingConfirmation(iohcPacket* packet);  // CMD 0x2F from device
-    bool sendKeyTransfer(Device2W* device);  // CMD 0x32 - Encrypted key transfer
+    
+    // DEPRECATED: CMD 0x32/0x33 not used in TaHoma flow
+    bool sendKeyTransfer(Device2W* device);  // CMD 0x32 - Encrypted key transfer (OLD)
     bool handleKeyTransferAck(iohcPacket* packet);
     
     // Info gathering steps

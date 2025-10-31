@@ -24,6 +24,11 @@
 
 namespace IOHC {
     void IRAM_ATTR iohcPacket::decode(bool verbosity) {
+        // Safety check: ensure buffer is valid
+        if (this->buffer_length < 8) {
+            printf("[WARN] Invalid packet: buffer_length=%d\n", this->buffer_length);
+            return;
+        }
 
         if (packetStamp - relStamp > 500000L) {
             printf("\n");

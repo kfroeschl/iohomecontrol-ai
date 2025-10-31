@@ -15,7 +15,9 @@
  */
 
 #include <iohcCryptoHelpers.h>
-#include <crypto2Wutils.h> 
+#include <crypto2Wutils.h>
+#include <cstring>
+#include <Arduino.h> 
 /*
     Helper function to convert a string containing hex numbers to a bytes sequence; one byte every two characters
 */
@@ -164,6 +166,46 @@ namespace iohcCrypto {
 //        mbedtls_aes_free( &aes );
         #endif        
 
+    }
+
+/*
+    Creates a MAC for 2-Way communication (to use in CMD 0x3D challenge response)
+    
+    @param hmac Output buffer for 6-byte MAC
+    @param challenge 6-byte challenge from CMD 0x3C
+    @param system_key 16-byte AES system key
+    @param frame_data Frame payload data (command and parameters)
+*/
+    void create_2W_hmac(uint8_t *hmac, const uint8_t *challenge, uint8_t *system_key, const std::vector<uint8_t>& frame_data) {
+        std::vector<uint8_t> iv;
+        #if defined(HELTEC)
+            mbedtls_aes_init(&aes);
+        #endif
+
+        // Construct the initial value using challenge (not sequence number)
+        iv = constructInitialValue(frame_data, challenge, nullptr);
+
+        // Debug: print the constructed IV
+        Serial.print("[create_2W_hmac] IV: ");
+        for (uint8_t byte : iv) {
+            Serial.printf("%02X", byte);
+        }
+        Serial.println();
+
+        #if defined(ESP8266)
+            aes128.setKey(system_key, 16);
+            aes128.encryptBlock(hmac, iv.data());
+        #elif defined(ESP32)
+            mbedtls_aes_setkey_enc(&aes, system_key, 128);
+            uint8_t encrypted[16];
+            mbedtls_aes_crypt_ecb(&aes, MBEDTLS_AES_ENCRYPT, iv.data(), encrypted);
+            // Copy first 6 bytes as MAC
+            memcpy(hmac, encrypted, 6);
+        #endif
+
+        // Debug: print the generated MAC
+        Serial.printf("[create_2W_hmac] MAC: %02X%02X%02X%02X%02X%02X\n",
+                      hmac[0], hmac[1], hmac[2], hmac[3], hmac[4], hmac[5]);
     }
 
 /*

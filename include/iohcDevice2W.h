@@ -16,10 +16,12 @@ using namespace IOHC;
 // Device pairing states
 enum class PairingState {
     UNPAIRED,           // Not yet paired
-    DISCOVERING,        // Discovery broadcast sent
-    CHALLENGE_SENT,     // Waiting for challenge response
+    DISCOVERING,        // Discovery broadcast sent (CMD 0x28 → waiting for CMD 0x29)
+    ALIVE_CHECK,        // Alive check sent (CMD 0x2C → waiting for CMD 0x2D)
+    LEARNING_MODE,      // Learning mode sent (CMD 0x2E → waiting for CMD 0x3C)
+    CHALLENGE_RECEIVED, // Challenge received (CMD 0x3C → need to send CMD 0x3D)
     PAIRING_CONFIRMED,  // Pairing confirmed (CMD 0x2F received)
-    KEY_EXCHANGED,      // 2W key transferred
+    KEY_EXCHANGED,      // 2W key transferred (DEPRECATED - not used in TaHoma flow)
     PAIRED,             // Fully paired and operational
     PAIRING_FAILED      // Pairing process failed
 };
@@ -70,6 +72,10 @@ public:
     uint8_t lastResponse[6];
     bool hasPendingChallenge;
     
+    // Last command sent (for MAC calculation in CMD 0x3D)
+    uint8_t lastCommand[32];    // Store full command payload
+    uint8_t lastCommandLen;
+    
     // Device information
     DeviceCapabilities capabilities;
     String description;         // User-provided description
@@ -77,12 +83,13 @@ public:
     // Constructor
     Device2W() : pairingState(PairingState::UNPAIRED), lastSeen(0), pairingStartTime(0),
                 hasSystemKey(false), hasSessionKey(false), sequenceNumber(0),
-                hasPendingChallenge(false) {
+                hasPendingChallenge(false), lastCommandLen(0) {
         memset(nodeAddress, 0, 3);
         memset(systemKey, 0, 16);
         memset(sessionKey, 0, 16);
         memset(lastChallenge, 0, 6);
         memset(lastResponse, 0, 6);
+        memset(lastCommand, 0, 32);
     }
     
     Device2W(const address& addr) : Device2W() {
@@ -105,8 +112,10 @@ public:
     // Check if pairing is in progress
     bool isPairingInProgress() const {
         return pairingState == PairingState::DISCOVERING ||
-               pairingState == PairingState::CHALLENGE_SENT ||
-               pairingState == PairingState::KEY_EXCHANGED;
+               pairingState == PairingState::ALIVE_CHECK ||
+               pairingState == PairingState::LEARNING_MODE ||
+               pairingState == PairingState::CHALLENGE_RECEIVED ||
+               pairingState == PairingState::PAIRING_CONFIRMED;
     }
     
     // Check if pairing timeout occurred (30 seconds)
@@ -120,7 +129,10 @@ public:
         switch (pairingState) {
             case PairingState::UNPAIRED: return "UNPAIRED";
             case PairingState::DISCOVERING: return "DISCOVERING";
-            case PairingState::CHALLENGE_SENT: return "CHALLENGE_SENT";
+            case PairingState::ALIVE_CHECK: return "ALIVE_CHECK";
+            case PairingState::LEARNING_MODE: return "LEARNING_MODE";
+            case PairingState::CHALLENGE_RECEIVED: return "CHALLENGE_RECEIVED";
+            case PairingState::PAIRING_CONFIRMED: return "PAIRING_CONFIRMED";
             case PairingState::KEY_EXCHANGED: return "KEY_EXCHANGED";
             case PairingState::PAIRED: return "PAIRED";
             case PairingState::PAIRING_FAILED: return "PAIRING_FAILED";

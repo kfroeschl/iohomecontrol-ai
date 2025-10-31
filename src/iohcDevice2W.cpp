@@ -98,7 +98,10 @@ bool Device2W::fromJson(const String& addressKey, const String& jsonStr) {
     String stateStr = doc["pairing_state"] | "UNPAIRED";
     if (stateStr == "PAIRED") pairingState = PairingState::PAIRED;
     else if (stateStr == "KEY_EXCHANGED") pairingState = PairingState::KEY_EXCHANGED;
-    else if (stateStr == "CHALLENGE_SENT") pairingState = PairingState::CHALLENGE_SENT;
+    else if (stateStr == "PAIRING_CONFIRMED") pairingState = PairingState::PAIRING_CONFIRMED;
+    else if (stateStr == "CHALLENGE_RECEIVED") pairingState = PairingState::CHALLENGE_RECEIVED;
+    else if (stateStr == "LEARNING_MODE") pairingState = PairingState::LEARNING_MODE;
+    else if (stateStr == "ALIVE_CHECK") pairingState = PairingState::ALIVE_CHECK;
     else if (stateStr == "DISCOVERING") pairingState = PairingState::DISCOVERING;
     else if (stateStr == "PAIRING_FAILED") pairingState = PairingState::PAIRING_FAILED;
     else pairingState = PairingState::UNPAIRED;

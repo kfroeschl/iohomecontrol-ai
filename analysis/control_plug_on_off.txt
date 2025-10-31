@@ -1,0 +1,45 @@
+# Tahome AA9BFA to PLug 57F505: Turn on
+07:47:47.091 > TX: TX-RX DONE detected, flag set
+07:47:47.092 > State: PREAMBLE
+07:47:47.092 > TX: TX-RX DONE detected, flag set
+07:47:47.092 > State: PAYLOAD
+07:47:47.092 > 
+07:47:47.092 > (14) 2W S 1 E 0  FROM AA9BFA TO 57F505 CMD 00 +0.000      >  DATA(06)  01e700000000 Org 1 Acei E7 Main 0 fp1 0 fp2 0  Acei 7 0 3 1 
+07:47:47.103 > TX: TX-RX DONE detected, flag set
+07:47:47.113 > State: PREAMBLE
+07:47:47.113 > TX: TX-RX DONE detected, flag set
+07:47:47.113 > State: PAYLOAD
+07:47:47.113 > (14) 2W S 0 E 0  FROM 57F505 TO AA9BFA CMD 3C +13.679        DATA(06)  c3bfeb080TX: TX-RX DONE detected, flag set
+07:47:47.124 > State: PREAMBLE
+07:47:47.124 > TX: TX-RX DONE detected, flag set
+07:47:47.124 > State: PAYLOAD
+07:47:47.135 > 36d
+07:47:47.135 > TX: TX-RX DONE detected, flag set
+07:47:47.135 > State: PREAMBLE
+07:47:47.135 > (14) 2W S 0 E 0  FROM AA9BFA TO 57F505 CMD 3D +16.863        DATA(06)  754cc19TX: TX-RX DONE detected, flag set
+07:47:47.146 > State: PAYLOAD
+07:47:47.146 > de234
+07:47:47.146 > (22) 2W S 0 E 1  FROM 57F505 TO AA9BFA CMD 04 +15.982     <  DATA(14)  04000000c8000002aa9bfa010000
+
+# Tahome AA9BFA to PLug 57F505: Turn off
+07:48:16.174 > TX: TX-RX DONE detected, flag set
+07:48:16.174 > State: PREAMBLE
+07:48:16.174 > TX: TX-RX DONE detected, flag set
+07:48:16.174 > State: PAYLOAD
+07:48:16.174 > 
+07:48:16.174 > (14) 2W S 1 E 0  FROM AA9BFA TO 57F505 CMD 00 +0.000      >  DATA(06)  01e7c8000000 Org 1 Acei E7 Main C8 fp1 0 fp2 0  Acei 7 0 3 1 
+07:48:16.185 > TX: TX-RX DONE detected, flag set
+07:48:16.196 > State: PREAMBLE
+07:48:16.196 > TX: TX-RX DONE detected, flag set
+07:48:16.196 > State: PAYLOAD
+07:48:16.196 > (14) 2W S 0 E 0  FROM 57F505 TO AA9BFA CMD 3C +13.957        DATA(06)  0c8c697a4TX: TX-RX DONE detected, flag set
+07:48:16.207 > State: PREAMBLE
+07:48:16.207 > TX: TX-RX DONE detected, flag set
+07:48:16.207 > State: PAYLOAD
+07:48:16.218 > b59
+07:48:16.218 > TX: TX-RX DONE detected, flag set
+07:48:16.218 > State: PREAMBLE
+07:48:16.218 > (14) 2W S 0 E 0  FROM AA9BFA TO 57F505 CMD 3D +16.580        DATA(06)  13d1f8083TX: TX-RX DONE detected, flag set
+07:48:16.229 > State: PAYLOAD
+07:48:16.229 > cf1
+07:48:16.229 > (22) 2W S 0 E 1  FROM 57F505 TO AA9BFA CMD 04 +16.073     <  DATA(14)  0400c80000000002aa9bfa010000

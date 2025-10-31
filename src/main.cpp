@@ -248,6 +248,41 @@ bool msgRcvd(IOHC::iohcPacket *iohc) {
         }
     }
     
+    // Handle CMD 0x3C (challenge) for device control (outside of pairing)
+    if (iohc->payload.packet.header.cmd == 0x3C) {
+        auto* devMgr = Device2WManager::getInstance();
+        Device2W* device = devMgr->getDevice(iohc->payload.packet.header.source);
+        
+        if (device && device->pairingState == PairingState::PAIRED) {
+            // Store the challenge
+            if (iohc->payload.buffer[8] >= 6) {  // Check payload length
+                devMgr->storeChallenge(device->nodeAddress, &iohc->payload.buffer[9], 6);
+                Serial.printf("📝 Stored challenge from device %s: %02X%02X%02X%02X%02X%02X\n",
+                             device->addressStr.c_str(),
+                             device->lastChallenge[0], device->lastChallenge[1], 
+                             device->lastChallenge[2], device->lastChallenge[3],
+                             device->lastChallenge[4], device->lastChallenge[5]);
+                Serial.println("⚠️  Device requires authentication - use 'auth2W <address>' to respond");
+            }
+            digitalWrite(RX_LED, digitalRead(RX_LED) ^ 1);
+            return true;
+        }
+    }
+    
+    // Handle CMD 0x04 (status/confirmation) responses
+    if (iohc->payload.packet.header.cmd == 0x04) {
+        auto* devMgr = Device2WManager::getInstance();
+        Device2W* device = devMgr->getDevice(iohc->payload.packet.header.source);
+        
+        if (device && device->pairingState == PairingState::PAIRED) {
+            Serial.printf("✅ CMD 0x04 response from %s: ", device->addressStr.c_str());
+            for (int i = 0; i < iohc->payload.buffer[8]; i++) {
+                Serial.printf("%02X", iohc->payload.buffer[9 + i]);
+            }
+            Serial.println();
+        }
+    }
+    
     // Fall through to legacy handling
     switch (iohc->payload.packet.header.cmd) {
         case iohcDevice::RECEIVED_DISCOVER_0x28: {

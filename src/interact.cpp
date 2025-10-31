@@ -31,8 +31,75 @@
 #endif
 #include <nvs_helpers.h>
 
+// External radio instance from main.cpp
+extern IOHC::iohcRadio *radioInstance;
+
 ConnState mqttStatus = ConnState::Disconnected;
 
+// Helper function to send CMD 0x3D challenge response for authenticated control
+// TEMPORARILY DISABLED TO SAVE MEMORY - Will re-enable after memory optimization
+/*
+bool sendChallengeResponseForControl(Device2W* device, const uint8_t* originalCommand, size_t cmdLen) {
+    if (!device->hasPendingChallenge) {
+        Serial.println("ERROR: No pending challenge to respond to");
+        return false;
+    }
+    
+    if (!device->hasSystemKey) {
+        Serial.println("ERROR: Device has no system key for authentication");
+        return false;
+    }
+    
+    // Create frame data from the original command for MAC calculation
+    std::vector<uint8_t> frame_data;
+    for (size_t i = 0; i < cmdLen; i++) {
+        frame_data.push_back(originalCommand[i]);
+    }
+    
+    // Generate MAC using system key and challenge
+    uint8_t mac[6];
+    iohcCrypto::create_2W_hmac(mac, device->lastChallenge, device->systemKey, frame_data);
+    
+    // Create CMD 0x3D packet
+    iohcPacket* packet = new iohcPacket();
+    packet->payload.packet.header.CtrlByte1.asStruct.MsgLen = sizeof(_header) - 1;
+    packet->payload.packet.header.CtrlByte1.asStruct.Protocol = 0;
+    packet->payload.packet.header.CtrlByte1.asStruct.StartFrame = 1;
+    packet->payload.packet.header.CtrlByte1.asStruct.EndFrame = 0;
+    packet->payload.packet.header.CtrlByte1.asByte += 6;
+    memcpy(packet->payload.buffer + 9, mac, 6);
+    packet->buffer_length = 6 + 9;
+    
+    packet->payload.packet.header.CtrlByte2.asByte = 0;
+    
+    address myAddr = {0xBA, 0x11, 0xAD};
+    memcpy(packet->payload.packet.header.source, myAddr, 3);
+    memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
+    
+    packet->payload.packet.header.cmd = 0x3D;
+    packet->frequency = CHANNEL2;
+    packet->repeatTime = 25;
+    packet->repeat = 0;
+    packet->lock = false;
+    packet->shortPreamble = true;
+    
+    std::vector<iohcPacket*> packets;
+    packets.push_back(packet);
+    radioInstance->send(packets);
+    
+    // Store response and clear pending flag
+    auto* devMgr = Device2WManager::getInstance();
+    devMgr->storeResponse(device->nodeAddress, mac, 6);
+    
+    Serial.printf("✅ Sent CMD 0x3D authentication (MAC: %02X%02X%02X%02X%02X%02X)\n",
+                  mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+    
+    return true;
+}
+*/
+
+// Pre-allocate command handlers instead of using malloc to avoid heap fragmentation
+_cmdEntry _cmdHandlerStorage[MAXCMDS];
 _cmdEntry* _cmdHandler[MAXCMDS];
 uint8_t lastEntry = 0;
 
@@ -63,22 +130,23 @@ static uint8_t _avail = 0;
  * different devices and functionalities.
  */
 void createCommands() {
-    // Atlantic 2W
+    // Atlantic 2W - COMMENTED OUT TO SAVE MEMORY
+    /*
     Cmd::addHandler((char *) "powerOn", (char *) "Permit to retrieve paired devices", [](Tokens *cmd)-> void {
         IOHC::iohcCozyDevice2W::getInstance()->cmd(IOHC::DeviceButton::powerOn, nullptr);
     });
     Cmd::addHandler((char *) "setTemp", (char *) "7.0 to 28.0 - 0 get actual temp", [](Tokens *cmd)-> void {
-        IOHC::iohcCozyDevice2W::getInstance()->cmd(IOHC::DeviceButton::setTemp, cmd /*cmd->at(1).c_str()*/);
+        IOHC::iohcCozyDevice2W::getInstance()->cmd(IOHC::DeviceButton::setTemp, cmd);
     });
     Cmd::addHandler((char *) "setMode", (char *) "auto prog manual off - FF to get actual mode",
                     [](Tokens *cmd)-> void {
-                        IOHC::iohcCozyDevice2W::getInstance()->cmd(IOHC::DeviceButton::setMode, cmd /*cmd->at(1).c_str()*/);
+                        IOHC::iohcCozyDevice2W::getInstance()->cmd(IOHC::DeviceButton::setMode, cmd);
                     });
     Cmd::addHandler((char *) "setPresence", (char *) "on off", [](Tokens *cmd)-> void {
-        IOHC::iohcCozyDevice2W::getInstance()->cmd(IOHC::DeviceButton::setPresence, cmd /*cmd->at(1).c_str()*/);
+        IOHC::iohcCozyDevice2W::getInstance()->cmd(IOHC::DeviceButton::setPresence, cmd);
     });
     Cmd::addHandler((char *) "setWindow", (char *) "open close", [](Tokens *cmd)-> void {
-        IOHC::iohcCozyDevice2W::getInstance()->cmd(IOHC::DeviceButton::setWindow, cmd /*cmd->at(1).c_str()*/);
+        IOHC::iohcCozyDevice2W::getInstance()->cmd(IOHC::DeviceButton::setWindow, cmd);
     });
     Cmd::addHandler((char *) "midnight", (char *) "Synchro Paired", [](Tokens *cmd)-> void {
         IOHC::iohcCozyDevice2W::getInstance()->cmd(IOHC::DeviceButton::midnight, nullptr);
@@ -86,6 +154,7 @@ void createCommands() {
     Cmd::addHandler((char *) "associate", (char *) "Synchro Paired", [](Tokens *cmd)-> void {
         IOHC::iohcCozyDevice2W::getInstance()->cmd(IOHC::DeviceButton::associate, nullptr);
     });
+    */
     Cmd::addHandler((char *) "custom", (char *) "test unknown commands", [](Tokens *cmd)-> void {
         /*scanMode = true;*/
         IOHC::iohcOtherDevice2W::getInstance()->cmd(IOHC::Other2WButton::custom, cmd /*cmd->at(1).c_str()*/);
@@ -119,6 +188,8 @@ void createCommands() {
     Cmd::addHandler((char *) "absolute", (char *) "1W set absolute position 0-100", [](Tokens *cmd)-> void {
         IOHC::iohcRemote1W::getInstance()->cmd(IOHC::RemoteButton::Absolute, cmd);
     });
+    // Less common 1W commands - COMMENTED OUT TO SAVE MEMORY
+    /*
     Cmd::addHandler((char *) "vent", (char *) "1W vent device", [](Tokens *cmd)-> void {
         IOHC::iohcRemote1W::getInstance()->cmd(IOHC::RemoteButton::Vent, cmd);
     });
@@ -137,6 +208,7 @@ void createCommands() {
     Cmd::addHandler((char *) "mode4", (char *) "1W Mode4", [](Tokens *cmd)-> void {
         IOHC::iohcRemote1W::getInstance()->cmd(IOHC::RemoteButton::Mode4, cmd);
     });
+    */
     Cmd::addHandler((char *) "new1W", (char *) "Add new 1W device", [](Tokens *cmd)-> void {
         if (cmd->size() < 2) {
             Serial.println("Usage: new1W <name>");
@@ -284,6 +356,13 @@ void createCommands() {
         Serial.println("Pairing cancelled");
     });
     
+    Cmd::addHandler((char *) "verifyCrypto", (char *) "Verify crypto implementation with test vectors", [](Tokens *cmd)-> void {
+        auto* pairingCtrl = PairingController::getInstance();
+        Serial.println("Running crypto verification test...");
+        pairingCtrl->verifyCryptoImplementation();
+        Serial.println("Check logs for results");
+    });
+    
     Cmd::addHandler((char *) "list2W", (char *) "List all 2W devices", [](Tokens *cmd)-> void {
         auto* devMgr = Device2WManager::getInstance();
         auto devices = devMgr->getAllDevices();
@@ -390,6 +469,357 @@ void createCommands() {
         } else {
             Serial.println("Failed to reload 2W devices");
         }
+    });
+    
+    // 2W Device Control Commands
+    Cmd::addHandler((char *) "on2W", (char *) "Turn ON 2W device <address>", [](Tokens *cmd)-> void {
+        if (cmd->size() < 2) {
+            Serial.println("Usage: on2W <address>");
+            return;
+        }
+        
+        auto* devMgr = Device2WManager::getInstance();
+        auto* device = devMgr->getDevice(String(cmd->at(1).c_str()));
+        
+        if (!device) {
+            Serial.println("Device not found. Use list2W to see paired devices.");
+            return;
+        }
+        
+        if (device->pairingState != PairingState::PAIRED) {
+            Serial.printf("Device %s is not paired (state: %s)\n", 
+                         device->addressStr.c_str(), device->getPairingStateStr().c_str());
+            return;
+        }
+        
+        // ON/OFF plug control: CMD 0x00 with 6-byte payload (from TaHoma logs)
+        // Format: 01 e7 00 00 00 00 for OFF, 01 e7 c8 00 00 00 for ON
+        iohcPacket* packet = new iohcPacket();
+        
+        packet->payload.packet.header.CtrlByte1.asStruct.MsgLen = sizeof(_header) + 5; // header + 6 bytes data - 1
+        packet->payload.packet.header.CtrlByte1.asStruct.Protocol = 0;
+        packet->payload.packet.header.CtrlByte1.asStruct.StartFrame = 1;
+        packet->payload.packet.header.CtrlByte1.asStruct.EndFrame = 0;
+        packet->buffer_length = 14; // 8 byte header + 6 bytes data
+        
+        packet->payload.packet.header.CtrlByte2.asByte = 0;
+        
+        address myAddr = {0xBA, 0x11, 0xAD};
+        memcpy(packet->payload.packet.header.source, myAddr, 3);
+        memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
+        
+        packet->payload.packet.header.cmd = 0x00;
+        // Write data bytes directly to buffer after header (8 bytes)
+        packet->payload.buffer[8] = 0x01;   // Originator type
+        packet->payload.buffer[9] = 0xe7;   // ACEI (actuator class/event identifier)
+        packet->payload.buffer[10] = 0x00;  // Main parameter (0x00 = ON for this device!)
+        packet->payload.buffer[11] = 0x00;  // Functional param 1
+        packet->payload.buffer[12] = 0x00;  // Functional param 2
+        packet->payload.buffer[13] = 0x00;  // Functional param 3
+        
+        // Store command for later MAC calculation
+        device->lastCommandLen = 7;  // CMD byte + 6 data bytes
+        device->lastCommand[0] = 0x00;  // CMD
+        device->lastCommand[1] = 0x01;  // Payload bytes
+        device->lastCommand[2] = 0xe7;
+        device->lastCommand[3] = 0x00;  // ON = 0x00 (counter-intuitive but correct!)
+        device->lastCommand[4] = 0x00;
+        device->lastCommand[5] = 0x00;
+        device->lastCommand[6] = 0x00;
+        
+        packet->frequency = CHANNEL2;
+        packet->repeatTime = 25;
+        packet->repeat = 0;
+        packet->lock = false;
+        packet->shortPreamble = true;
+        
+        std::vector<iohcPacket*> packets;
+        packets.push_back(packet);
+        radioInstance->send(packets);
+        
+        Serial.printf("Sent ON command (CMD 0x00: 01 e7 c8 00 00 00) to device %s\n", device->addressStr.c_str());
+        Serial.println("Device should respond with CMD 0x3C challenge - you'll need to authenticate with auth2W");
+    });
+    
+    Cmd::addHandler((char *) "off2W", (char *) "Turn OFF 2W device <address>", [](Tokens *cmd)-> void {
+        if (cmd->size() < 2) {
+            Serial.println("Usage: off2W <address>");
+            return;
+        }
+        
+        auto* devMgr = Device2WManager::getInstance();
+        auto* device = devMgr->getDevice(String(cmd->at(1).c_str()));
+        
+        if (!device) {
+            Serial.println("Device not found. Use list2W to see paired devices.");
+            return;
+        }
+        
+        if (device->pairingState != PairingState::PAIRED) {
+            Serial.printf("Device %s is not paired (state: %s)\n", 
+                         device->addressStr.c_str(), device->getPairingStateStr().c_str());
+            return;
+        }
+        
+        // ON/OFF plug control: CMD 0x00 with 6-byte payload (from TaHoma logs)
+        // Format: 01 e7 00 00 00 00 for OFF, 01 e7 c8 00 00 00 for ON
+        iohcPacket* packet = new iohcPacket();
+        
+        packet->payload.packet.header.CtrlByte1.asStruct.MsgLen = sizeof(_header) + 5; // header + 6 bytes data - 1
+        packet->payload.packet.header.CtrlByte1.asStruct.Protocol = 0;
+        packet->payload.packet.header.CtrlByte1.asStruct.StartFrame = 1;
+        packet->payload.packet.header.CtrlByte1.asStruct.EndFrame = 0;
+        packet->buffer_length = 14; // 8 byte header + 6 bytes data
+        
+        packet->payload.packet.header.CtrlByte2.asByte = 0;
+        
+        address myAddr = {0xBA, 0x11, 0xAD};
+        memcpy(packet->payload.packet.header.source, myAddr, 3);
+        memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
+        
+        packet->payload.packet.header.cmd = 0x00;
+        // Write data bytes directly to buffer after header (8 bytes)
+        packet->payload.buffer[8] = 0x01;   // Originator type
+        packet->payload.buffer[9] = 0xe7;   // ACEI (actuator class/event identifier)
+        packet->payload.buffer[10] = 0x00;  // Main parameter (0x00 = 0 = OFF)
+        packet->payload.buffer[11] = 0x00;  // Functional param 1
+        packet->payload.buffer[12] = 0x00;  // Functional param 2
+        packet->payload.buffer[13] = 0x00;  // Functional param 3
+        
+        // Store command for later MAC calculation
+        device->lastCommandLen = 7;  // CMD byte + 6 data bytes
+        device->lastCommand[0] = 0x00;  // CMD
+        device->lastCommand[1] = 0x01;  // Payload bytes
+        device->lastCommand[2] = 0xe7;
+        device->lastCommand[3] = 0x00;  // OFF = 0x00
+        device->lastCommand[4] = 0x00;
+        device->lastCommand[5] = 0x00;
+        device->lastCommand[6] = 0x00;
+        
+        packet->frequency = CHANNEL2;
+        packet->repeatTime = 25;
+        packet->repeat = 0;
+        packet->lock = false;
+        packet->shortPreamble = true;
+        
+        std::vector<iohcPacket*> packets;
+        packets.push_back(packet);
+        radioInstance->send(packets);
+        
+        Serial.printf("Sent OFF command (CMD 0x00: 01 e7 00 00 00 00) to device %s\n", device->addressStr.c_str());
+        Serial.println("Device should respond with CMD 0x3C challenge - you'll need to authenticate with auth2W");
+    });
+    
+    Cmd::addHandler((char *) "status2W", (char *) "Query status of 2W device <address>", [](Tokens *cmd)-> void {
+        if (cmd->size() < 2) {
+            Serial.println("Usage: status2W <address>");
+            return;
+        }
+        
+        auto* devMgr = Device2WManager::getInstance();
+        auto* device = devMgr->getDevice(String(cmd->at(1).c_str()));
+        
+        if (!device) {
+            Serial.println("Device not found. Use list2W to see paired devices.");
+            return;
+        }
+        
+        if (device->pairingState != PairingState::PAIRED) {
+            Serial.printf("Device %s is not paired (state: %s)\n", 
+                         device->addressStr.c_str(), device->getPairingStateStr().c_str());
+            return;
+        }
+        
+        // Send CMD 0x03 with payload 030000 to query status
+        iohcPacket* packet = new iohcPacket();
+        
+        packet->payload.packet.header.CtrlByte1.asStruct.MsgLen = sizeof(_header) + 2; // header + 3 bytes data - 1
+        packet->payload.packet.header.CtrlByte1.asStruct.Protocol = 0;
+        packet->payload.packet.header.CtrlByte1.asStruct.StartFrame = 1;
+        packet->payload.packet.header.CtrlByte1.asStruct.EndFrame = 0;
+        packet->buffer_length = 11; // 8 byte header + 3 bytes data
+        
+        packet->payload.packet.header.CtrlByte2.asByte = 0;
+        
+        address myAddr = {0xBA, 0x11, 0xAD};
+        memcpy(packet->payload.packet.header.source, myAddr, 3);
+        memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
+        
+        packet->payload.packet.header.cmd = 0x03;
+        // Write data bytes directly to buffer after header (8 bytes)
+        packet->payload.buffer[8] = 0x03;   // Status query
+        packet->payload.buffer[9] = 0x00;
+        packet->payload.buffer[10] = 0x00;
+        
+        packet->frequency = CHANNEL2;
+        packet->repeatTime = 25;
+        packet->repeat = 0;
+        packet->lock = false;
+        packet->shortPreamble = true;
+        
+        std::vector<iohcPacket*> packets;
+        packets.push_back(packet);
+        radioInstance->send(packets);
+        
+        Serial.printf("Sent status query to device %s (check logs for CMD 0x04 response)\n", device->addressStr.c_str());
+    });
+    
+    Cmd::addHandler((char *) "test2W", (char *) "Test command with custom payload <address> <cmd> <byte1> <byte2> <byte3> [byte4] [byte5] [byte6]", [](Tokens *cmd)-> void {
+        if (cmd->size() < 5) {
+            Serial.println("Usage: test2W <address> <cmd> <byte1> <byte2> <byte3> [byte4] [byte5] [byte6]");
+            Serial.println("Example: test2W 4c79dc 00 01 e7 00 00 00 00  (CMD 0x00 with 6 bytes)");
+            Serial.println("Example: test2W 4c79dc 03 2d 01 c8  (CMD 0x03 with 3 bytes)");
+            return;
+        }
+        
+        auto* devMgr = Device2WManager::getInstance();
+        auto* device = devMgr->getDevice(String(cmd->at(1).c_str()));
+        
+        if (!device) {
+            Serial.println("Device not found. Use list2W to see paired devices.");
+            return;
+        }
+        
+        // Parse command byte and payload
+        uint8_t cmdByte = (uint8_t)strtoul(cmd->at(2).c_str(), nullptr, 16);
+        uint8_t byte1 = (uint8_t)strtoul(cmd->at(3).c_str(), nullptr, 16);
+        uint8_t byte2 = (uint8_t)strtoul(cmd->at(4).c_str(), nullptr, 16);
+        uint8_t byte3 = (uint8_t)strtoul(cmd->at(5).c_str(), nullptr, 16);
+        
+        // Optional bytes for longer payloads
+        uint8_t byte4 = (cmd->size() > 6) ? (uint8_t)strtoul(cmd->at(6).c_str(), nullptr, 16) : 0x00;
+        uint8_t byte5 = (cmd->size() > 7) ? (uint8_t)strtoul(cmd->at(7).c_str(), nullptr, 16) : 0x00;
+        uint8_t byte6 = (cmd->size() > 8) ? (uint8_t)strtoul(cmd->at(8).c_str(), nullptr, 16) : 0x00;
+        
+        int dataLen = (cmd->size() > 6) ? 6 : 3;
+        
+        iohcPacket* packet = new iohcPacket();
+        
+        packet->payload.packet.header.CtrlByte1.asStruct.MsgLen = sizeof(_header) + dataLen - 1;
+        packet->payload.packet.header.CtrlByte1.asStruct.Protocol = 0;
+        packet->payload.packet.header.CtrlByte1.asStruct.StartFrame = 1;
+        packet->payload.packet.header.CtrlByte1.asStruct.EndFrame = 0;
+        packet->buffer_length = 8 + dataLen;
+        
+        packet->payload.packet.header.CtrlByte2.asByte = 0;
+        
+        address myAddr = {0xBA, 0x11, 0xAD};
+        memcpy(packet->payload.packet.header.source, myAddr, 3);
+        memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
+        
+        packet->payload.packet.header.cmd = cmdByte;
+        packet->payload.buffer[8] = byte1;
+        packet->payload.buffer[9] = byte2;
+        packet->payload.buffer[10] = byte3;
+        if (dataLen == 6) {
+            packet->payload.buffer[11] = byte4;
+            packet->payload.buffer[12] = byte5;
+            packet->payload.buffer[13] = byte6;
+        }
+        
+        packet->frequency = CHANNEL2;
+        packet->repeatTime = 25;
+        packet->repeat = 0;
+        packet->lock = false;
+        packet->shortPreamble = true;
+        
+        std::vector<iohcPacket*> packets;
+        packets.push_back(packet);
+        radioInstance->send(packets);
+        
+        if (dataLen == 6) {
+            Serial.printf("Sent CMD 0x%02X with payload %02X %02X %02X %02X %02X %02X to device %s\n", 
+                         cmdByte, byte1, byte2, byte3, byte4, byte5, byte6, device->addressStr.c_str());
+        } else {
+            Serial.printf("Sent CMD 0x%02X with payload %02X %02X %02X to device %s\n", 
+                         cmdByte, byte1, byte2, byte3, device->addressStr.c_str());
+        }
+    });
+    
+    // Authentication command for 2W devices
+    Cmd::addHandler((char *) "auth2W", (char *) "Authenticate to 2W device <address>", [](Tokens *cmd)-> void {
+        if (cmd->size() < 2) {
+            Serial.println("Usage: auth2W <address>");
+            Serial.println("This responds to a CMD 0x3C challenge from a device");
+            return;
+        }
+        
+        auto* devMgr = Device2WManager::getInstance();
+        auto* device = devMgr->getDevice(String(cmd->at(1).c_str()));
+        
+        if (!device) {
+            Serial.println("Device not found. Use list2W to see paired devices.");
+            return;
+        }
+        
+        if (!device->hasPendingChallenge) {
+            Serial.println("ERROR: No pending challenge from this device");
+            Serial.println("Send a command first (like on2W or off2W) to trigger a challenge");
+            return;
+        }
+        
+        if (!device->hasSystemKey) {
+            Serial.println("ERROR: Device has no system key");
+            Serial.println("The device must be paired first");
+            return;
+        }
+        
+        if (device->lastCommandLen == 0) {
+            Serial.println("ERROR: No command stored");
+            Serial.println("Send a command first (like on2W or off2W)");
+            return;
+        }
+        
+        // Generate MAC using the stored challenge, system key, and ORIGINAL COMMAND
+        // Frame data is the original command that triggered the challenge
+        std::vector<uint8_t> frame_data;
+        for (uint8_t i = 0; i < device->lastCommandLen; i++) {
+            frame_data.push_back(device->lastCommand[i]);
+        }
+        
+        Serial.print("[auth2W] Using frame data: ");
+        for (uint8_t byte : frame_data) {
+            Serial.printf("%02X", byte);
+        }
+        Serial.println();
+        
+        uint8_t mac[6];
+        iohcCrypto::create_2W_hmac(mac, device->lastChallenge, device->systemKey, frame_data);
+        
+        // Create CMD 0x3D packet
+        iohcPacket* packet = new iohcPacket();
+        
+        packet->payload.packet.header.CtrlByte1.asStruct.MsgLen = sizeof(_header) + 5; // header + 6 bytes - 1
+        packet->payload.packet.header.CtrlByte1.asStruct.Protocol = 0;
+        packet->payload.packet.header.CtrlByte1.asStruct.StartFrame = 1;
+        packet->payload.packet.header.CtrlByte1.asStruct.EndFrame = 0;
+        packet->buffer_length = 14; // 8 byte header + 6 bytes MAC
+        
+        packet->payload.packet.header.CtrlByte2.asByte = 0;
+        
+        address myAddr = {0xBA, 0x11, 0xAD};
+        memcpy(packet->payload.packet.header.source, myAddr, 3);
+        memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
+        
+        packet->payload.packet.header.cmd = 0x3D;
+        memcpy(packet->payload.buffer + 8, mac, 6);
+        
+        packet->frequency = CHANNEL2;
+        packet->repeatTime = 25;
+        packet->repeat = 0;
+        packet->lock = false;
+        packet->shortPreamble = true;
+        
+        std::vector<iohcPacket*> packets;
+        packets.push_back(packet);
+        radioInstance->send(packets);
+        
+        // Clear pending challenge flag
+        device->hasPendingChallenge = false;
+        
+        Serial.printf("✅ Sent CMD 0x3D authentication (MAC: %02X%02X%02X%02X%02X%02X)\n",
+                     mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+        Serial.println("Device should respond with CMD 0x04 confirming the action");
     });
     
     // General commands (existing)
@@ -543,12 +973,9 @@ bool addHandler(char *cmd, char *description, void (*handler)(Tokens*)) {
   for (uint8_t idx = 0; idx < MAXCMDS; ++idx) {
     if (_cmdHandler[idx] != nullptr) {
     } else {
-      void *alloc = malloc(sizeof(struct _cmdEntry));
-      if (!alloc)
-        return false;
-
-      _cmdHandler[idx] = static_cast<_cmdEntry *>(alloc);
-      memset(alloc, 0, sizeof(struct _cmdEntry));
+      // Use pre-allocated storage instead of malloc to avoid heap fragmentation
+      _cmdHandler[idx] = &_cmdHandlerStorage[idx];
+      memset(_cmdHandler[idx], 0, sizeof(struct _cmdEntry));
       strncpy(_cmdHandler[idx]->cmd, cmd,
               strlen(cmd) < sizeof(_cmdHandler[idx]->cmd) ? strlen(cmd)
                                                           : sizeof(_cmdHandler[idx]->cmd) - 1);
