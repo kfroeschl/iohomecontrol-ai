@@ -69,6 +69,11 @@ void initSyslog() {
         ESP_LOGD(TAG, "Syslog already initialized");
         return;
     }
+    // Check if WiFi is connected before trying to initialize UDP
+    if (WiFi.status() != WL_CONNECTED) {
+        ESP_LOGD(TAG, "WiFi not connected, cannot initialize syslog");
+        return;
+    }
     if (syslog_server.empty()) {
         ESP_LOGD(TAG, "Syslog server not set");
         return;

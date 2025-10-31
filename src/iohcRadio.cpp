@@ -326,17 +326,28 @@ void iohcRadio::send(std::vector<iohcPacket *> &iohcTx) {
         ets_printf("TX: Already transmitting. Ignoring send()\n");
         return;
     }
-
     packets2send = std::move(iohcTx);
     txCounter = 0;
+    iohc = packets2send[txCounter];
+    // log write payload
+    ets_printf("TX: Writing payload (%d bytes): ", iohc->buffer_length);
+    for (size_t i = 0; i < iohc->buffer_length; i++) {
+        ets_printf("%02X ", iohc->payload.buffer[i]);
+    }
+    ets_printf("\n");
+
+
     ets_printf("TX: Preparing %d packet(s)\n", packets2send.size());
     setRadioState(RadioState::TX);
 
-    iohc = packets2send[txCounter];
-
-    // 🟢 Set long preamble for first packet
-    Radio::setPreambleLength(LONG_PREAMBLE_MS);
-    ets_printf("TX: Using LONG preamble (%d ms)\n", LONG_PREAMBLE_MS);
+    // 🟢 Set preamble length based on packet flag
+    if (iohc->shortPreamble) {
+        Radio::setPreambleLength(SHORT_PREAMBLE_MS);
+        // ets_printf("TX: Using SHORT preamble (%d ms) - active session\n", SHORT_PREAMBLE_MS);
+    } else {
+        Radio::setPreambleLength(LONG_PREAMBLE_MS);
+        // ets_printf("TX: Using LONG preamble (%d ms)\n", LONG_PREAMBLE_MS);
+    }
 
     // Send first packet immediately
     Radio::setStandby();
@@ -390,14 +401,16 @@ void iohcRadio::onTxTicker(void *arg) {
     // 🔁 Repeat logic
     if (radio->iohc->repeat > 0) {
         radio->iohc->repeat--;
-        ets_printf("TX: Repeating current packet (%d repeats left)\n", radio->iohc->repeat);
+        ets_printf("TX: Repeating current packet CMD=0x%02X (%d repeats left)\n", 
+                   radio->iohc->payload.packet.header.cmd, radio->iohc->repeat);
     } else {
         radio->txCounter++;
         if (radio->txCounter < radio->packets2send.size()) {
             radio->iohc = radio->packets2send[radio->txCounter];
-            ets_printf("TX: Moving to next packet %d/%d (repeat=%d)\n",
+            ets_printf("TX: Moving to next packet %d/%d CMD=0x%02X (repeat=%d)\n",
                        radio->txCounter + 1,
                        radio->packets2send.size(),
+                       radio->iohc->payload.packet.header.cmd,
                        radio->iohc->repeat);
         }
     }

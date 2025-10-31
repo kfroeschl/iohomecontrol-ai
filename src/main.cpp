@@ -28,6 +28,8 @@
 #include <iohcRemote1W.h>
 #include <iohcCozyDevice2W.h>
 #include <iohcOtherDevice2W.h>
+#include <iohcDevice2W.h>
+#include <iohcPairingController.h>
 #include <iohcRemoteMap.h>
 #include <interact.h>
 #if defined(MQTT)
@@ -84,6 +86,10 @@ IOHC::iohcCozyDevice2W *cozyDevice2W;
 IOHC::iohcOtherDevice2W *otherDevice2W;
 IOHC::iohcRemoteMap *remoteMap;
 
+// New 2W device management
+Device2WManager *device2WManager;
+PairingController *pairingController;
+
 uint32_t frequencies[] = FREQS2SCAN;
 
 using namespace IOHC;
@@ -137,6 +143,17 @@ void setup() {
     cozyDevice2W = IOHC::iohcCozyDevice2W::getInstance();
     otherDevice2W = IOHC::iohcOtherDevice2W::getInstance();
     remoteMap = IOHC::iohcRemoteMap::getInstance();
+
+    // Initialize new 2W device management system
+    device2WManager = Device2WManager::getInstance();
+    device2WManager->loadFromFile();
+    
+    pairingController = PairingController::getInstance();
+    pairingController->begin(device2WManager, radioInstance);
+    
+    // TODO: Load 2W system key from NVS or config
+    // For now, using the global transfert_key
+    pairingController->setSystemKey(transfert_key);
 
     //   AES_init_ctx(&ctx, transfert_key); // PreInit AES for cozy (1W use original version) TODO
 
@@ -221,8 +238,22 @@ bool msgRcvd(IOHC::iohcPacket *iohc) {
     }
     addLogMessage("Command received from " + deviceId +
                   " (" + deviceName + ")");
+    
+    // First, try to handle with new pairing controller
+    if (pairingController && pairingController->isPairingActive()) {
+        if (pairingController->handlePairingPacket(iohc)) {
+            // Pairing controller handled this packet
+            digitalWrite(RX_LED, digitalRead(RX_LED) ^ 1);
+            return true;
+        }
+    }
+    
+    // Fall through to legacy handling
     switch (iohc->payload.packet.header.cmd) {
         case iohcDevice::RECEIVED_DISCOVER_0x28: {
+            // Don't run legacy pairing if new pairing controller is active
+            if (pairingController && pairingController->isPairingActive()) break;
+            
             printf("2W Pairing Asked\n");
             if (!Cmd::pairMode) break;
 
@@ -248,7 +279,24 @@ bool msgRcvd(IOHC::iohcPacket *iohc) {
             break;
         }
         case iohcDevice::RECEIVED_DISCOVER_ANSWER_0x29: {
-            printf("2W Device want to be paired\n");
+            // Don't run legacy pairing if new pairing controller is active
+            if (pairingController && pairingController->isPairingActive()) break;
+            
+            printf("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+            printf("📡 2W Device discovered!\n");
+            
+            // Extract source address (3 bytes)
+            char addrStr[7];
+            snprintf(addrStr, sizeof(addrStr), "%02x%02x%02x", 
+                     iohc->payload.packet.header.source[0],
+                     iohc->payload.packet.header.source[1],
+                     iohc->payload.packet.header.source[2]);
+            
+            printf("   Address: %s\n", addrStr);
+            printf("   To pair this device, use:\n");
+            printf("   > pair2W %s\n", addrStr);
+            printf("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+            
             if (!Cmd::pairMode) break;
 
             std::vector<uint8_t> deviceAsked;
@@ -725,4 +773,18 @@ void txUserBuffer(Tokens *cmd) {
 void loop() {
     loopWebServer(); // For ESPAsyncWebServer, this is typically not needed.
     checkWifiConnection();
+    
+    // Process pairing controller
+    if (pairingController) {
+        pairingController->process();
+    }
+    
+    // Check for pairing timeouts
+    static uint32_t lastTimeoutCheck = 0;
+    if (millis() - lastTimeoutCheck > 10000) { // Check every 10 seconds
+        if (device2WManager) {
+            device2WManager->removeTimedOutDevices();
+        }
+        lastTimeoutCheck = millis();
+    }
 }

@@ -637,6 +637,362 @@ This happens for multiple devices in sequence (CA5321, 2287D7, 8B133C, BC7374, e
 3. **Device types differ** - Different Main Parameter values (E00, A01, 504, 505) indicate different device capabilities
 4. **Broadcast discovery still active** - 1W devices (F153FA) continue broadcasting even during 2W operations
 
+---
+
+## Current 2W Implementation Status
+
+### Overview
+The 2W implementation exists but is **unstable and incomplete**. The codebase has two separate 2W device classes targeting different device types, but neither is fully functional as a general-purpose 2W controller.
+
+### Implemented Components
+
+#### 1. **iohcCozyDevice2W** - Atlantic/Sauter/Thermor Heating Controller
+**Status**: Partially functional for specific heating devices
+
+**Implemented Features**:
+- Temperature control (7.0-28.0°C) via CMD 0x20 (SEND_WRITE_PRIVATE)
+- Mode setting: auto, manual, prog, off
+- Presence detection
+- Window status (open/close)
+- Midnight sync command
+- Basic association (CMD 0x31 - SEND_ASK_CHALLENGE)
+
+**Data Format**:
+```cpp
+// Commands use 0x0C 0x61 0x01 <subcommand> <value> pattern
+setTemp:     {0x0C, 0x61, 0x01, 0x03, temp_value}
+setMode:     {0x0C, 0x61, 0x01, 0x00, mode_value}
+setPresence: {0x0C, 0x61, 0x01, 0x10, presence_value}
+setWindow:   {0x0C, 0x61, 0x01, 0x0E, window_value}
+```
+
+**Limitations**:
+- Hardcoded gateway address: `{0xba, 0x11, 0xad}`
+- Fixed target addresses in code, not from JSON
+- No dynamic device discovery
+- No proper challenge-response implementation
+- Only works with Atlantic/Sauter/Thermor protocol variant
+
+#### 2. **iohcOtherDevice2W** - Generic 2W Controller (Experimental)
+**Status**: Highly experimental, mostly for protocol exploration
+
+**Implemented Features**:
+- Discovery broadcast (CMD 0x28, 0x2A)
+- Device name query (CMD 0x50 - GET_NAME)
+- Custom command testing framework
+- ACEI scanning capabilities
+- Pairing mode support
+- Command validity mapping
+
+**Test/Debug Commands**:
+- `discovery`: Broadcast scan for devices
+- `getName`: Query device name
+- `custom`: Test arbitrary commands
+- `custom60`: Test 0x60 command family
+- `checkCmd`: Systematic command exploration
+- `scanDump`: Display discovered command map
+
+**Limitations**:
+- No actual device control implemented
+- Primarily a research/testing tool
+- Hardcoded device lists
+- No persistent state management
+- Challenge-response incomplete
+
+#### 3. **Command Handling in main.cpp**
+**Status**: Partial implementation of pairing protocol
+
+**Implemented Handlers**:
+```cpp
+RECEIVED_DISCOVER_0x28         → Send DISCOVER_ANSWER_0x29
+RECEIVED_DISCOVER_ANSWER_0x29  → Send DISCOVER_ACTUATOR_0x2C
+RECEIVED_DISCOVER_REMOTE_ANSWER_0x2B → Store in sysTable
+RECEIVED_DISCOVER_ACTUATOR_0x2C → Send DISCOVER_ACTUATOR_ACK_0x2D
+RECEIVED_LAUNCH_KEY_TRANSFERT_0x38 → Send KEY_TRANSFERT_0x32
+RECEIVED_CHALLENGE_REQUEST_0x3C → Send CHALLENGE_ANSWER_0x3D
+RECEIVED_WRITE_PRIVATE_0x20    → Memorize command
+RECEIVED_PRIVATE_ACK_0x21      → (empty handler, no action)
+```
+
+**Crypto Implementation**:
+- AES encryption for key transfer
+- Initial value construction for challenges
+- Transfer key XOR operations
+- Challenge-response computation (partial)
+
+### Missing Critical Components
+
+#### 1. **Complete Challenge-Response System**
+- CMD 0x3C/0x3D authentication works but not fully integrated
+- No automatic challenge handling during normal operations
+- Challenge data not properly validated
+- Missing challenge timeout/retry logic
+
+#### 2. **Device State Management**
+- No tracking of paired devices
+- No storage of session keys
+- No sequence number management
+- No device capability caching
+
+#### 3. **Command Set**
+**Implemented (partial/incomplete)**:
+- CMD 0x00: **Activate/Execute Function** - Seen in logs, not implemented. Format: `Originator + ACEI + MainParam + FP1 + FP2`
+- CMD 0x28: **Discover** - Implemented in OtherDevice2W (broadcast for discovery)
+- CMD 0x29: **Discover Answer** - Handled, returns node type/subtype/address/manufacturer/multiinfo/timestamp
+- CMD 0x2C: **Discover Actuator Confirmation** - No params, discover ack (implemented)
+- CMD 0x2D: **Discover Confirmation Ack** - No params, answer to 0x2C (implemented)
+- CMD 0x31: **Ask Challenge** - Implemented, triggers 0x3C response
+- CMD 0x32: **Key Transfer** - Implemented, encrypted 2W key (16 bytes)
+- CMD 0x33: **Key Transfer Ack** - Implemented, no params
+- CMD 0x38: **Launch Key Transfer** - Implemented, contains 6-byte challenge
+- CMD 0x3C: **Challenge Request** - Implemented, 6-byte challenge data
+- CMD 0x3D: **Challenge Response** - Implemented, 6-byte response data
+- CMD 0x50: **Get Name** - Implemented in OtherDevice2W
+- CMD 0x51: **Get Name Answer** - Handled, 16 bytes ASCII
+- CMD 0x54: **Get General Info 1** - Implemented
+- CMD 0x55: **General Info 1 Answer** - Handled, 14 bytes
+- CMD 0x56: **Get General Info 2** - Implemented
+- CMD 0x57: **General Info 2 Answer** - Handled, 16 bytes
+
+**Missing from logs but needed**:
+- CMD 0x01: **Activate Mode** - Mode number + mode parameter + 2 unknown bytes (not implemented)
+- CMD 0x02: **Direct Command/Manual Order** - Serial console only, ASCII format with OID+PID (not applicable via radio)
+- CMD 0x03: **Private Command** - Seen in logs, 3-6 bytes data, purpose unclear (not implemented)
+- CMD 0x04: **Private Command Answer** - Seen in logs, 6-20 bytes data, first byte is error code (not implemented)
+- CMD 0x0C: **Unknown (IoPrepareDataSession?)** - Seen in logs with 4 bytes data (not implemented)
+- CMD 0x0D: **Answer to 0x0C** - Seen in logs, 5 bytes data (not implemented)
+- CMD 0x19: **Unknown (Followed by 0xFE)** - Seen in logs, 1 byte data (02/03/04/07) (not implemented)
+- CMD 0x20: **Write Private** - Manufacturer-specific private commands, can brick devices (not implemented)
+- CMD 0x21: **Private Protocol Response** - Handler exists in main.cpp but empty (not implemented)
+- CMD 0x2A: **Discover Remote** - 12-byte challenge key, requires authentication (not implemented)
+- CMD 0x2B: **Discover Remote Answer** - Similar to 0x29 format (not implemented)
+- CMD 0x30: **Send 1W Key** - 16-byte encrypted key + manufacturer + sequence (not implemented)
+- CMD 0x46: **Script: Register/Upload** - 9 bytes config data (not implemented)
+- CMD 0x47: **Download Config (Answer to 46)** - 5 bytes config (not implemented)
+- CMD 0x4A: **Delete File / Large Data Transfer Request** - 3-13 bytes filename (not implemented)
+- CMD 0xFE: **Status/Confirmation** - 1 byte error code. 0x05=NO ERROR, 0x08=ERROR_DURING_EXECUTION (minimal handling)
+
+**Command Originators** (byte 2 in CMD 0x00):
+Used to specify who/what fired the command:
+- `0x00`: User (local button on actuator)
+- `0x01`: **User** - Remote control (most common)
+- `0x02`: Rain sensor
+- `0x03`: Timer sensor
+- `0x04`: Security controller (SCD)
+- `0x08`: **SAAC** - Stand Alone Automatic Controls (common)
+- `0x09`: Wind sensor
+- `0x0C`: Local light sensor
+- `0x0D`: Unspecified environment sensor
+- `0x10`: Myself (actuator self-initiated)
+- `0xFE`: Automatic cycle
+- `0xFF`: Emergency (never disabled)
+
+**ACEI Format** (byte 3 in CMD 0x00):
+Action Control Extended Info - controls priority and session validity:
+- Bits 7-5: Priority Level
+  - `0b000` (0): Personal/Human - Most secure, disables all other levels
+  - `0b001` (1): Environment/Goods Protection - Local sensors
+  - `0b010` (2): User Level 1 - High priority controllers
+  - `0b011` (3): User Level 2 - Default for remote controllers
+  - `0b100-111` (4-7): Comfort/Automatic control levels
+- Bits 4-3: Service Number (0-3)
+- Bits 2-1: Extended Info (TBD)
+- Bit 0: Is Valid Frame (always 1)
+
+**Standard Parameter Values** (for MainParam and FP):
+- `0x0000`: Min / On / 1W Button Up
+- `0x0001`: 1W Button Down
+- `0x0002`: 1W Button Stop
+- `0x0003`: 1W Button Prog (My?)
+- `0x00FE`: Button Released
+- `0x00FF`: Button Stop
+- `0xC800`: Max / Off / Down
+- `0x0000-0xC800`: Relative Percentage (0-100%)
+- `0xD100`: Target (Execution Parameter Buffer)
+- `0xD200`: Current (Execution Parameter Buffer)
+- `0xD300`: Default
+- `0xD400`: MP: Ignore / FP: ReadOnly
+- `0xF7FF`: Unknown Feedback Value
+
+#### 4. **Status/Error Codes** (for CMD 0xFE and CMD 0x04)
+**Common Status Values**:
+- `0x00`: UNKNOWN_STATUS_REPLY
+- `0x01`: COMMAND_COMPLETED_OK - No errors detected
+- `0x02`: NO_CONTACT - No communication to node
+- `0x03`: MANUALLY_OPERATED - Manually operated by a user
+- `0x04`: BLOCKED - Node has been blocked by an object
+- `0x05`: **WRONG_SYSTEMKEY** - The node contains a wrong system key (often used as success code in some contexts)
+- `0x06`: PRIORITY_LEVEL_LOCKED - Node is locked on this priority level
+- `0x07`: REACHED_WRONG_POSITION - Node stopped in another position than expected
+- `0x08`: **ERROR_DURING_EXECUTION** - An error occurred during command execution
+- `0x09`: NO_EXECUTION - No movement of the node parameter
+- `0x0A`: CALIBRATING - Node is calibrating the parameters
+- `0x0B`: POWER_CONSUMPTION_TOO_HIGH
+- `0x0C`: POWER_CONSUMPTION_TOO_LOW
+- `0x0D`: LOCK_POSITION_OPEN - Door open during lock command
+- `0x0E`: MOTION_TIME_TOO_LONG__COMMUNICATION_ENDED - Target not reached in time
+- `0x0F`: THERMAL_PROTECTION - Node has gone into thermal protection mode
+- `0x10`: PRODUCT_NOT_OPERATIONAL
+- `0x11`: FILTER_MAINTENANCE_NEEDED
+- `0x12`: BATTERY_LEVEL - Battery level is low
+- `0x13`: TARGET_MODIFIED - Node modified the target value
+- `0x14`: MODE_NOT_IMPLEMENTED - Node doesn't support this mode
+- `0x1B`: TARGET_NOT_REACHABLE - Node unable to reach target position
+- `0x1D`: COMMAND_OVERRULED - Command was overruled by a new command
+- `0xDF-0xEE`: LIMITATION codes (by user, rain, timer, SAAC, wind, emergency, etc.)
+
+#### 5. **Multi-Frame Support**
+- StartFrame/EndFrame handling exists but untested
+- No frame reassembly logic
+- No fragmentation for large payloads
+
+#### 6. **Frequency Hopping**
+- Radio layer supports 3-channel FHSS
+- 2W packet creation sets `frequency = CHANNEL2` only
+- No dynamic channel switching based on protocol state
+- Timing parameters may need adjustment
+
+#### 7. **Device Types**
+Based on log analysis, need support for:
+- Roller shutters (Main E00)
+- Unknown type A01
+- Unknown type 504, 505
+- Different manufacturer protocols
+
+### Code Quality Issues
+
+**Hardcoded Values**:
+```cpp
+// From iohcCozyDevice2W.h
+address gateway = {0xba, 0x11, 0xad};
+address master_from = {0x47, 0x77, 0x06};
+address master_to = {0x48, 0x79, 0x02};
+// These should be in JSON configuration
+```
+
+**Inconsistent Patterns**:
+- CozyDevice2W uses `cmd(DeviceButton, Tokens*)`
+- OtherDevice2W uses `cmd(Other2WButton, Tokens*)`
+- No unified device interface
+- Each class has its own packet forging logic
+
+**Memory Management**:
+- Extensive use of `new iohcPacket` without clear cleanup
+- Vectors of pointers without RAII wrappers
+- Potential memory leaks in send paths
+
+**Error Handling**:
+- Minimal validation of received packets
+- No timeout handling for expected responses
+- No retry logic for failed commands
+
+### What's Needed for Full 2W Controller
+
+#### High Priority:
+1. **Unified device database** - JSON-based like 1W.json
+   - Device address, type, capabilities
+   - Session keys, sequence numbers
+   - Pairing status, last seen timestamp
+
+2. **Complete pairing workflow**
+   - Discovery → Challenge → Key Exchange → Association
+   - Persistent storage of paired devices
+   - Re-pairing after power loss
+
+3. **Generic command framework**
+   - Command factory based on device type
+   - Automatic challenge injection
+   - Response validation and parsing
+
+4. **State machine per device**
+   - Track pairing state
+   - Manage pending commands
+   - Handle async responses
+
+5. **Proper ACEI/capability handling**
+   - Parse and store device capabilities
+   - Validate commands against capabilities
+   - Map high-level commands to device-specific payloads
+
+#### Medium Priority:
+6. **Multi-channel coordination**
+   - Implement proper channel hopping
+   - Timing synchronization
+   - Collision avoidance
+
+7. **Robust crypto layer**
+   - Automatic challenge generation
+   - Key rotation support
+   - Secure key storage (NVS)
+
+8. **Device type abstraction**
+   - Base class for 2W devices
+   - Type-specific command builders
+   - Polymorphic device handling
+
+9. **Testing framework**
+   - Packet simulation
+   - Mock devices for testing
+   - Command validation tools
+
+#### Low Priority:
+10. **MQTT/Web integration**
+    - Similar to 1W implementation
+    - Device discovery via MQTT
+    - Status updates
+
+11. **Multi-frame support**
+    - Large payload fragmentation
+    - Frame reassembly
+    - Out-of-order handling
+
+12. **Advanced features**
+    - Scenes/groups
+    - Scheduled commands
+    - Status polling
+
+### Recommended Development Path
+
+**Phase 1: Stabilization** (Current → MVP)
+1. Create unified `Other2W.json` format based on 1W.json
+2. Implement basic device CRUD (add/remove/list)
+3. Fix memory leaks in packet sending
+4. Add proper error handling
+
+**Phase 2: Core Protocol** (MVP → Functional)
+5. Complete challenge-response automation
+6. Implement full pairing workflow
+7. Add sequence number management
+8. Store session keys in NVS
+
+**Phase 3: Device Support** (Functional → Usable)
+9. Reverse-engineer common command patterns from logs
+10. Add support for roller shutters (most common use case)
+11. Implement position tracking
+12. Add MQTT integration
+
+**Phase 4: Polish** (Usable → Production)
+13. Multi-channel support
+14. Web UI for 2W devices
+15. Home Assistant auto-discovery
+16. Comprehensive testing
+
+### Current Blockers
+
+1. **Incomplete protocol understanding** - Many commands (0x0C, 0x46, 0x4A) have unknown purposes
+2. **Device-specific behavior** - Different manufacturers use different command patterns
+3. **Timing sensitivity** - 2W requires precise timing that may conflict with 1W optimizations
+4. **Testing difficulty** - Requires real 2W hardware to validate
+5. **Documentation gaps** - Less community knowledge compared to 1W
+
+### Conclusion
+
+The 2W implementation is a **work-in-progress research project**, not a production-ready controller. It demonstrates protocol knowledge but lacks the robustness and completeness of the 1W implementation. Significant development effort is required to achieve feature parity with 1W.
+
+**For developers**: Focus on understanding the protocol through log analysis before attempting major refactoring. The existing code provides valuable insights even if incomplete.
+
+**For users**: Stick with 1W devices or use official Somfy gateways for 2W. The current 2W code is primarily educational.
+
 ## Quick Start for AI Agents
 
 When assisting with this project:

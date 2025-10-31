@@ -17,6 +17,8 @@
 #include <iohcRemote1W.h>
 #include <iohcCozyDevice2W.h>
 #include <iohcOtherDevice2W.h>
+#include <iohcDevice2W.h>
+#include <iohcPairingController.h>
 #include <iohcRemoteMap.h>
 #include <iohcPacket.h>
 #include <interact.h>
@@ -237,6 +239,10 @@ void createCommands() {
     });
     // Other 2W
     Cmd::addHandler((char *) "discovery", (char *) "Send discovery on air", [](Tokens *cmd)-> void {
+        Serial.println("Sending 2W discovery broadcast...");
+        Serial.println("Listening for devices (press device pairing button now)...");
+        Serial.println("Device addresses will be shown when they respond.");
+        Serial.println("Use 'pair2W <address>' to pair a discovered device.");
         IOHC::iohcOtherDevice2W::getInstance()->cmd(IOHC::Other2WButton::discovery, nullptr);
     });
     Cmd::addHandler((char *) "getName", (char *) "Name Of A Device", [](Tokens *cmd)-> void {
@@ -246,6 +252,147 @@ void createCommands() {
         scanMode = true;
         IOHC::iohcOtherDevice2W::getInstance()->cmd(IOHC::Other2WButton::checkCmd, nullptr);
     });
+    
+    // New 2W Device Management
+    Cmd::addHandler((char *) "pair2W", (char *) "Pair 2W device <address>", [](Tokens *cmd)-> void {
+        if (cmd->size() < 2) {
+            Serial.println("Usage: pair2W <address>");
+            Serial.println("Example: pair2W fe90ee");
+            return;
+        }
+        
+        address deviceAddr{};
+        if (hexStringToBytes(cmd->at(1), deviceAddr) != 3) {
+            Serial.println("Invalid address - must be 6 hex characters (3 bytes)");
+            return;
+        }
+        
+        auto* pairingCtrl = PairingController::getInstance();
+        if (pairingCtrl->startPairing(deviceAddr)) {
+            char addrStr[7];
+            snprintf(addrStr, sizeof(addrStr), "%02x%02x%02x", deviceAddr[0], deviceAddr[1], deviceAddr[2]);
+            Serial.printf("Started pairing device %s\n", addrStr);
+            Serial.println("Pairing process will complete automatically.");
+        } else {
+            Serial.println("Failed to start pairing (already in progress?)");
+        }
+    });
+    
+    Cmd::addHandler((char *) "cancelPair2W", (char *) "Cancel ongoing pairing", [](Tokens *cmd)-> void {
+        auto* pairingCtrl = PairingController::getInstance();
+        pairingCtrl->cancelPairing();
+        Serial.println("Pairing cancelled");
+    });
+    
+    Cmd::addHandler((char *) "list2W", (char *) "List all 2W devices", [](Tokens *cmd)-> void {
+        auto* devMgr = Device2WManager::getInstance();
+        auto devices = devMgr->getAllDevices();
+        
+        if (devices.empty()) {
+            Serial.println("No 2W devices found");
+            return;
+        }
+        
+        Serial.printf("Found %d 2W device(s):\n", devices.size());
+        Serial.println("Address  | State          | Type | Name          | Last Seen");
+        Serial.println("---------|----------------|------|---------------|----------");
+        
+        for (auto* dev : devices) {
+            uint32_t lastSeenSec = (millis() - dev->lastSeen) / 1000;
+            Serial.printf("%s | %-14s | %04X | %-13s | %us ago\n",
+                         dev->addressStr.c_str(),
+                         dev->getPairingStateStr().c_str(),
+                         dev->capabilities.nodeType,
+                         dev->capabilities.name.c_str(),
+                         lastSeenSec);
+        }
+    });
+    
+    Cmd::addHandler((char *) "info2W", (char *) "Show detailed info for 2W device <address>", [](Tokens *cmd)-> void {
+        if (cmd->size() < 2) {
+            Serial.println("Usage: info2W <address>");
+            return;
+        }
+        
+        auto* devMgr = Device2WManager::getInstance();
+        auto* device = devMgr->getDevice(String(cmd->at(1).c_str()));
+        
+        if (!device) {
+            Serial.println("Device not found");
+            return;
+        }
+        
+        Serial.printf("\n=== Device %s ===\n", device->addressStr.c_str());
+        Serial.printf("Pairing State: %s\n", device->getPairingStateStr().c_str());
+        Serial.printf("Description:   %s\n", device->description.c_str());
+        Serial.printf("Last Seen:     %u seconds ago\n", (millis() - device->lastSeen) / 1000);
+        
+        Serial.printf("\nCapabilities:\n");
+        Serial.printf("  Node Type:     0x%04X (%u)\n", device->capabilities.nodeType, device->capabilities.nodeType);
+        Serial.printf("  Node Subtype:  0x%02X (%u)\n", device->capabilities.nodeSubtype, device->capabilities.nodeSubtype);
+        Serial.printf("  Manufacturer:  0x%02X\n", device->capabilities.manufacturer);
+        Serial.printf("  Multi Info:    0x%02X\n", device->capabilities.multiInfo);
+        Serial.printf("  Timestamp:     %u\n", device->capabilities.timestamp);
+        Serial.printf("  Name:          %s\n", device->capabilities.name.c_str());
+        
+        Serial.printf("\nCrypto State:\n");
+        Serial.printf("  Has System Key:  %s\n", device->hasSystemKey ? "Yes" : "No");
+        Serial.printf("  Has Session Key: %s\n", device->hasSessionKey ? "Yes" : "No");
+        Serial.printf("  Sequence Number: %u\n", device->sequenceNumber);
+        
+        if (device->capabilities.hasGeneralInfo1) {
+            Serial.printf("\nGeneral Info 1: ");
+            for (int i = 0; i < 14; i++) {
+                Serial.printf("%02X ", device->capabilities.generalInfo1[i]);
+            }
+            Serial.println();
+        }
+        
+        if (device->capabilities.hasGeneralInfo2) {
+            Serial.printf("General Info 2: ");
+            for (int i = 0; i < 16; i++) {
+                Serial.printf("%02X ", device->capabilities.generalInfo2[i]);
+            }
+            Serial.println();
+        }
+        Serial.println();
+    });
+    
+    Cmd::addHandler((char *) "del2W", (char *) "Remove 2W device <address>", [](Tokens *cmd)-> void {
+        if (cmd->size() < 2) {
+            Serial.println("Usage: del2W <address>");
+            return;
+        }
+        
+        auto* devMgr = Device2WManager::getInstance();
+        if (devMgr->removeDevice(String(cmd->at(1).c_str()))) {
+            Serial.printf("Device %s removed\n", cmd->at(1).c_str());
+            devMgr->saveToFile();
+        } else {
+            Serial.println("Device not found");
+        }
+    });
+    
+    Cmd::addHandler((char *) "save2W", (char *) "Save 2W devices to file", [](Tokens *cmd)-> void {
+        auto* devMgr = Device2WManager::getInstance();
+        if (devMgr->saveToFile()) {
+            Serial.println("2W devices saved successfully");
+        } else {
+            Serial.println("Failed to save 2W devices");
+        }
+    });
+    
+    Cmd::addHandler((char *) "reload2W", (char *) "Reload 2W devices from file", [](Tokens *cmd)-> void {
+        auto* devMgr = Device2WManager::getInstance();
+        devMgr->clear();
+        if (devMgr->loadFromFile()) {
+            Serial.println("2W devices reloaded successfully");
+        } else {
+            Serial.println("Failed to reload 2W devices");
+        }
+    });
+    
+    // General commands (existing)
     Cmd::addHandler((char *) "scanDump", (char *) "Dump Scan Results", [](Tokens *cmd)-> void {
         scanMode = false;
         IOHC::iohcOtherDevice2W::getInstance()->scanDump();

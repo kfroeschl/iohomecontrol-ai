@@ -224,6 +224,7 @@ namespace IOHC {
         unsigned long repeatTime = 0L;
         uint8_t repeat = 0;
         bool lock = false;
+        bool shortPreamble = false;  // Set to true to use short preamble (for active pairing sessions)
         unsigned long delayed = 0;
 
         double afc{}; // AFC freq correction applied

@@ -46,7 +46,7 @@ namespace IOHC {
 
         packet->payload.packet.header.CtrlByte1.asStruct.MsgLen = sizeof(_header) - 1;
 
-        packet->payload.packet.header.cmd = 0x2A; //0x28; //typn;
+        packet->payload.packet.header.cmd = 0x28; // 2W Discovery command (not 0x2A which is for remotes)
         // Common Flags
         packet->payload.packet.header.CtrlByte1.asStruct.EndFrame = 0;
         packet->payload.packet.header.CtrlByte2.asByte = 0;
@@ -80,19 +80,20 @@ namespace IOHC {
         // Emulates device button press
         switch (cmd) {
             case Other2WButton::discovery: {
-                int bec = 0;
+                // Send 2W discovery broadcast (CMD 0x28) to address 0x00003B
+                // Based on analysis: "FROM AA9BFA TO 00003B CMD 28 DATA(00)"
+                packets2send.push_back(new iohcPacket);
 
-                for (int j = 0; j < 255; j++) {
-                    packets2send.push_back(new iohcPacket);
+                std::vector<uint8_t> toSend = {}; // NO payload data for discovery
+                forgePacket(packets2send.back(), toSend, 0x003B); // 0x003B = 2W broadcast address
+                packets2send.back()->payload.packet.header.cmd = 0x28; // Discovery command
+                packets2send.back()->payload.packet.header.CtrlByte1.asStruct.StartFrame = 1;
+                packets2send.back()->payload.packet.header.CtrlByte1.asStruct.EndFrame = 1;
+                packets2send.back()->repeatTime = 50;
+                packets2send.back()->repeat = 2; // Send 3 times to improve reliability
 
-                    std::string discovery = "d430477706ba11ad31"; //28"; //"2b578ebc37334d6e2f50a4dfa9";
-                    std::vector<uint8_t> toSend = {};
-                    packets2send.back()->buffer_length = hexStringToBytes(
-                        discovery, packets2send.back()/*[j]*/->payload.buffer);
-                    forgePacket(packets2send.back()/*[j]*//*->payload.buffer[4]*/, toSend, bec);
-                    bec += 0x01;
-                    packets2send.back()->repeatTime = 250; // Slow down discovery loop
-                }
+                // Set source address (should be from gateway/controller)
+                memcpy(packets2send.back()->payload.packet.header.source, fake_gateway, 3);
 
                 digitalWrite(RX_LED, digitalRead(RX_LED) ^ 1);
                 _radioInstance->send(packets2send);
