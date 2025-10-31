@@ -1,0 +1,112 @@
+verbose
+17:06:33.473 > verbose
+17:06:46.965 > TX: TX-RX DONE detected, flag set
+17:06:46.965 > State: PREAMBLE
+17:06:46.965 > TX: TX-RX DONE detected, flag set
+17:06:46.965 > State: PAYLOAD
+17:06:46.965 > 2W Pairing Asked
+17:06:46.965 > 
+17:06:46.965 > (08) 2W S 1 E 1  FROM AA9BFA TO 00003B CMD 28 +0.000         DATA(00) 
+17:06:47.451 > TX: TX-RX DONE detected, flag set
+17:06:47.451 > State: PREAMBLE
+17:06:47.463 > TX: TX-RX DONE detected, flag set
+17:06:47.463 > State: PAYLOAD
+17:06:47.463 > ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+17:06:47.474 > 📡 2W Device discovered!
+17:06:47.474 >    Address: eec022
+17:06:47.474 >    To pair this device, use:
+17:06:47.474 >    > pair2W eec022
+17:06:47.484 > ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+17:06:47.484 > (17) 2W S 1 E 1  FROM EEC022 TO AA9BFA CMD 29 +494.445       DATA(09)  03c0eec02202dc001c
+17:06:48.330 > TX: TX-RX DONE detected, flag set
+17:06:48.330 > State: PREAMBLE
+17:06:48.330 > TX: TX-RX DONE detected, flag set
+17:06:48.330 > State: PAYLOAD
+17:06:48.330 > 2W Actuator Ack Asked
+17:06:48.330 > 
+17:06:48.341 > (08) 2W S 1 E 0  FROM AA9BFA TO EEC022 CMD 2C +0.000      >  DATA(00) 
+17:06:48.341 > TX: TX-RX DONE detected, flag set
+17:06:48.341 > State: PREAMBLE
+17:06:48.341 > TX: TX-RX DONE detected, flag set
+17:06:48.351 > State: PAYLOAD
+17:06:48.351 > (08) 2W S 0 E 1  FROM EEC022 TO AA9BFA CMD 2D +11.842     <  DATA(00) 
+17:06:49.708 > TX: TX-RX DONE detected, flag set
+17:06:49.709 > State: PREAMBLE
+17:06:49.709 > TX: TX-RX DONE detected, flag set
+17:06:49.709 > State: PAYLOAD
+17:06:49.709 > 2W Pairing Asked
+17:06:49.709 > 
+17:06:49.709 > (08) 2W S 1 E 1  FROM AA9BFA TO 00003B CMD 28 +0.000         DATA(00) 
+17:06:51.053 > TX: TX-RX DONE detected, flag set
+17:06:51.053 > State: PREAMBLE
+17:06:51.053 > TX: TX-RX DONE detected, flag set
+17:06:51.053 > State: PAYLOAD
+17:06:51.053 > 2W Pairing Asked
+17:06:51.053 > 
+17:06:51.053 > (08) 2W S 1 E 1  FROM AA9BFA TO 00003B CMD 28 +0.000         DATA(00) 
+17:06:52.733 > TX: TX-RX DONE detected, flag set
+17:06:52.733 > State: PREAMBLE
+17:06:52.733 > TX: TX-RX DONE detected, flag set
+17:06:52.733 > State: PAYLOAD
+17:06:52.733 > 1W Learning mode
+17:06:52.733 > 
+17:06:52.733 > (09) 2W S 1 E 0  FROM AA9BFA TO EEC022 CMD 2E +0.000      >  DATA(01)  02
+17:06:52.744 > TX: TX-RX DONE detected, flag set
+17:06:52.744 > State: PREAMBLE
+17:06:52.744 > TX: TX-RX DONE detected, flag set
+17:06:52.755 > State: PAYLOAD
+17:06:52.755 > (14) 2W S 0 E 0  FROM EEC022 TO AA9BFA CMD 3C +14.758        DATA(06)  ef9c649969a1
+17:06:52.755 > TX: TX-RX DONE detected, flag set
+17:06:52.766 > State: PREAMBLE
+17:06:52.766 > TX: TX-RX DONE detected, flag set
+17:06:52.766 > State: PAYLOAD
+17:06:52.766 > (14) 2W S 0 E 0  FROM AA9BFA TO EEC022 CMD 3D +12.707        DATA(06)  3a3d831d4ba7
+17:06:52.777 > TX: TX-RX DONE detected, flag set
+17:06:52.777 > State: PREAMBLE
+17:06:52.777 > TX: TX-RX DONE detected, flag set
+17:06:52.788 > State: PAYLOAD
+17:06:52.788 > Received Unknown command 2F (09) 2W S 0 E 1      FROM EEC022 TO AA9BFA CMD 2F +16.342     <  DATA(01)  02
+17:06:53.012 > TX: TX-RX DONE detected, flag set
+17:06:53.013 > State: PREAMBLE
+17:06:53.013 > TX: TX-RX DONE detected, flag set
+17:06:53.013 > State: PAYLOAD
+17:06:53.013 > Received Unknown command 54 (08) 2W S 1 E 0      FROM AA9BFA TO EEC022 CMD 54 +235.882    >  DATA(00) 
+17:06:53.024 > TX: TX-RX DONE detected, flag set
+17:06:53.024 > State: PREAMBLE
+17:06:53.024 > TX: TX-RX DONE detected, flag set
+17:06:53.035 > State: PAYLOAD
+17:06:53.035 > (22) 2W S 0 E 1  FROM EEC022 TO AA9BFA CMD 55 +16.559     <  DATA(14)  353133363937344130350300ffff
+17:06:53.534 > TX: TX-RX DONE detected, flag set
+17:06:53.534 > State: PREAMBLE
+17:06:53.534 > TX: TX-RX DONE detected, flag set
+17:06:53.534 > State: PAYLOAD
+17:06:53.534 > 
+17:06:53.534 > (08) 2W S 1 E 0  FROM AA9BFA TO EEC022 CMD 50 +0.000      >  DATA(00) 
+17:06:53.545 > TX: TX-RX DONE detected, flag set
+17:06:53.545 > State: PREAMBLE
+17:06:53.545 > TX: TX-RX DONE detected, flag set
+17:06:53.556 > State: PAYLOAD
+17:06:53.556 > ON/OFF PLUG IO
+17:06:53.556 > (24) 2W S 0 E 1  FROM EEC022 TO AA9BFA CMD 51 +16.780     <  DATA(16)  004f4e2f4f464620504c554720696f00
+17:07:11.613 > TX: TX-RX DONE detected, flag set
+17:07:11.613 > State: PREAMBLE
+17:07:11.613 > TX: TX-RX DONE detected, flag set
+17:07:11.613 > State: PAYLOAD
+17:07:11.613 > 
+17:07:11.613 > (11) 2W S 1 E 0  FROM AA9BFA TO EEC022 CMD 03 +0.000      >  DATA(03)  030000
+17:07:11.625 > TX: TX-RX DONE detected, flag set
+17:07:11.625 > State: PREAMBLE
+17:07:11.625 > TX: TX-RX DONE detected, flag set
+17:07:11.635 > State: PAYLOAD
+17:07:11.635 > (22) 2W S 0 E 1  FROM EEC022 TO AA9BFA CMD 04 +15.499     <  DATA(14)  0580c800c8000000000000000000
+17:07:12.809 > TX: TX-RX DONE detected, flag set
+17:07:12.809 > State: PREAMBLE
+17:07:12.809 > TX: TX-RX DONE detected, flag set
+17:07:12.809 > State: PAYLOAD
+17:07:12.809 > 
+17:07:12.809 > (11) 2W S 1 E 0  FROM AA9BFA TO EEC022 CMD 03 +0.000      >  DATA(03)  030000
+17:07:12.820 > TX: TX-RX DONE detected, flag set
+17:07:12.820 > State: PREAMBLE
+17:07:12.820 > TX: TX-RX DONE detected, flag set
+17:07:12.832 > State: PAYLOAD
+17:07:12.832 > (22) 2W S 0 E 1  FROM EEC022 TO AA9BFA CMD 04 +16.168     <  DATA(14)  0580000000000000aa9bfa010000
