@@ -3,6 +3,7 @@
 
 #include "iohcDevice2W.h"
 #include "iohcPacket.h"
+#include <functional>
 
 // Forward declarations
 namespace IOHC {
@@ -60,9 +61,24 @@ private:
     uint8_t systemKey2W[16];
     bool hasSystemKey;
     
+    // Auto-pairing mode (automatically pair first device that responds to discovery)
+    bool autoPairMode;
+    
+    // CMD 0x2A broadcast counter (send 4 times)
+    uint8_t cmd2ABroadcastCount;
+    
+    // Auto-retry mechanism for failed sends
+    std::function<bool()> pendingRetryFunc;  // Function to retry
+    uint8_t retryCount;
+    uint32_t lastRetryTime;
+    static const uint8_t MAX_RETRIES = 5;
+    static const uint32_t RETRY_DELAY_MS = 100;
+    
     PairingController() : deviceMgr(nullptr), radio(nullptr), 
                          pairingActive(false), lastStepTime(0), hasSystemKey(false),
-                         hasChallenge(false), lastSentPacket(nullptr) {
+                         hasChallenge(false), lastSentPacket(nullptr), autoPairMode(false),
+                         cmd2ABroadcastCount(0), pendingRetryFunc(nullptr), retryCount(0), 
+                         lastRetryTime(0) {
         memset(currentPairingAddr, 0, 3);
         memset(systemKey2W, 0, 16);
         memset(deviceChallenge, 0, 6);
@@ -88,6 +104,12 @@ public:
     // Cancel ongoing pairing
     void cancelPairing();
     
+    // Enable auto-pairing mode (automatically pair first device that responds)
+    void enableAutoPairMode();
+    
+    // Disable auto-pairing mode
+    void disableAutoPairMode();
+    
     // Process received packets during pairing
     bool handlePairingPacket(iohcPacket* packet);
     
@@ -96,16 +118,30 @@ public:
     
     // Get current pairing status
     bool isPairingActive() const { return pairingActive; }
+    bool isAutoPairMode() const { return autoPairMode; }
     Device2W* getCurrentPairingDevice();
     
     // Debug/testing: Verify crypto implementation with known test vectors
     void verifyCryptoImplementation();
     
 private:
-    // Pairing workflow steps (TaHoma Protocol)
+    // Auto-retry helper functions
+    void scheduleRetry(std::function<bool()> retryFunc);
+    void clearRetry();
+    void processRetry();
+    
+    // Pairing workflow steps (New Protocol - matches log sequence)
     bool sendPairingBroadcast();        // CMD 0x28 - Discovery (broadcast, no payload)
     bool sendAliveCheck(Device2W* device);  // CMD 0x2C - Actuator alive check
-    bool sendLearningMode(Device2W* device);  // CMD 0x2E - 1W Learning mode
+    bool send2ABroadcast();             // CMD 0x2A - Pairing broadcast (12-byte payload, send 4x)
+    bool sendPriorityAddressRequest(Device2W* device);  // CMD 0x36 - Priority Address Request
+    bool sendChallengeToPair(Device2W* device);  // CMD 0x3C - Send Challenge to device (WE send challenge)
+    // Device responds with CMD 0x3D, then we request info with CMD 0x54
+    
+    // Old/deprecated workflow steps
+    bool sendLearningMode(Device2W* device);  // CMD 0x2E - 1W Learning mode (NOT USED)
+    bool sendAskChallenge(Device2W* device);  // CMD 0x31 - Ask Challenge (Push key exchange method)
+    bool sendForceKeyExchange(Device2W* device);  // CMD 0x38 - Force key exchange when device skips challenge (Pull method)
     bool handleDeviceChallenge(iohcPacket* packet);  // CMD 0x3C from device
     bool sendChallengeResponse(Device2W* device); // CMD 0x3D to device (using stored challenge)
     bool handlePairingConfirmation(iohcPacket* packet);  // CMD 0x2F from device

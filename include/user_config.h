@@ -48,6 +48,18 @@ inline uint16_t syslog_port = 514;     // Syslog server port
 #define HTTP_LISTEN_PORT    80
 #define HTTP_USERNAME       "admin"
 #define HTTP_PASSWORD       "admin"
+
+// io-homecontrol Controller Address Configuration
+// This address identifies this controller in the io-homecontrol network
+// Change this if you need a different controller address
+#define CONTROLLER_ADDRESS_0  0x69
+#define CONTROLLER_ADDRESS_1  0x69
+#define CONTROLLER_ADDRESS_2  0x69
+// AA9BFA -> tahoma box address
+
+
+// Helper macro to create address array
+#define CONTROLLER_ADDRESS    {CONTROLLER_ADDRESS_0, CONTROLLER_ADDRESS_1, CONTROLLER_ADDRESS_2}
 #if defined(ESP8266)
         #define SERIALSPEED         460800
 #elif defined(ESP32)

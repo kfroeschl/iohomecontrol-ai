@@ -21,6 +21,7 @@ void addLogMessage(const String &msg) {
         logDeque.pop_front();
     }
     logDeque.push_back(msg);
+    ets_printf("[Log] %s\n", msg.c_str());
 #if defined(WEBSERVER)
     //broadcastLog(msg);
 #endif

@@ -153,9 +153,9 @@ void setup() {
     pairingController = PairingController::getInstance();
     pairingController->begin(device2WManager, radioInstance);
     
-    // TODO: Load 2W system key from NVS or config
-    // For now, using the global transfert_key
-    pairingController->setSystemKey(transfert_key);
+    // Set the Somfy stack key for 2W authentication
+    // Note: transfer_key is only used during key exchange, system_key is used for all authentication
+    pairingController->setSystemKey(system_key);
     
     // Initialize 2W response handler for automatic authentication
     responseHandler = IOHC2WResponseHandler::getInstance();
@@ -242,16 +242,17 @@ bool msgRcvd(IOHC::iohcPacket *iohc) {
       if (entry)
         deviceName = entry->name.c_str();
     }
-    addLogMessage("Command received from " + deviceId +
-                  " (" + deviceName + ")");
+    // addLogMessage("Command received from " + deviceId + " (" + deviceName + ")");
     
     // First, try to handle with new pairing controller
-    if (pairingController && pairingController->isPairingActive()) {
+    // Handle if pairing is active OR if we're in auto-pair mode waiting for a device
+    if (pairingController && (pairingController->isPairingActive() || pairingController->isAutoPairMode())) {
         if (pairingController->handlePairingPacket(iohc)) {
             // Pairing controller handled this packet
             digitalWrite(RX_LED, digitalRead(RX_LED) ^ 1);
             return true;
         }
+        printf("not handled by pairing\n");
     }
     
     // Handle CMD 0x3C (challenge) for device control (outside of pairing)
@@ -260,12 +261,13 @@ bool msgRcvd(IOHC::iohcPacket *iohc) {
             digitalWrite(RX_LED, digitalRead(RX_LED) ^ 1);
             return true;
         }
+        printf("not handled by response challenge\n");
     }
     
     // Handle CMD 0x04 (status/confirmation) responses
     if (iohc->payload.packet.header.cmd == 0x04) {
         if (responseHandler && responseHandler->handleConfirmation(iohc)) {
-            // Response was handled
+            printf("not handled by response confirmation\n");
         }
     }
     
@@ -279,7 +281,17 @@ bool msgRcvd(IOHC::iohcPacket *iohc) {
             if (!Cmd::pairMode) break;
 
             // 0x0b OverKiz 0x0c Atlantic
-            std::vector<uint8_t> toSend = {0xff, 0xc0, 0xba, 0x11, 0xad, 0x0b, 0xcc, 0x00, 0x00};
+            std::vector<uint8_t> toSend = {
+                0xff,
+                0xc0,
+                CONTROLLER_ADDRESS_0,
+                CONTROLLER_ADDRESS_1,
+                CONTROLLER_ADDRESS_2,
+                0x0b,
+                0xcc,
+                0x00,
+                0x00
+            };
 
             packets2send.clear();
             auto* packet = new iohcPacket;
@@ -657,7 +669,7 @@ bool msgRcvd(IOHC::iohcPacket *iohc) {
         case 0x4A:
         case 0X05: break;
         default:
-            printf("Received Unknown command %02X ", iohc->payload.packet.header.cmd);
+            // printf("Received Unknown command %02X\n", iohc->payload.packet.header.cmd);
             return false;
             break;
     }

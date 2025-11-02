@@ -1,4 +1,17 @@
 {
-   
+  "bdb5f5": {
+    "description": "",
+    "pairing_state": "PAIRED",
+    "last_seen": 266233,
+    "node_type": 0,
+    "node_subtype": 0,
+    "manufacturer": 0,
+    "multi_info": 0,
+    "timestamp": 0,
+    "name": "",
+    "system_key": "ce0d4b2f5c6824932dffed7e7006d338",
+    "sequence": 0,
+    "general_info1": "353133363937344130350300ffff",
+    "general_info2": "3531323239363341303503c003000000"
+  }
 }
-

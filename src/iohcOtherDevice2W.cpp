@@ -38,7 +38,7 @@ namespace IOHC {
         return _iohcOtherDevice2W;
     }
 
-    address fake_gateway = {0xba, 0x11, 0xad};
+    address fake_gateway = CONTROLLER_ADDRESS;
 
     void iohcOtherDevice2W::forgePacket(iohcPacket *packet, const std::vector<uint8_t> &toSend, size_t typn = 0) {
         digitalWrite(RX_LED, digitalRead(RX_LED) ^ 1);
@@ -310,7 +310,7 @@ namespace IOHC {
                 std::vector<uint8_t> toSend = {0x03, 0xe7, 0x32, 0x00, 0x00, 0x00};
                 //{0x03, 0x00, 0x00}; //  Not good for Cmd 0x01 Answer FE 0x10
 
-                address gateway = {0xba, 0x11, 0xad}; //{0x08, 0x42, 0xe3};
+                address gateway = CONTROLLER_ADDRESS; //{0x08, 0x42, 0xe3};
                 address from = {0x08, 0x42, 0xe3}; //data->at(1).c_str(); //
 
                 // Those are the local reals discovered device, can be huge, and must but put in 2W.json

@@ -21,6 +21,7 @@
 #include <vector>
 #include <iohcDevice.h>
 #include <tokens.h>
+#include <user_config.h>
 
 #define OTHER_2W_FILE  "/Other2W.json"
 
@@ -50,7 +51,7 @@ namespace IOHC {
         ~iohcOtherDevice2W() override = default;
 
         // Put that in json
-        address gateway/*[3]*/ = {0xba, 0x11, 0xad};
+    address gateway/*[3]*/ = CONTROLLER_ADDRESS;
         address master_from/*[3]*/ = {0x47, 0x77, 0x06}; // It's the new heater kitchen Address From
         address master_to/*[3]*/ = {0x48, 0x79, 0x02}; // It's the new heater kitchen Address To
         address slave_from/*[3]*/ = {0x8C, 0xCB, 0x30}; // It's the new heater kitchen Address From

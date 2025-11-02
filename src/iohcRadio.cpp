@@ -329,13 +329,8 @@ void iohcRadio::send(std::vector<iohcPacket *> &iohcTx) {
     packets2send = std::move(iohcTx);
     txCounter = 0;
     iohc = packets2send[txCounter];
-    // log write payload
-    ets_printf("TX: Writing payload (%d bytes): ", iohc->buffer_length);
-    for (size_t i = 0; i < iohc->buffer_length; i++) {
-        ets_printf("%02X ", iohc->payload.buffer[i]);
-    }
-    ets_printf("\n");
 
+    ets_printf("%s\n", iohc->decodeToString(true).c_str());
 
     // ets_printf("TX: Preparing %d packet(s)\n", packets2send.size());
     setRadioState(RadioState::TX);
@@ -394,7 +389,7 @@ void iohcRadio::onTxTicker(void *arg) {
 
     // ⏳ Wait for TXDONE
     if (!radio->txComplete) {
-        ets_printf("TX: Waiting for TXDONE... (state=%s)\n", radioStateToString(radio->radioState));
+        // ets_printf("TX: Waiting for TXDONE... (state=%s)\n", radioStateToString(radio->radioState));
         return;
     }
 
@@ -731,6 +726,9 @@ void IRAM_ATTR iohcRadio::packetSender(iohcRadio *radio) {
         setRadioState(iohcRadio::RadioState::RX);
 
 #endif
+        if (rxPacket != nullptr) {
+            rxPacket->decode(true); //stats);
+        }    
 
         // Radio::clearFlags();
         // Call RX callback with the rxPacket (NOT the member variable 'iohc' which is for TX)
@@ -738,7 +736,6 @@ void IRAM_ATTR iohcRadio::packetSender(iohcRadio *radio) {
         
         // Decode and log the received packet
         if (rxPacket != nullptr) {
-            rxPacket->decode(true); //stats);
             addLogMessage(String(rxPacket->decodeToString(true).c_str()));
             delete rxPacket;
         } else {

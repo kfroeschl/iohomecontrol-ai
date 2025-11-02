@@ -20,6 +20,7 @@
 #include "crypto2Wutils.h"
 #include "Aes.h"
 #include <Arduino.h>
+#include "user_config.h"
 
 IOHC2WResponseHandler* IOHC2WResponseHandler::_instance = nullptr;
 
@@ -63,11 +64,24 @@ bool IOHC2WResponseHandler::handleChallenge(IOHC::iohcPacket* iohc) {
         if (device->lastCommandLen > 0) {
             Serial.println("🔐 Sending automatic authentication response...");
             
-            // Build frame data from stored original command
-            std::vector<uint8_t> frame_data;
-            for (uint8_t i = 0; i < device->lastCommandLen; i++) {
-                frame_data.push_back(device->lastCommand[i]);
+            // Debug: Show system key
+            Serial.print("[Auth] System Key: ");
+            for (int i = 0; i < 16; i++) {
+                Serial.printf("%02X", device->systemKey[i]);
             }
+            Serial.println();
+            
+            // Build frame data for CMD 0x3D authentication
+            // Frame data should be JUST the CMD 0x3D byte (not the original command!)
+            std::vector<uint8_t> frame_data;
+            frame_data.push_back(0x3D);  // CMD 0x3D response byte
+            
+            // Debug: Show frame data
+            Serial.print("[Auth] Frame Data: ");
+            for (uint8_t byte : frame_data) {
+                Serial.printf("%02X", byte);
+            }
+            Serial.println();
             
             // Calculate MAC
             uint8_t mac[6];
@@ -79,15 +93,15 @@ bool IOHC2WResponseHandler::handleChallenge(IOHC::iohcPacket* iohc) {
             packet->payload.packet.header.CtrlByte1.asStruct.Protocol = 0;
             packet->payload.packet.header.CtrlByte1.asStruct.StartFrame = 1;
             packet->payload.packet.header.CtrlByte1.asStruct.EndFrame = 0;
-            packet->buffer_length = 14;
+            packet->buffer_length = 15;
             packet->payload.packet.header.CtrlByte2.asByte = 0;
             
-            address myAddr = {0xBA, 0x11, 0xAD};
+            address myAddr = CONTROLLER_ADDRESS;
             memcpy(packet->payload.packet.header.source, myAddr, 3);
             memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
             
             packet->payload.packet.header.cmd = 0x3D;
-            memcpy(packet->payload.buffer + 8, mac, 6);
+            memcpy(packet->payload.buffer + 9, mac, 6);
             
             packet->frequency = CHANNEL2;
             packet->repeatTime = 25;
@@ -99,6 +113,7 @@ bool IOHC2WResponseHandler::handleChallenge(IOHC::iohcPacket* iohc) {
             packets.push_back(packet);
             _radioInstance->send(packets);
             
+        
             Serial.printf("✅ Sent CMD 0x3D authentication (MAC: %02X%02X%02X%02X%02X%02X)\n",
                          mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
             Serial.println("⏳ Waiting for CMD 0x04 confirmation...");

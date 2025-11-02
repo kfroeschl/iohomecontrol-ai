@@ -23,6 +23,7 @@
 #include <map>
 #include <vector>
 #include <tokens.h>
+#include <user_config.h>
 
 #define COZY_2W_FILE  "/Cozy2W.json"
 
@@ -48,7 +49,7 @@ namespace IOHC {
         Memorize memorizeSend; //2W only
 
         // Put that in json
-        address gateway/*[3]*/ = {0xba, 0x11, 0xad};
+    address gateway/*[3]*/ = CONTROLLER_ADDRESS;
         address master_from/*[3]*/ = {0x47, 0x77, 0x06}; // It's the new heater kitchen Address From
         address master_to/*[3]*/ = {0x48, 0x79, 0x02}; // It's the new heater kitchen Address To
         address slave_from/*[3]*/ = {0x8C, 0xCB, 0x30}; // It's the new heater kitchen Address From
@@ -60,7 +61,7 @@ namespace IOHC {
             Address{0x8C, 0xCB, 0x31}, //Slave_to
             // Address{0x47, 0x77, 0x06},
             // Address{0x8C, 0xCB, 0x30},
-            // Address{0xba, 0x11, 0xad},
+            // Address{CONTROLLER_ADDRESS_0, CONTROLLER_ADDRESS_1, CONTROLLER_ADDRESS_2},
         };
 
         bool verbosity = true;

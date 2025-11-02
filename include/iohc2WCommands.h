@@ -22,6 +22,7 @@
 namespace IOHC2WCommands {
     // Reusable 2W command implementation functions
     void pair2W(Tokens *cmd);
+    void autoPair2W(Tokens *cmd);  // Discovery + automatic pairing
     void cancelPair2W(Tokens *cmd);
     void list2W(Tokens *cmd);
     void info2W(Tokens *cmd);

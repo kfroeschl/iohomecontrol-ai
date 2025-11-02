@@ -27,6 +27,7 @@
 #include <iohcCryptoHelpers.h>
 #include <iohc2WCommands.h>
 #include <cstdlib>
+#include <user_config.h>
 #if defined(MQTT)
 #include <mqtt_handler.h>
 #endif
@@ -73,7 +74,7 @@ bool sendChallengeResponseForControl(Device2W* device, const uint8_t* originalCo
     
     packet->payload.packet.header.CtrlByte2.asByte = 0;
     
-    address myAddr = {0xBA, 0x11, 0xAD};
+    address myAddr = CONTROLLER_ADDRESS;
     memcpy(packet->payload.packet.header.source, myAddr, 3);
     memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
     
@@ -328,6 +329,7 @@ void createCommands() {
     
     // Register all 2W device management and control commands
     Cmd::addHandler((char*)"pair2W", (char*)"Pair 2W device <address>", IOHC2WCommands::pair2W);
+    Cmd::addHandler((char*)"autoPair2W", (char*)"Auto-discover and pair first device that responds", IOHC2WCommands::autoPair2W);
     Cmd::addHandler((char*)"cancelPair2W", (char*)"Cancel pairing process", IOHC2WCommands::cancelPair2W);
     Cmd::addHandler((char*)"list2W", (char*)"List all 2W devices", IOHC2WCommands::list2W);
     Cmd::addHandler((char*)"info2W", (char*)"Show detailed info for 2W device <address>", IOHC2WCommands::info2W);

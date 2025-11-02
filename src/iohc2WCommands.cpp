@@ -19,6 +19,8 @@
 #include <iohcPairingController.h>
 #include <iohcPacket.h>
 #include <iohcRadio.h>
+#include <iohcOtherDevice2W.h>
+#include <user_config.h>
 
 // External radio instance from main.cpp
 extern IOHC::iohcRadio *radioInstance;
@@ -48,6 +50,28 @@ void pair2W(Tokens *cmd) {
         } else {
             Serial.println("Failed to start pairing (already in progress?)");
         }
+}
+
+void autoPair2W(Tokens *cmd) {
+    Serial.println("╔════════════════════════════════════════════╗");
+    Serial.println("║   AUTO-PAIRING MODE                        ║");
+    Serial.println("╚════════════════════════════════════════════╝");
+    Serial.println();
+    Serial.println("📡 Sending discovery broadcast...");
+    Serial.println("⏳ Waiting for device response...");
+    Serial.println("🔔 Press the pairing button on your device NOW");
+    Serial.println();
+    Serial.println("The device will be paired automatically when");
+    Serial.println("it responds to the discovery broadcast.");
+    Serial.println();
+    Serial.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    
+    // Enable auto-pairing mode in PairingController
+    auto* pairingCtrl = PairingController::getInstance();
+    pairingCtrl->enableAutoPairMode();
+    
+    // Send discovery broadcast (same as discovery command)
+    IOHC::iohcOtherDevice2W::getInstance()->cmd(IOHC::Other2WButton::discovery, nullptr);
 }
 
 void cancelPair2W(Tokens *cmd) {
@@ -194,31 +218,31 @@ void on2W(Tokens *cmd) {
         packet->payload.packet.header.CtrlByte1.asStruct.Protocol = 0;
         packet->payload.packet.header.CtrlByte1.asStruct.StartFrame = 1;
         packet->payload.packet.header.CtrlByte1.asStruct.EndFrame = 0;
-        packet->buffer_length = 14;
+        packet->buffer_length = 15;
         
         packet->payload.packet.header.CtrlByte2.asByte = 0;
         
-        address myAddr = {0xBA, 0x11, 0xAD};
+    address myAddr = CONTROLLER_ADDRESS;
         memcpy(packet->payload.packet.header.source, myAddr, 3);
         memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
         
         packet->payload.packet.header.cmd = 0x00;
-        packet->payload.buffer[8] = 0x01;   // Originator type
-        packet->payload.buffer[9] = 0xe7;   // ACEI (actuator class/event identifier)
-        packet->payload.buffer[10] = 0x00;  // Main parameter (0x00 = ON)
-        packet->payload.buffer[11] = 0x00;  // Functional param 1
-        packet->payload.buffer[12] = 0x00;  // Functional param 2
-        packet->payload.buffer[13] = 0x00;  // Functional param 3
+        packet->payload.buffer[9] = 0x01;   // Originator type
+        packet->payload.buffer[10] = 0xe7;   // ACEI (actuator class/event identifier)
+        packet->payload.buffer[11] = 0x00;  // Main parameter (0x00 = ON)
+        packet->payload.buffer[12] = 0x00;  // Functional param 1
+        packet->payload.buffer[13] = 0x00;  // Functional param 2
+        packet->payload.buffer[14] = 0x00;  // Functional param 3
         
         // Store command for later MAC calculation
-        device->lastCommandLen = 7;
-        device->lastCommand[0] = 0x00;
-        device->lastCommand[1] = 0x01;
-        device->lastCommand[2] = 0xe7;
-        device->lastCommand[3] = 0x00;  // ON = 0x00
+        device->lastCommandByte = 0x00;  // CMD byte
+        device->lastCommandLen = 6;
+        device->lastCommand[0] = 0x01;
+        device->lastCommand[1] = 0xe7;
+        device->lastCommand[2] = 0x00;  // ON = 0x00
+        device->lastCommand[3] = 0x00;
         device->lastCommand[4] = 0x00;
         device->lastCommand[5] = 0x00;
-        device->lastCommand[6] = 0x00;
         
         packet->frequency = CHANNEL2;
         packet->repeatTime = 25;
@@ -262,31 +286,31 @@ void off2W(Tokens *cmd) {
         packet->payload.packet.header.CtrlByte1.asStruct.Protocol = 0;
         packet->payload.packet.header.CtrlByte1.asStruct.StartFrame = 1;
         packet->payload.packet.header.CtrlByte1.asStruct.EndFrame = 0;
-        packet->buffer_length = 14;
+        packet->buffer_length = 15;
         
         packet->payload.packet.header.CtrlByte2.asByte = 0;
         
-        address myAddr = {0xBA, 0x11, 0xAD};
+    address myAddr = CONTROLLER_ADDRESS;
         memcpy(packet->payload.packet.header.source, myAddr, 3);
         memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
         
         packet->payload.packet.header.cmd = 0x00;
-        packet->payload.buffer[8] = 0x01;   // Originator type
-        packet->payload.buffer[9] = 0xe7;   // ACEI (actuator class/event identifier)
-        packet->payload.buffer[10] = 0xc8;  // Main parameter (0xc8 = OFF)
-        packet->payload.buffer[11] = 0x00;  // Functional param 1
-        packet->payload.buffer[12] = 0x00;  // Functional param 2
-        packet->payload.buffer[13] = 0x00;  // Functional param 3
+        packet->payload.buffer[9] = 0x01;   // Originator type
+        packet->payload.buffer[10] = 0xe7;   // ACEI (actuator class/event identifier)
+        packet->payload.buffer[11] = 0xc8;  // Main parameter (0xc8 = OFF)
+        packet->payload.buffer[12] = 0x00;  // Functional param 1
+        packet->payload.buffer[13] = 0x00;  // Functional param 2
+        packet->payload.buffer[14] = 0x00;  // Functional param 3
         
         // Store command for later MAC calculation
-        device->lastCommandLen = 7;
-        device->lastCommand[0] = 0x00;
-        device->lastCommand[1] = 0x01;
-        device->lastCommand[2] = 0xe7;
-        device->lastCommand[3] = 0xc8;  // OFF = 0xc8
+        device->lastCommandByte = 0x00;  // CMD byte
+        device->lastCommandLen = 6;
+        device->lastCommand[0] = 0x01;
+        device->lastCommand[1] = 0xe7;
+        device->lastCommand[2] = 0xc8;  // OFF = 0xc8
+        device->lastCommand[3] = 0x00;
         device->lastCommand[4] = 0x00;
         device->lastCommand[5] = 0x00;
-        device->lastCommand[6] = 0x00;
         
         packet->frequency = CHANNEL2;
         packet->repeatTime = 25;
@@ -329,18 +353,18 @@ void status2W(Tokens *cmd) {
         packet->payload.packet.header.CtrlByte1.asStruct.Protocol = 0;
         packet->payload.packet.header.CtrlByte1.asStruct.StartFrame = 1;
         packet->payload.packet.header.CtrlByte1.asStruct.EndFrame = 0;
-        packet->buffer_length = 11;
+        packet->buffer_length = 12;
         
         packet->payload.packet.header.CtrlByte2.asByte = 0;
         
-        address myAddr = {0xBA, 0x11, 0xAD};
+    address myAddr = CONTROLLER_ADDRESS;
         memcpy(packet->payload.packet.header.source, myAddr, 3);
         memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
         
         packet->payload.packet.header.cmd = 0x03;
-        packet->payload.buffer[8] = 0x03;
-        packet->payload.buffer[9] = 0x00;
+        packet->payload.buffer[9] = 0x03;
         packet->payload.buffer[10] = 0x00;
+        packet->payload.buffer[11] = 0x00;
         
         packet->frequency = CHANNEL2;
         packet->repeatTime = 25;
@@ -390,22 +414,22 @@ void test2W(Tokens *cmd) {
         packet->payload.packet.header.CtrlByte1.asStruct.Protocol = 0;
         packet->payload.packet.header.CtrlByte1.asStruct.StartFrame = 1;
         packet->payload.packet.header.CtrlByte1.asStruct.EndFrame = 0;
-        packet->buffer_length = 8 + dataLen;
+        packet->buffer_length = 9 + dataLen;
         
         packet->payload.packet.header.CtrlByte2.asByte = 0;
         
-        address myAddr = {0xBA, 0x11, 0xAD};
+    address myAddr = CONTROLLER_ADDRESS;
         memcpy(packet->payload.packet.header.source, myAddr, 3);
         memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
         
         packet->payload.packet.header.cmd = cmdByte;
-        packet->payload.buffer[8] = byte1;
-        packet->payload.buffer[9] = byte2;
-        packet->payload.buffer[10] = byte3;
+        packet->payload.buffer[9] = byte1;
+        packet->payload.buffer[10] = byte2;
+        packet->payload.buffer[11] = byte3;
         if (dataLen == 6) {
-            packet->payload.buffer[11] = byte4;
-            packet->payload.buffer[12] = byte5;
-            packet->payload.buffer[13] = byte6;
+            packet->payload.buffer[12] = byte4;
+            packet->payload.buffer[13] = byte5;
+            packet->payload.buffer[14] = byte6;
         }
         
         packet->frequency = CHANNEL2;

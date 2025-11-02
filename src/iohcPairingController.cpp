@@ -4,6 +4,7 @@
 #include "iohcCryptoHelpers.h"
 #include "crypto2Wutils.h"
 #include "log_buffer.h"
+#include "user_config.h"
 
 using namespace IOHC;
 
@@ -52,10 +53,7 @@ bool PairingController::startPairing(const address& deviceAddr) {
     // NOW set pairing active (after device is confirmed to exist)
     pairingActive = true;
     lastStepTime = millis() - 1000;  // Set to past time to trigger immediate first send
-    
-    // Note: No longer generating challenge - CMD 0x28 has no payload
-    addLogMessage("Pairing will start immediately...");
-    
+
     // Don't send immediately - let process() handle it when radio is ready
     // This prevents "radio busy" errors
     return true;
@@ -74,34 +72,54 @@ void PairingController::cancelPairing() {
     addLogMessage("Pairing cancelled");
 }
 
+void PairingController::enableAutoPairMode() {
+    autoPairMode = true;
+    addLogMessage("✨ Auto-pairing mode ENABLED - will pair first device that responds");
+}
+
+void PairingController::disableAutoPairMode() {
+    autoPairMode = false;
+    addLogMessage("Auto-pairing mode disabled");
+}
+
 Device2W* PairingController::getCurrentPairingDevice() {
     if (!pairingActive) return nullptr;
     return deviceMgr->getDevice(currentPairingAddr);
 }
 
 bool PairingController::handlePairingPacket(iohcPacket* packet) {
+    // Check for auto-pair mode - CMD 0x29 (Discovery Response)
+    if (autoPairMode && !pairingActive && packet->payload.packet.header.cmd == 0x29) {
+        // Device responded to discovery broadcast - automatically start pairing!
+        address deviceAddr;
+        memcpy(deviceAddr, packet->payload.packet.header.source, 3);
+        
+        Serial.println();
+        Serial.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        Serial.printf(" DEVICE DETECTED - Address: %02X%02X%02X\n", deviceAddr[0], deviceAddr[1], deviceAddr[2]);
+        Serial.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        Serial.println();
+        
+        // Disable auto-pair mode (we found our device)
+        disableAutoPairMode();
+        
+        // Start pairing this device
+        if (startPairing(deviceAddr)) {
+            // Continue processing this CMD 0x29 packet below
+            // Don't return yet - let it fall through to normal pairing flow
+        } else {
+            Serial.println("❌ Failed to start pairing!");
+            return false;
+        }
+    }
+    
     if (!pairingActive) {
         return false;
     }
-    
-    // Log raw packet details for debugging
-    ets_printf("[Pairing] RAW packet: CMD=0x%02X SF=%d EF=%d from=%02X%02X%02X len=%d\n",
-               packet->payload.packet.header.cmd,
-               packet->payload.packet.header.CtrlByte1.asStruct.StartFrame,
-               packet->payload.packet.header.CtrlByte1.asStruct.EndFrame,
-               packet->payload.packet.header.source[0],
-               packet->payload.packet.header.source[1],
-               packet->payload.packet.header.source[2],
-               packet->buffer_length);
-    
+
     // Convert to simple packet structure
     SimplePairingPacket simplePacket;
     simplePacket.fromIohcPacket(packet);
-    
-    ets_printf("[Pairing] Packet received: CMD 0x%02X from %02X%02X%02X (expecting %02X%02X%02X)\n",
-               simplePacket.command,
-               simplePacket.source[0], simplePacket.source[1], simplePacket.source[2],
-               currentPairingAddr[0], currentPairingAddr[1], currentPairingAddr[2]);
     
     // Check if packet is from device we're pairing
     if (memcmp(simplePacket.source, currentPairingAddr, 3) != 0) {
@@ -111,38 +129,66 @@ bool PairingController::handlePairingPacket(iohcPacket* packet) {
     Device2W* device = getCurrentPairingDevice();
     if (!device) return false;
     
-    char logMsg[128];
-    snprintf(logMsg, sizeof(logMsg), 
-             "📥 Pairing packet CMD 0x%02X from %02X%02X%02X (state=%d)",
-             simplePacket.command,
-             simplePacket.source[0], simplePacket.source[1], simplePacket.source[2],
-             (int)device->pairingState);
-    ets_printf("[Pairing] %s\n", logMsg);
-    
     bool handled = false;
-    
+
+    Serial.printf("[Pairing] Current state: %s, CMD: 0x%02X\n", device->getPairingStateStr().c_str(), simplePacket.command);
     switch (simplePacket.command) {
         case 0x29: // Discovery Response (device responds to CMD 0x28)
             if (device->pairingState == PairingState::DISCOVERING) {
-                char logMsg[128];
-                snprintf(logMsg, sizeof(logMsg), 
-                         "✅ Received CMD 0x29 from %02X%02X%02X - Device discovered!",
-                         simplePacket.source[0], simplePacket.source[1], simplePacket.source[2]);
-                addLogMessage(logMsg);
+                addLogMessage("✅ Device responded to our CMD 0x28 broadcast");
+                // Send CMD 0x31 (Ask Challenge) to see what device responds with
+                addLogMessage("Sending CMD 0x31 (Ask Challenge)...");
+                device->pairingState = PairingState::ASKING_CHALLENGE;
                 
-                // Device responded to our CMD 0x28 broadcast
-                // Now send CMD 0x2C (Alive Check) per TaHoma protocol
-                handled = sendAliveCheck(device);
+                if (sendAskChallenge(device)) {
+                    lastStepTime = millis();
+                    handled = true;
+                    clearRetry();  // Success, clear any pending retry
+                } else {
+                    addLogMessage("❌ Failed to send CMD 0x31 - scheduling auto-retry...");
+                    // Schedule auto-retry
+                    scheduleRetry([this, device]() {
+                        return sendAskChallenge(device);
+                    });
+                    handled = true;  // Mark as handled to prevent other code from interfering
+                }
             }
             break;
             
         case 0x2D: // Alive Check Response (device responds to CMD 0x2C)
             if (device->pairingState == PairingState::ALIVE_CHECK) {
                 addLogMessage("✅ Alive check passed (CMD 0x2D)");
-                
-                // Device is alive and ready
-                // Now send CMD 0x2E (Learning Mode)
-                handled = sendLearningMode(device);
+                // After alive check, broadcast CMD 0x2A 4 times
+                device->pairingState = PairingState::BROADCASTING_2A;
+                cmd2ABroadcastCount = 0;  // Reset counter
+                lastStepTime = millis();
+                handled = true;
+            }
+            break;
+            
+        case 0x37: // Priority Address Response (device responds to CMD 0x36)
+            Serial.printf("[Pairing] CMD 0x37 received! State=%d, payload_len=%d\n", 
+                         (int)device->pairingState, simplePacket.payload_len);
+            // Accept CMD 0x37 in either WAITING_BEFORE_LEARNING or LEARNING_MODE state
+            if (device->pairingState == PairingState::WAITING_BEFORE_LEARNING || 
+                device->pairingState == PairingState::LEARNING_MODE) {
+                if (simplePacket.payload_len >= 3) {
+                    char logMsg[128];
+                    snprintf(logMsg, sizeof(logMsg), 
+                             "✅ Priority Address received (CMD 0x37): %02X%02X%02X",
+                             simplePacket.payload[0], simplePacket.payload[1], simplePacket.payload[2]);
+                    addLogMessage(logMsg);
+                    // Immediately send challenge (CMD 0x3C) to device
+                    addLogMessage("Sending challenge (CMD 0x3C) to device...");
+                    if (sendChallengeToPair(device)) {
+                        device->pairingState = PairingState::CHALLENGE_SENT;
+                        lastStepTime = millis();
+                    } else {
+                        addLogMessage("❌ Failed to send CMD 0x3C");
+                        cancelPairing();
+                    }
+                    handled = true;
+                }
             }
             break;
             
@@ -183,53 +229,121 @@ bool PairingController::handlePairingPacket(iohcPacket* packet) {
             }
             break;
             
-        case 0x2F: // Pairing Confirmation
+        case 0x2F: // Pairing Confirmation (device responds to CMD 0x3D)
             if (simplePacket.payload_len >= 1) {
-                addLogMessage("Received pairing confirmation (CMD 0x2F)");
+                uint8_t confirmationStatus = simplePacket.payload[0];
+                char logMsg[128];
+                snprintf(logMsg, sizeof(logMsg), 
+                         "✅ Received pairing confirmation (CMD 0x2F) status: 0x%02X",
+                         confirmationStatus);
+                addLogMessage(logMsg);
                 
-                // Check if we received challenge (CMD 0x3C) before confirmation
-                if (hasChallenge) {
-                    addLogMessage("Challenge received, ready for key exchange");
+                if (confirmationStatus == 0x02) {
+                    addLogMessage("🎉 Pairing authentication successful!");
+                    // After CMD 0x3D response, move to device info gathering
+                    device->pairingState = PairingState::KEY_EXCHANGED;
+                    lastStepTime = millis();
+                    handled = true;
                 } else {
-                    addLogMessage("No challenge received - device may not require it");
+                    addLogMessage("❌ Pairing authentication failed");
+                    cancelPairing();
+                    handled = true;
                 }
+            }
+            break;
+            
+        case 0x32: // Key Transfer from device (response to CMD 0x38) - NOT used in Tahoma flow
+            if (simplePacket.payload_len >= 16) {
+                addLogMessage("✅ Received CMD 0x32 (device key transfer)");
+                // Device is sending us its key - this is the Pull method
+                // Store the encrypted key and decrypt it
+                // TODO: Process device key if needed
+                // For now, we'll challenge the device to verify the key
+                device->pairingState = PairingState::KEY_EXCHANGED;
                 
-                // Move to PAIRING_CONFIRMED state
-                // Key transfer will be sent by process() loop
-                device->pairingState = PairingState::PAIRING_CONFIRMED;
+                // Challenge the device to authenticate (send CMD 0x3C)
+                addLogMessage("Challenging device to authenticate key...");
+                // The challenge will be sent in the process() loop
                 lastStepTime = millis();
                 handled = true;
             }
             break;
             
-        case 0x3C: // Device Challenge (2W Protocol)
+        case 0x3C: // Challenge from device (response to CMD 0x31)
+            if (device->pairingState == PairingState::ASKING_CHALLENGE) {
+                if (simplePacket.payload_len >= 6) {
+                    // Store the 6-byte challenge from the device
+                    memcpy(deviceChallenge, simplePacket.payload, 6);
+                    hasChallenge = true;
+                    
+                    char logMsg[128];
+                    snprintf(logMsg, sizeof(logMsg), 
+                             "✅ Received device challenge (CMD 0x3C) after CMD 0x31: %02X%02X%02X%02X%02X%02X",
+                             deviceChallenge[0], deviceChallenge[1], deviceChallenge[2],
+                             deviceChallenge[3], deviceChallenge[4], deviceChallenge[5]);
+                    addLogMessage(logMsg);
+                    
+                    // Device sent challenge - respond with CMD 0x32 (Key Transfer)
+                    addLogMessage("Sending CMD 0x32 (Key Transfer) with encrypted stack key...");
+                    if (sendKeyTransfer(device)) {
+                        device->pairingState = PairingState::CHALLENGE_RECEIVED;
+                        lastStepTime = millis();
+                        handled = true;
+                    } else {
+                        addLogMessage("❌ Failed to send CMD 0x32");
+                        // Schedule retry
+                        scheduleRetry([this, device]() {
+                            return sendKeyTransfer(device);
+                        });
+                        handled = true;
+                    }
+                } else {
+                    addLogMessage("⚠️ CMD 0x3C received but payload too short");
+                }
+            }
+            break;
+            
+        case 0x3D: // Challenge Response from device (device responds to our CMD 0x3C)
             if (simplePacket.payload_len >= 6) {
-                // Store the 6-byte challenge from the device
-                memcpy(deviceChallenge, simplePacket.payload, 6);
-                hasChallenge = true;
-                
                 char logMsg[128];
                 snprintf(logMsg, sizeof(logMsg), 
-                         "✅ Received device challenge (CMD 0x3C): %02X%02X%02X%02X%02X%02X",
-                         deviceChallenge[0], deviceChallenge[1], deviceChallenge[2],
-                         deviceChallenge[3], deviceChallenge[4], deviceChallenge[5]);
+                         "✅ Received challenge response (CMD 0x3D): %02X%02X%02X%02X%02X%02X",
+                         simplePacket.payload[0], simplePacket.payload[1], simplePacket.payload[2],
+                         simplePacket.payload[3], simplePacket.payload[4], simplePacket.payload[5]);
                 addLogMessage(logMsg);
                 
-                // Update state to indicate challenge received
-                device->pairingState = PairingState::CHALLENGE_RECEIVED;
-                
-                // Send CMD 0x3D (challenge response) - TaHoma protocol
-                addLogMessage("Sending challenge response (CMD 0x3D)...");
-                handled = sendChallengeResponse(device);
+                if (device->pairingState == PairingState::CHALLENGE_SENT) {
+                    // Device responded to our challenge - now request device info
+                    addLogMessage("Challenge authenticated! Requesting device info...");
+                    device->pairingState = PairingState::KEY_EXCHANGED;
+                    lastStepTime = millis();
+                    handled = true;
+                }
             }
             break;
             
         case 0x33: // Key Transfer Ack
-            device->pairingState = PairingState::KEY_EXCHANGED;
-            addLogMessage("Key transfer acknowledged, requesting device info...");
+            addLogMessage("✅ Key transfer acknowledged (CMD 0x33)!");
             
-            // Start gathering device information
-            lastStepTime = millis() - 2000; // Trigger immediate info request
+            // send device address request
+            
+            
+            // Mark pairing as completed
+            addLogMessage("🎉 Pairing completed successfully!");
+            if (!sendPriorityAddressRequest(device)) {
+                addLogMessage("❌ Failed to send CMD 0x36");
+            }
+            
+            // Store system key in device
+            if (hasSystemKey) {
+                memcpy(device->systemKey, systemKey2W, 16);
+                device->hasSystemKey = true;
+                addLogMessage("✅ Stored system key in device");
+            }
+            
+            deviceMgr->completePairing(currentPairingAddr);
+            pairingActive = false;
+            device->pairingState = PairingState::PAIRED;
             handled = true;
             break;
             
@@ -239,10 +353,13 @@ bool PairingController::handlePairingPacket(iohcPacket* packet) {
                 for (int i = 0; i < 16 && simplePacket.payload[i] != 0; i++) {
                     name += (char)simplePacket.payload[i];
                 }
+                addLogMessage("Name received: " + name);
                 deviceMgr->updateFromNameAnswer(currentPairingAddr, name);
                 // Now request general info 1
                 requestGeneralInfo1(device);
                 handled = true;
+            } else {
+                addLogMessage("❌ Name answer too short");
             }
             break;
             
@@ -291,8 +408,54 @@ bool PairingController::handlePairingPacket(iohcPacket* packet) {
     return handled;
 }
 
+// Auto-retry helper functions
+void PairingController::scheduleRetry(std::function<bool()> retryFunc) {
+    pendingRetryFunc = retryFunc;
+    retryCount = 0;
+    lastRetryTime = millis();
+    ets_printf("[Pairing] Scheduled auto-retry (will attempt up to %d times)\n", MAX_RETRIES);
+}
+
+void PairingController::clearRetry() {
+    pendingRetryFunc = nullptr;
+    retryCount = 0;
+}
+
+void PairingController::processRetry() {
+    if (!pendingRetryFunc) return;
+    
+    uint32_t now = millis();
+    
+    // Check if enough time has passed since last retry
+    if (now - lastRetryTime < RETRY_DELAY_MS) {
+        return;
+    }
+    
+    // Try to execute the retry function
+    if (pendingRetryFunc()) {
+        // Success! Clear the retry
+        ets_printf("[Pairing] Auto-retry succeeded after %d attempts\n", retryCount + 1);
+        clearRetry();
+    } else {
+        // Failed, increment counter
+        retryCount++;
+        lastRetryTime = now;
+        
+        if (retryCount >= MAX_RETRIES) {
+            ets_printf("[Pairing] Auto-retry failed after %d attempts, giving up\n", MAX_RETRIES);
+            addLogMessage("⚠️  Auto-retry exhausted, operation failed");
+            clearRetry();
+        } else {
+            ets_printf("[Pairing] Auto-retry attempt %d/%d...\n", retryCount, MAX_RETRIES);
+        }
+    }
+}
+
 void PairingController::process() {
     if (!pairingActive) return;
+    
+    // Process any pending retries first
+    processRetry();
     
     Device2W* device = getCurrentPairingDevice();
     if (!device) {
@@ -339,12 +502,57 @@ void PairingController::process() {
                 lastStepTime = now;
             }
             break;
+           
+        case PairingState::BROADCASTING_2A:
+            // After alive check, broadcast CMD 0x2A 4 times
+            if (now - lastStepTime > 200) {  // 200ms between broadcasts
+                if (cmd2ABroadcastCount < 4) {
+                    if (send2ABroadcast()) {
+                        cmd2ABroadcastCount++;
+                        char logMsg[64];
+                        snprintf(logMsg, sizeof(logMsg), "CMD 0x2A broadcast %d/4 sent", cmd2ABroadcastCount);
+                        addLogMessage(logMsg);
+                        lastStepTime = now;
+                    } else {
+                        addLogMessage("❌ Failed to send CMD 0x2A broadcast");
+                    }
+                } else {
+                    // All 4 broadcasts sent, move to next step
+                    addLogMessage("✅ All CMD 0x2A broadcasts sent");
+                    device->pairingState = PairingState::WAITING_BEFORE_LEARNING;
+                    lastStepTime = now;
+                }
+            }
+            break;
+            
+        case PairingState::WAITING_BEFORE_LEARNING:
+            // After alive check response (CMD 0x2D), send Priority Address Request (CMD 0x36)
+            // Only send once, then wait for CMD 0x37 response
+            if (now - lastStepTime > 100) {  // Small delay to ensure CMD 0x2D is fully processed
+                if (sendPriorityAddressRequest(device)) {
+                    device->pairingState = PairingState::LEARNING_MODE;  // Transition to wait for CMD 0x37
+                    lastStepTime = now;
+                } else {
+                    addLogMessage("❌ Failed to send CMD 0x36");
+                    cancelPairing();
+                }
+            }
+            break;
             
         case PairingState::LEARNING_MODE:
-            // Wait for CMD 0x3C (device challenge)
-            // handlePairingPacket will call sendChallengeResponse() when CMD 0x3C is received
+            // Wait for CMD 0x37 (priority address response)
+            // handlePairingPacket will send CMD 0x3C when CMD 0x37 is received
             if (now - lastStepTime > 5000) {
-                addLogMessage("Waiting for device challenge (CMD 0x3C)...");
+                addLogMessage("Waiting for priority address response (CMD 0x37)...");
+                lastStepTime = now;
+            }
+            break;
+            
+        case PairingState::CHALLENGE_SENT:
+            // Wait for CMD 0x3D (challenge response from device)
+            // handlePairingPacket will handle CMD 0x3D
+            if (now - lastStepTime > 5000) {
+                addLogMessage("Waiting for challenge response (CMD 0x3D)...");
                 lastStepTime = now;
             }
             break;
@@ -359,24 +567,22 @@ void PairingController::process() {
             break;
             
         case PairingState::PAIRING_CONFIRMED:
-            // TaHoma flow: After CMD 0x2F, start gathering device info
-            // CMD 0x50 (Name), CMD 0x54 (General Info 1), CMD 0x56 (General Info 2)
-            if (now - lastStepTime > 200) {  // 200ms delay after CMD 0x2F
-                ets_printf("[Pairing] PAIRING_CONFIRMED - requesting device info...\n");
-                requestName(device);
-                // Move to KEY_EXCHANGED state immediately to prevent re-requesting
-                // The handlers will process responses (CMD 0x51, 0x55, 0x57) and complete pairing
-                device->pairingState = PairingState::KEY_EXCHANGED;
-                lastStepTime = now;
+            // After CMD 0x2F, we send CMD 0x31 (Ask Challenge) for key exchange
+            // This is handled in the CMD 0x2F packet handler
+            if (now - lastStepTime > 5000) {
+                addLogMessage("Timeout in PAIRING_CONFIRMED state");
+                cancelPairing();
             }
             break;
             
         case PairingState::KEY_EXCHANGED:
-            // Wait for device info responses (CMD 0x51, 0x55, 0x57)
-            // Handlers will complete pairing when CMD 0x57 is received
-            if (now - lastStepTime > 10000) {
-                addLogMessage("Timeout waiting for device info responses");
-                cancelPairing();
+            // After CMD 0x32 key transfer, start gathering device info
+            // CMD 0x50 (Name), CMD 0x54 (General Info 1), CMD 0x56 (General Info 2)
+            if (now - lastStepTime > 500) {  // 500ms delay after key transfer
+                ets_printf("[Pairing] KEY_EXCHANGED - requesting device info...\n");
+                requestName(device);
+                device->pairingState = PairingState::PAIRED;  // Move to final state
+                lastStepTime = now;
             }
             break;
             
@@ -405,7 +611,7 @@ bool PairingController::sendPairingBroadcast() {
     packet->payload.packet.header.CtrlByte2.asStruct.Prio = 1;  // Priority flag
     
     // Source: controller address
-    address myAddr = {0xBA, 0x11, 0xAD}; // TODO: Make configurable
+    address myAddr = CONTROLLER_ADDRESS;
     memcpy(packet->payload.packet.header.source, myAddr, 3);
     
     // Target: 2W broadcast address (CMD 0x28 MUST be broadcast, not targeted)
@@ -454,7 +660,7 @@ bool PairingController::sendAliveCheck(Device2W* device) {
     packet->payload.packet.header.CtrlByte2.asByte = 0;
     
     // Source: controller address
-    address myAddr = {0xBA, 0x11, 0xAD};
+    address myAddr = CONTROLLER_ADDRESS;
     memcpy(packet->payload.packet.header.source, myAddr, 3);
     
     // Target: specific device address
@@ -481,8 +687,54 @@ bool PairingController::sendAliveCheck(Device2W* device) {
     return sent;
 }
 
+bool PairingController::send2ABroadcast() {
+    // CMD 0x2A - Pairing Broadcast (12-byte payload)
+    // From log: DATA(12) 01386e3c72c82ef848407773
+    iohcPacket* packet = new iohcPacket();
+    
+    // Use the 12-byte payload from the log
+    uint8_t payload[12] = {0x01, 0x38, 0x6E, 0x3C, 0x72, 0xC8, 
+                           0x2E, 0xF8, 0x48, 0x40, 0x77, 0x73};
+    
+    // Set up packet structure
+    packet->payload.packet.header.CtrlByte1.asStruct.MsgLen = sizeof(_header) - 1;
+    packet->payload.packet.header.CtrlByte1.asStruct.Protocol = 0;
+    packet->payload.packet.header.CtrlByte1.asStruct.StartFrame = 1;
+    packet->payload.packet.header.CtrlByte1.asStruct.EndFrame = 1;  // Both start and end
+    packet->payload.packet.header.CtrlByte1.asByte += 12;
+    memcpy(packet->payload.buffer + 9, payload, 12);
+    packet->buffer_length = 12 + 9;
+    
+    packet->payload.packet.header.CtrlByte2.asByte = 0;
+    packet->payload.packet.header.CtrlByte2.asStruct.LPM = 1;  // Low Power Mode flag from log
+    
+    // Source: controller address
+    address myAddr = CONTROLLER_ADDRESS;
+    memcpy(packet->payload.packet.header.source, myAddr, 3);
+    
+    // Target: 2W broadcast address
+    address broadcast2W = {0x00, 0x00, 0x3B};
+    memcpy(packet->payload.packet.header.target, broadcast2W, 3);
+    
+    packet->payload.packet.header.cmd = 0x2A;
+    packet->frequency = CHANNEL2;
+    packet->repeatTime = 25;
+    packet->repeat = 0;
+    packet->lock = false;
+    packet->shortPreamble = false;  // Use long preamble for broadcast
+    packet->delayed = 250;
+    
+    bool sent = sendPacket(packet);
+    if (sent) {
+        lastStepTime = millis();
+    }
+    return sent;
+}
+
 bool PairingController::sendLearningMode(Device2W* device) {
     // CMD 0x2E - 1W Learning mode (1-byte payload: 0x02)
+    // NOTE: This is NOT used in the new pairing sequence!
+    // Kept for backward compatibility only.
     iohcPacket* packet = new iohcPacket();
     
     uint8_t payload = 0x02;
@@ -499,7 +751,7 @@ bool PairingController::sendLearningMode(Device2W* device) {
     packet->payload.packet.header.CtrlByte2.asByte = 0;
     
     // Source: controller address
-    address myAddr = {0xBA, 0x11, 0xAD};
+    address myAddr = CONTROLLER_ADDRESS;
     memcpy(packet->payload.packet.header.source, myAddr, 3);
     
     // Target: specific device address
@@ -523,6 +775,189 @@ bool PairingController::sendLearningMode(Device2W* device) {
                  "Sent Learning Mode: CMD 0x2E to %02X%02X%02X (waiting for CMD 0x3C challenge)",
                  device->nodeAddress[0], device->nodeAddress[1], device->nodeAddress[2]);
         addLogMessage(logMsg);
+    }
+    return sent;
+}
+
+bool PairingController::sendPriorityAddressRequest(Device2W* device) {
+    // CMD 0x36 - Priority Address Request (no payload)
+    iohcPacket* packet = new iohcPacket();
+    
+    // Set up packet structure (no payload)
+    packet->payload.packet.header.CtrlByte1.asStruct.MsgLen = sizeof(_header) - 1;
+    packet->payload.packet.header.CtrlByte1.asStruct.Protocol = 0;
+    packet->payload.packet.header.CtrlByte1.asStruct.StartFrame = 1;
+    packet->payload.packet.header.CtrlByte1.asStruct.EndFrame = 0;
+    packet->buffer_length = 9;  // Header only, no payload
+    
+    packet->payload.packet.header.CtrlByte2.asByte = 0;
+    packet->payload.packet.header.CtrlByte2.asStruct.Prio = 1;  // Set priority flag
+    
+    // Source: controller address
+    address myAddr = CONTROLLER_ADDRESS;
+    memcpy(packet->payload.packet.header.source, myAddr, 3);
+    
+    // Target: specific device address
+    memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
+    
+    packet->payload.packet.header.cmd = 0x36;
+    packet->frequency = CHANNEL2;
+    packet->repeatTime = 25;
+    packet->repeat = 0;
+    packet->lock = false;
+    packet->shortPreamble = true;
+    
+    bool sent = sendPacket(packet);
+    if (sent) {
+        char logMsg[128];
+        snprintf(logMsg, sizeof(logMsg), 
+                 "Sent Priority Address Request: CMD 0x36 to %02X%02X%02X",
+                 device->nodeAddress[0], device->nodeAddress[1], device->nodeAddress[2]);
+        addLogMessage(logMsg);
+        lastStepTime = millis();
+    }
+    return sent;
+}
+
+bool PairingController::sendChallengeToPair(Device2W* device) {
+    // CMD 0x3C - Send Challenge Request to device (6-byte challenge)
+    iohcPacket* packet = new iohcPacket();
+    
+    // Generate random 6-byte challenge
+    for (int i = 0; i < 6; i++) {
+        deviceChallenge[i] = random(0, 256);
+    }
+    hasChallenge = true;
+    
+    // Set up packet structure
+    packet->payload.packet.header.CtrlByte1.asStruct.MsgLen = sizeof(_header) - 1;
+    packet->payload.packet.header.CtrlByte1.asStruct.Protocol = 0;
+    packet->payload.packet.header.CtrlByte1.asStruct.StartFrame = 1;
+    packet->payload.packet.header.CtrlByte1.asStruct.EndFrame = 0;
+    packet->payload.packet.header.CtrlByte1.asByte += 6;
+    memcpy(packet->payload.buffer + 9, deviceChallenge, 6);
+    packet->buffer_length = 6 + 9;
+    
+    packet->payload.packet.header.CtrlByte2.asByte = 0;
+    
+    // Source: controller address
+    address myAddr = CONTROLLER_ADDRESS;
+    memcpy(packet->payload.packet.header.source, myAddr, 3);
+    
+    // Target: specific device address
+    memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
+    
+    packet->payload.packet.header.cmd = 0x3C;
+    packet->frequency = CHANNEL2;
+    packet->repeatTime = 25;
+    packet->repeat = 0;
+    packet->lock = false;
+    packet->shortPreamble = true;
+    
+    bool sent = sendPacket(packet);
+    if (sent) {
+        char logMsg[128];
+        snprintf(logMsg, sizeof(logMsg), 
+                 "Sent Challenge: CMD 0x3C to %02X%02X%02X (challenge: %02X%02X%02X%02X%02X%02X)",
+                 device->nodeAddress[0], device->nodeAddress[1], device->nodeAddress[2],
+                 deviceChallenge[0], deviceChallenge[1], deviceChallenge[2],
+                 deviceChallenge[3], deviceChallenge[4], deviceChallenge[5]);
+        addLogMessage(logMsg);
+        lastStepTime = millis();
+    }
+    return sent;
+}
+
+bool PairingController::sendAskChallenge(Device2W* device) {
+    // CMD 0x31 - Ask Challenge (Push key exchange method)
+    // After CMD 0x2F, send CMD 0x31 to initiate Push key exchange
+    // Device will respond with CMD 0x3C (challenge)
+    // Then we send CMD 0x32 (encrypted stack key)
+    // Device authenticates with CMD 0x3C
+    // We respond with CMD 0x3D
+    // Device confirms with CMD 0x33
+    
+    addLogMessage("🔑 Sending CMD 0x31 (Ask Challenge) to initiate Push key exchange");
+    
+    iohcPacket* packet = new iohcPacket();
+    
+    // Set up packet structure - CMD 0x31 has no payload
+    packet->payload.packet.header.CtrlByte1.asStruct.MsgLen = sizeof(_header) - 1;
+    packet->payload.packet.header.CtrlByte1.asStruct.Protocol = 0;
+    packet->payload.packet.header.CtrlByte1.asStruct.StartFrame = 1;
+    packet->payload.packet.header.CtrlByte1.asStruct.EndFrame = 0;
+    packet->buffer_length = 9;  // Header only, no payload
+    
+    packet->payload.packet.header.CtrlByte2.asByte = 0;
+    
+    address myAddr = CONTROLLER_ADDRESS;
+    memcpy(packet->payload.packet.header.source, myAddr, 3);
+    memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
+    
+    packet->payload.packet.header.cmd = 0x31;
+    packet->frequency = CHANNEL2;
+    packet->repeatTime = 25;
+    packet->repeat = 0;
+    packet->lock = false;
+    
+    bool sent = sendPacket(packet);
+    
+    if (sent) {
+        addLogMessage("Sent CMD 0x31 - waiting for device to respond with CMD 0x3C (challenge)");
+        lastStepTime = millis();
+    }
+    return sent;
+}
+
+bool PairingController::sendForceKeyExchange(Device2W* device) {
+    // CMD 0x38 - Launch Key Transfer with 6-byte challenge
+    // Used when device skips CMD 0x3C and goes straight to CMD 0x2F
+    // This forces the device to exchange keys
+    
+    addLogMessage("🔑 Device skipped challenge - forcing key exchange with CMD 0x38");
+    
+    // Generate random challenge
+    for (int i = 0; i < 6; i++) {
+        deviceChallenge[i] = random(0, 256);
+    }
+    
+    char challengeMsg[128];
+    snprintf(challengeMsg, sizeof(challengeMsg), 
+             "[Pairing] Generated challenge: %02X%02X%02X%02X%02X%02X",
+             deviceChallenge[0], deviceChallenge[1], deviceChallenge[2],
+             deviceChallenge[3], deviceChallenge[4], deviceChallenge[5]);
+    addLogMessage(challengeMsg);
+    
+    iohcPacket* packet = new iohcPacket();
+    
+    // Set up packet structure  
+    packet->payload.packet.header.CtrlByte1.asStruct.MsgLen = sizeof(_header) - 1;
+    packet->payload.packet.header.CtrlByte1.asStruct.Protocol = 0;
+    packet->payload.packet.header.CtrlByte1.asStruct.StartFrame = 1;
+    packet->payload.packet.header.CtrlByte1.asStruct.EndFrame = 0;
+    packet->payload.packet.header.CtrlByte1.asByte += 6;
+    memcpy(packet->payload.buffer + 9, deviceChallenge, 6);
+    packet->buffer_length = 6 + 9;
+    
+    packet->payload.packet.header.CtrlByte2.asByte = 0;
+    
+    address myAddr = CONTROLLER_ADDRESS;
+    memcpy(packet->payload.packet.header.source, myAddr, 3);
+    memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
+    
+    packet->payload.packet.header.cmd = 0x38;
+    packet->frequency = CHANNEL2;
+    packet->repeatTime = 25;
+    packet->repeat = 0;
+    packet->lock = false;
+    
+    hasChallenge = true;  // Mark that we have a challenge
+    
+    bool sent = sendPacket(packet);
+    
+    if (sent) {
+        addLogMessage("Sent CMD 0x38 - waiting for device to respond with CMD 0x3C");
+        lastStepTime = millis();
     }
     return sent;
 }
@@ -573,7 +1008,7 @@ bool PairingController::sendChallengeResponse(Device2W* device) {
     packet->payload.packet.header.CtrlByte2.asByte = 0;
     
     // Source: controller address
-    address myAddr = {0xBA, 0x11, 0xAD};
+    address myAddr = CONTROLLER_ADDRESS;
     memcpy(packet->payload.packet.header.source, myAddr, 3);
     
     // Target: specific device
@@ -627,7 +1062,7 @@ bool PairingController::sendChallenge(Device2W* device) {
     
     packet->payload.packet.header.CtrlByte2.asByte = 0;
     
-    address myAddr = {0xBA, 0x11, 0xAD};
+    address myAddr = CONTROLLER_ADDRESS;
     memcpy(packet->payload.packet.header.source, myAddr, 3);
     memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
     
@@ -765,7 +1200,7 @@ bool PairingController::sendKeyTransfer(Device2W* device) {
     
     packet->payload.packet.header.CtrlByte2.asByte = 0;
     
-    address myAddr = {0xBA, 0x11, 0xAD};
+    address myAddr = CONTROLLER_ADDRESS;
     memcpy(packet->payload.packet.header.source, myAddr, 3);
     memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
     
@@ -778,6 +1213,7 @@ bool PairingController::sendKeyTransfer(Device2W* device) {
     
     // Store system key in device
     deviceMgr->storeSystemKey(device->nodeAddress, systemKey2W, 16);
+    deviceMgr->storeStackKey(device->nodeAddress, encrypted_iv, 16);
     
     ets_printf("[Pairing] Calling sendPacket() for CMD 0x32...\n");
     bool sent = sendPacket(packet);
@@ -785,7 +1221,8 @@ bool PairingController::sendKeyTransfer(Device2W* device) {
     
     if (sent) {
         ets_printf("[Pairing] sendPacket() returned SUCCESS for CMD 0x32\n");
-        addLogMessage("Sent key transfer (CMD 0x32)");
+        addLogMessage("Sent key transfer (CMD 0x32) - key exchange complete!");
+        device->pairingState = PairingState::KEY_EXCHANGED;
         lastStepTime = millis();
     } else {
         ets_printf("[Pairing] sendPacket() returned FAILURE for CMD 0x32\n");
@@ -807,7 +1244,7 @@ bool PairingController::requestName(Device2W* device) {
     
     packet->payload.packet.header.CtrlByte2.asByte = 0;
     
-    address myAddr = {0xBA, 0x11, 0xAD};
+    address myAddr = CONTROLLER_ADDRESS;
     memcpy(packet->payload.packet.header.source, myAddr, 3);
     memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
     
@@ -843,7 +1280,7 @@ bool PairingController::requestGeneralInfo1(Device2W* device) {
     
     packet->payload.packet.header.CtrlByte2.asByte = 0;
     
-    address myAddr = {0xBA, 0x11, 0xAD};
+    address myAddr = CONTROLLER_ADDRESS;
     memcpy(packet->payload.packet.header.source, myAddr, 3);
     memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
     
@@ -878,7 +1315,7 @@ bool PairingController::requestGeneralInfo2(Device2W* device) {
     
     packet->payload.packet.header.CtrlByte2.asByte = 0;
     
-    address myAddr = {0xBA, 0x11, 0xAD};
+    address myAddr = CONTROLLER_ADDRESS;
     memcpy(packet->payload.packet.header.source, myAddr, 3);
     memcpy(packet->payload.packet.header.target, device->nodeAddress, 3);
     

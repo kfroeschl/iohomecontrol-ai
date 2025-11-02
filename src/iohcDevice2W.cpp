@@ -239,7 +239,7 @@ std::vector<Device2W*> Device2WManager::getDevicesByState(PairingState state) {
 
 Device2W* Device2WManager::findDeviceInPairing() {
     for (auto& pair : devices) {
-        if (pair.second->isPairingInProgress()) {
+        if (pair.second->isPairing()) {
             return pair.second;
         }
     }
@@ -448,6 +448,20 @@ bool Device2WManager::storeSystemKey(const address& addr, const uint8_t* key, si
     saveToFile();
     
     addLogMessage(("Stored system key for " + device->addressStr).c_str());
+    return true;
+}
+
+bool Device2WManager::storeStackKey(const address& addr, const uint8_t* key, size_t len) {
+    if (len < 16) return false;
+    
+    Device2W* device = getDevice(addr);
+    if (!device) return false;
+    
+    memcpy(device->stackKey, key, 16);
+    device->hasStackKey = true;
+    device->touch();
+    
+    addLogMessage(("Stored stack key for " + device->addressStr).c_str());
     return true;
 }
 
