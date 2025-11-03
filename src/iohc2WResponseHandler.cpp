@@ -72,12 +72,17 @@ bool IOHC2WResponseHandler::handleChallenge(IOHC::iohcPacket* iohc) {
             Serial.println();
             
             // Build frame data for CMD 0x3D authentication
-            // Frame data should be JUST the CMD 0x3D byte (not the original command!)
+            // According to linklayer.md: "The initial value is always created using data from the requesting command"
+            // So frame_data should be the ORIGINAL command (e.g., CMD 0x00 for on/off), not CMD 0x3D!
             std::vector<uint8_t> frame_data;
-            frame_data.push_back(0x3D);  // CMD 0x3D response byte
+            frame_data.push_back(device->lastCommandByte);  // Original command byte (e.g., 0x00)
+            // Add the command payload (data after CMD byte)
+            for (int i = 0; i < device->lastCommandLen; i++) {
+                frame_data.push_back(device->lastCommand[i]);
+            }
             
             // Debug: Show frame data
-            Serial.print("[Auth] Frame Data: ");
+            Serial.print("[Auth] Frame Data (original command): ");
             for (uint8_t byte : frame_data) {
                 Serial.printf("%02X", byte);
             }

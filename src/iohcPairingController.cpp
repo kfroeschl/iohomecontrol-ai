@@ -269,7 +269,7 @@ bool PairingController::handlePairingPacket(iohcPacket* packet) {
             }
             break;
             
-        case 0x3C: // Challenge from device (response to CMD 0x31)
+        case 0x3C: // Challenge from device (response to CMD 0x31 or challenging a sent command)
             if (device->pairingState == PairingState::ASKING_CHALLENGE) {
                 if (simplePacket.payload_len >= 6) {
                     // Store the 6-byte challenge from the device
@@ -295,6 +295,35 @@ bool PairingController::handlePairingPacket(iohcPacket* packet) {
                         scheduleRetry([this, device]() {
                             return sendKeyTransfer(device);
                         });
+                        handled = true;
+                    }
+                } else {
+                    addLogMessage("⚠️ CMD 0x3C received but payload too short");
+                }
+            }
+            else if (device->pairingState == PairingState::CHALLENGE_RECEIVED || 
+                     device->pairingState == PairingState::KEY_EXCHANGED) {
+                // Device is challenging our CMD 0x32 (Key Transfer) or CMD 0x36 (Address Request)
+                if (simplePacket.payload_len >= 6) {
+                    memcpy(deviceChallenge, simplePacket.payload, 6);
+                    hasChallenge = true;
+                    
+                    char logMsg[128];
+                    snprintf(logMsg, sizeof(logMsg), 
+                             "✅ Device challenging CMD 0x%02X: %02X%02X%02X%02X%02X%02X",
+                             commandBeingAuthenticated,
+                             deviceChallenge[0], deviceChallenge[1], deviceChallenge[2],
+                             deviceChallenge[3], deviceChallenge[4], deviceChallenge[5]);
+                    addLogMessage(logMsg);
+                    
+                    // Send CMD 0x3D challenge response
+                    addLogMessage("Sending CMD 0x3D challenge response...");
+                    if (sendChallengeResponse(device)) {
+                        addLogMessage("✅ Sent CMD 0x3D authentication response");
+                        lastStepTime = millis();
+                        handled = true;
+                    } else {
+                        addLogMessage("❌ Failed to send CMD 0x3D");
                         handled = true;
                     }
                 } else {
@@ -814,6 +843,7 @@ bool PairingController::sendPriorityAddressRequest(Device2W* device) {
                  "Sent Priority Address Request: CMD 0x36 to %02X%02X%02X",
                  device->nodeAddress[0], device->nodeAddress[1], device->nodeAddress[2]);
         addLogMessage(logMsg);
+        commandBeingAuthenticated = 0x36;  // Track that CMD 0x36 needs authentication
         lastStepTime = millis();
     }
     return sent;
@@ -983,9 +1013,15 @@ bool PairingController::sendChallengeResponse(Device2W* device) {
     uint8_t response[6];
     
     if (hasSystemKey) {
-        // Create frame data for MAC calculation (just the command byte for CMD 0x3D)
+        // Create frame data for MAC calculation
+        // According to linklayer.md: "The initial value is always created using data from the requesting command"
+        // This means we use the command that triggered the challenge (e.g., 0x32 for key transfer, 0x36 for address request)
         std::vector<uint8_t> frame_data;
-        frame_data.push_back(0x3D);  // Command
+        frame_data.push_back(commandBeingAuthenticated);  // Command that is being authenticated
+        
+        char cmdMsg[64];
+        snprintf(cmdMsg, sizeof(cmdMsg), "Authenticating CMD 0x%02X with challenge", commandBeingAuthenticated);
+        addLogMessage(cmdMsg);
         
         // Generate MAC using 2W HMAC algorithm
         iohcCrypto::create_2W_hmac(response, deviceChallenge, systemKey2W, frame_data);
@@ -1223,6 +1259,7 @@ bool PairingController::sendKeyTransfer(Device2W* device) {
         ets_printf("[Pairing] sendPacket() returned SUCCESS for CMD 0x32\n");
         addLogMessage("Sent key transfer (CMD 0x32) - key exchange complete!");
         device->pairingState = PairingState::KEY_EXCHANGED;
+        commandBeingAuthenticated = 0x32;  // Track that CMD 0x32 needs authentication
         lastStepTime = millis();
     } else {
         ets_printf("[Pairing] sendPacket() returned FAILURE for CMD 0x32\n");

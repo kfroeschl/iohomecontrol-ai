@@ -46,6 +46,14 @@ String Device2W::toJson() const {
         keyHex[32] = '\0';
         doc["session_key"] = String(keyHex);
     }
+    if (hasStackKey) {
+        char keyHex[33];
+        for (int i = 0; i < 16; i++) {
+            snprintf(keyHex + i * 2, 3, "%02x", stackKey[i]);
+        }
+        keyHex[32] = '\0';
+        doc["stack_key"] = String(keyHex);
+    }
     
     doc["sequence"] = sequenceNumber;
     
@@ -136,6 +144,17 @@ bool Device2W::fromJson(const String& addressKey, const String& jsonStr) {
                 sessionKey[i] = strtoul(byteStr.c_str(), nullptr, 16);
             }
             hasSessionKey = true;
+        }
+    }
+    
+    if (doc.containsKey("stack_key")) {
+        String keyHex = doc["stack_key"];
+        if (keyHex.length() == 32) {
+            for (int i = 0; i < 16; i++) {
+                String byteStr = keyHex.substring(i * 2, i * 2 + 2);
+                stackKey[i] = strtoul(byteStr.c_str(), nullptr, 16);
+            }
+            hasStackKey = true;
         }
     }
     

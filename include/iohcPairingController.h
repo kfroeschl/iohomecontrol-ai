@@ -54,6 +54,9 @@ private:
     uint8_t deviceChallenge[6];
     bool hasChallenge;
     
+    // Track which command is being authenticated (e.g., 0x32 for key transfer, 0x36 for address request)
+    uint8_t commandBeingAuthenticated;
+    
     // Pairing challenge (12 bytes for CMD 0x2A) - DEPRECATED, CMD 0x28 has no payload
     uint8_t pairingChallenge[12];
     
@@ -76,9 +79,9 @@ private:
     
     PairingController() : deviceMgr(nullptr), radio(nullptr), 
                          pairingActive(false), lastStepTime(0), hasSystemKey(false),
-                         hasChallenge(false), lastSentPacket(nullptr), autoPairMode(false),
-                         cmd2ABroadcastCount(0), pendingRetryFunc(nullptr), retryCount(0), 
-                         lastRetryTime(0) {
+                         hasChallenge(false), commandBeingAuthenticated(0), lastSentPacket(nullptr), 
+                         autoPairMode(false), cmd2ABroadcastCount(0), pendingRetryFunc(nullptr), 
+                         retryCount(0), lastRetryTime(0) {
         memset(currentPairingAddr, 0, 3);
         memset(systemKey2W, 0, 16);
         memset(deviceChallenge, 0, 6);

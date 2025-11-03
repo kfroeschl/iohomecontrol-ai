@@ -119,6 +119,10 @@ namespace iohcCrypto {
                 initial_value[i] = frame_data[i];
             i++;
         }
+        
+        // Debug: show checksum calculation
+        Serial.printf("[constructIV] Frame data %d bytes, Checksum: %02X%02X\n", 
+                     frame_data.size(), initial_value[8], initial_value[9]);
 
         if (i < 8)
             for (size_t j = i; j < 8; j++)
