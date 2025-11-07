@@ -17,7 +17,7 @@
 #ifndef CRYPTO_H
 #define CRYPTO_H
 
-#include <board-config.h>
+// #include <board-config.h>
 #include <string>
 #include <vector>
 #include <tuple>

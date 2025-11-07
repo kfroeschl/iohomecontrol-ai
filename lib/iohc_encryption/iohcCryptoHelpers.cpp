@@ -16,8 +16,9 @@
 
 #include <iohcCryptoHelpers.h>
 #include <crypto2Wutils.h>
+#include <Aes.h>
 #include <cstring>
-#include <Arduino.h> 
+// #include <Arduino.h> 
 /*
     Helper function to convert a string containing hex numbers to a bytes sequence; one byte every two characters
 */
@@ -121,8 +122,8 @@ namespace iohcCrypto {
         }
         
         // Debug: show checksum calculation
-        Serial.printf("[constructIV] Frame data %d bytes, Checksum: %02X%02X\n", 
-                     frame_data.size(), initial_value[8], initial_value[9]);
+        // Serial.printf("[constructIV] Frame data %d bytes, Checksum: %02X%02X\n", 
+        //              frame_data.size(), initial_value[8], initial_value[9]);
 
         if (i < 8)
             for (size_t j = i; j < 8; j++)
@@ -168,6 +169,14 @@ namespace iohcCrypto {
 //        }
         mbedtls_aes_crypt_ecb(&aes, MBEDTLS_AES_ENCRYPT, iv.data(), hmac);
 //        mbedtls_aes_free( &aes );
+        #else
+            // Native build using Aes.h
+            AES_ctx ctx;
+            AES_init_ctx(&ctx, controller_key);
+            uint8_t encrypted[16];
+            memcpy(encrypted, iv.data(), 16);
+            AES_ECB_encrypt(&ctx, encrypted);
+            memcpy(hmac, encrypted, 16);
         #endif        
 
     }
@@ -190,11 +199,11 @@ namespace iohcCrypto {
         iv = constructInitialValue(frame_data, challenge, nullptr);
 
         // Debug: print the constructed IV
-        Serial.print("[create_2W_hmac] IV: ");
-        for (uint8_t byte : iv) {
-            Serial.printf("%02X", byte);
-        }
-        Serial.println();
+        // Serial.print("[create_2W_hmac] IV: ");
+        // for (uint8_t byte : iv) {
+        //     Serial.printf("%02X", byte);
+        // }
+        // Serial.println();
 
         #if defined(ESP8266)
             aes128.setKey(system_key, 16);
@@ -205,11 +214,19 @@ namespace iohcCrypto {
             mbedtls_aes_crypt_ecb(&aes, MBEDTLS_AES_ENCRYPT, iv.data(), encrypted);
             // Copy first 6 bytes as MAC
             memcpy(hmac, encrypted, 6);
+        #else
+            // Native build using Aes.h
+            AES_ctx ctx;
+            AES_init_ctx(&ctx, system_key);
+            uint8_t encrypted[16];
+            memcpy(encrypted, iv.data(), 16);
+            AES_ECB_encrypt(&ctx, encrypted);
+            memcpy(hmac, encrypted, 6);
         #endif
 
         // Debug: print the generated MAC
-        Serial.printf("[create_2W_hmac] MAC: %02X%02X%02X%02X%02X%02X\n",
-                      hmac[0], hmac[1], hmac[2], hmac[3], hmac[4], hmac[5]);
+        // Serial.printf("[create_2W_hmac] MAC: %02X%02X%02X%02X%02X%02X\n",
+        //               hmac[0], hmac[1], hmac[2], hmac[3], hmac[4], hmac[5]);
     }
 
 /*
@@ -256,6 +273,15 @@ namespace iohcCrypto {
             for (int i = 0; i < 16; ++i)
                 key[i] = captured[i];
             mbedtls_aes_free( &aes );
+        #else
+            // Native build using Aes.h
+            AES_ctx ctx;
+            AES_init_ctx(&ctx, btransfer);
+            uint8_t encrypted_iv[16];
+            memcpy(encrypted_iv, iv.data(), 16);
+            AES_ECB_encrypt(&ctx, encrypted_iv);
+            for (int i = 0; i < 16; ++i)
+                key[i] ^= encrypted_iv[i];
         #endif
     }
 }
