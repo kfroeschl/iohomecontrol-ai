@@ -14,6 +14,22 @@ void tearDown(void) {
     // clean stuff up here
 }
 
+// Helper function to build and verify a complete frame with CRC
+std::string buildFrameWithCRC(const std::vector<uint8_t>& frameData) {
+    std::vector<uint8_t> frame = frameData;
+    uint16_t crc = iohcCrypto::radioPacketComputeCrc(frame);
+    frame.push_back(crc & 0xff);
+    frame.push_back((crc >> 8) & 0xff);
+    return bytesToHexString(frame.data(), frame.size());
+}
+
+// Helper function to build frame and verify against expected value
+void assertFrameEquals(const std::vector<uint8_t>& frameData, const char* expected, const char* description) {
+    std::string result = buildFrameWithCRC(frameData);
+    printf("  %s\n", result.c_str());
+    TEST_ASSERT_EQUAL_STRING(expected, result.c_str());
+}
+
 // Helper function to encrypt 2W key (not present in original library)
 void encrypt_2W_key(uint8_t* encrypted_key, const uint8_t* challenge, const std::vector<uint8_t>& frame_data, const uint8_t* key) {
     // Construct initial value using the frame data and challenge
@@ -97,35 +113,16 @@ void test_1W_key_push() {
     TEST_ASSERT_EQUAL_STRING("19e81ec43d5e", bytesToHexString(hmac, 6).c_str());
     
     // Build final frame
-    std::vector<uint8_t> frame;
-    frame.push_back(0xfc);
-    frame.push_back(0x00);
-    frame.push_back(0x00);
-    frame.push_back(0x00);
-    frame.push_back(0x3f);
-    frame.push_back(node_address[0]);
-    frame.push_back(node_address[1]);
-    frame.push_back(node_address[2]);
-    frame.push_back(0x30);
-    for (int i = 0; i < 16; i++) {
-        frame.push_back(encrypted_1W[i]);
-    }
-    frame.push_back(0x02);
-    frame.push_back(0x01);
-    frame.push_back(sequence_number[0]);
-    frame.push_back(sequence_number[1]);
-    for (int i = 0; i < 6; i++) {
-        frame.push_back(hmac[i]);
-    }
-    
-    // Compute CRC
-    uint16_t crc = iohcCrypto::radioPacketComputeCrc(frame);
-    frame.push_back(crc & 0xff);
-    frame.push_back((crc >> 8) & 0xff);
+    std::vector<uint8_t> final_frame = {0xfc, 0x00, 0x00, 0x00, 0x3f};
+    final_frame.insert(final_frame.end(), node_address, node_address + 3);
+    final_frame.insert(final_frame.end(), frame_data.begin(), frame_data.end());
+    final_frame.push_back(0x02);
+    final_frame.push_back(0x01);
+    final_frame.insert(final_frame.end(), sequence_number, sequence_number + 2);
+    final_frame.insert(final_frame.end(), hmac, hmac + 6);
     
     printf("Final frame sent:\n");
-    printf("  %s\n", bytesToHexString(frame.data(), frame.size()).c_str());
-    TEST_ASSERT_EQUAL_STRING("fc0000003fabcdef307e60491f976adf653db0ed785e49a2010201123419e81ec43d5e9bf2", bytesToHexString(frame.data(), frame.size()).c_str());
+    assertFrameEquals(final_frame, "fc0000003fabcdef307e60491f976adf653db0ed785e49a2010201123419e81ec43d5e9bf2", "Final frame with CRC");
 }
 
 void test_2W_key_pull() {
@@ -138,9 +135,7 @@ void test_2W_key_pull() {
     // Build frame 0x38 + challenge
     std::vector<uint8_t> frame38;
     frame38.push_back(0x38);
-    for (int i = 0; i < 6; i++) {
-        frame38.push_back(challenge[i]);
-    }
+    frame38.insert(frame38.end(), challenge, challenge + 6);
     
     printf("Encrypted 2-way key to be sent with 0x32:\n");
     uint8_t encrypted_2W[16];
@@ -151,9 +146,7 @@ void test_2W_key_pull() {
     // Build frame 0x32 + encrypted key
     std::vector<uint8_t> frame32;
     frame32.push_back(0x32);
-    for (int i = 0; i < 16; i++) {
-        frame32.push_back(encrypted_2W[i]);
-    }
+    frame32.insert(frame32.end(), encrypted_2W, encrypted_2W + 16);
     
     // Create challenge answer
     uint8_t mac_2w[16];
@@ -166,41 +159,24 @@ void test_2W_key_pull() {
     printf("Frames sent on the air:\n");
     
     // 0x38 ask key transfer
-    std::vector<uint8_t> frame;
-    frame = {0x4e, 0x04, 0xfe, 0xef, 0xee, 0xf0, 0x0f, 0x00};
-    for (auto b : frame38) frame.push_back(b);
-    uint16_t crc = iohcCrypto::radioPacketComputeCrc(frame);
-    frame.push_back(crc & 0xff);
-    frame.push_back((crc >> 8) & 0xff);
-    printf("  %s\n", bytesToHexString(frame.data(), frame.size()).c_str());
-    TEST_ASSERT_EQUAL_STRING("4e04feefeef00f0038123456789abc23b6", bytesToHexString(frame.data(), frame.size()).c_str());
+    std::vector<uint8_t> frame = {0x4e, 0x04, 0xfe, 0xef, 0xee, 0xf0, 0x0f, 0x00};
+    frame.insert(frame.end(), frame38.begin(), frame38.end());
+    assertFrameEquals(frame, "4e04feefeef00f0038123456789abc23b6", "0x38 ask key transfer");
     
     // 0x32 key transfer
     frame = {0x18, 0x04, 0xf0, 0x0f, 0x00, 0xfe, 0xef, 0xee, 0x32};
-    for (int i = 0; i < 16; i++) frame.push_back(encrypted_2W[i]);
-    crc = iohcCrypto::radioPacketComputeCrc(frame);
-    frame.push_back(crc & 0xff);
-    frame.push_back((crc >> 8) & 0xff);
-    printf("  %s\n", bytesToHexString(frame.data(), frame.size()).c_str());
-    TEST_ASSERT_EQUAL_STRING("1804f00f00feefee32ea425a7a182885d4eaeefd416d625e016379", bytesToHexString(frame.data(), frame.size()).c_str());
+    frame.insert(frame.end(), encrypted_2W, encrypted_2W + 16);
+    assertFrameEquals(frame, "1804f00f00feefee32ea425a7a182885d4eaeefd416d625e016379", "0x32 key transfer");
     
     // 0x3c challenge
     frame = {0x0e, 0x00, 0xfe, 0xef, 0xee, 0xf0, 0x0f, 0x00, 0x3c};
-    for (int i = 0; i < 6; i++) frame.push_back(challenge[i]);
-    crc = iohcCrypto::radioPacketComputeCrc(frame);
-    frame.push_back(crc & 0xff);
-    frame.push_back((crc >> 8) & 0xff);
-    printf("  %s\n", bytesToHexString(frame.data(), frame.size()).c_str());
-    TEST_ASSERT_EQUAL_STRING("0e00feefeef00f003c123456789abc5eb1", bytesToHexString(frame.data(), frame.size()).c_str());
+    frame.insert(frame.end(), challenge, challenge + 6);
+    assertFrameEquals(frame, "0e00feefeef00f003c123456789abc5eb1", "0x3c challenge");
     
     // 0x3d challenge answer
     frame = {0x8e, 0x00, 0xf0, 0x0f, 0x00, 0xfe, 0xef, 0xee, 0x3d};
-    for (int i = 0; i < 6; i++) frame.push_back(mac_2w[i]);
-    crc = iohcCrypto::radioPacketComputeCrc(frame);
-    frame.push_back(crc & 0xff);
-    frame.push_back((crc >> 8) & 0xff);
-    printf("  %s\n", bytesToHexString(frame.data(), frame.size()).c_str());
-    TEST_ASSERT_EQUAL_STRING("8e00f00f00feefee3d0ae519a73c992400", bytesToHexString(frame.data(), frame.size()).c_str());
+    frame.insert(frame.end(), mac_2w, mac_2w + 6);
+    assertFrameEquals(frame, "8e00f00f00feefee3d0ae519a73c992400", "0x3d challenge answer");
 }
 
 void test_2W_key_push() {
@@ -212,8 +188,7 @@ void test_2W_key_push() {
                               0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16};
     
     // Build frame 0x31
-    std::vector<uint8_t> frame31;
-    frame31.push_back(0x31);
+    std::vector<uint8_t> frame31 = {0x31};
     
     printf("Encrypted 2-way key to be sent with 0x32:\n");
     uint8_t encrypted_2W[16];
@@ -222,12 +197,9 @@ void test_2W_key_push() {
     TEST_ASSERT_EQUAL_STRING("102e49a16d3b69726f3192cf17534ad9", bytesToHexString(encrypted_2W, 16).c_str());
     
     // Build frame 0x32 with the specific encrypted key from Python demo
-    std::vector<uint8_t> frame32;
     uint8_t frame32_bytes[] = {0x32, 0xf8, 0x49, 0x58, 0x4f, 0xfc, 0xfc, 0x44, 0x2b, 
                                0x1e, 0x97, 0xe4, 0xc3, 0x8d, 0xf7, 0xb1, 0x43};
-    for (int i = 0; i < 17; i++) {
-        frame32.push_back(frame32_bytes[i]);
-    }
+    std::vector<uint8_t> frame32(frame32_bytes, frame32_bytes + 17);
     
     // Create challenge answer for frame32
     uint8_t mac_2w32[16];
@@ -240,57 +212,32 @@ void test_2W_key_push() {
     printf("Frames sent on the air:\n");
     
     // 0x31 ask challenge
-    std::vector<uint8_t> frame;
-    frame = {0x48, 0x00, 0xfe, 0xef, 0xee, 0xf0, 0x0f, 0x00, 0x31};
-    uint16_t crc = iohcCrypto::radioPacketComputeCrc(frame);
-    frame.push_back(crc & 0xff);
-    frame.push_back((crc >> 8) & 0xff);
-    printf("  %s\n", bytesToHexString(frame.data(), frame.size()).c_str());
-    TEST_ASSERT_EQUAL_STRING("4800feefeef00f0031fb60", bytesToHexString(frame.data(), frame.size()).c_str());
+    std::vector<uint8_t> frame = {0x48, 0x00, 0xfe, 0xef, 0xee, 0xf0, 0x0f, 0x00, 0x31};
+    assertFrameEquals(frame, "4800feefeef00f0031fb60", "0x31 ask challenge");
     
     // 0x3c challenge
     frame = {0x0e, 0x00, 0xf0, 0x0f, 0x00, 0xfe, 0xef, 0xee, 0x3c};
-    for (int i = 0; i < 6; i++) frame.push_back(challenge1[i]);
-    crc = iohcCrypto::radioPacketComputeCrc(frame);
-    frame.push_back(crc & 0xff);
-    frame.push_back((crc >> 8) & 0xff);
-    printf("  %s\n", bytesToHexString(frame.data(), frame.size()).c_str());
-    TEST_ASSERT_EQUAL_STRING("0e00f00f00feefee3c123456789abc19db", bytesToHexString(frame.data(), frame.size()).c_str());
+    frame.insert(frame.end(), challenge1, challenge1 + 6);
+    assertFrameEquals(frame, "0e00f00f00feefee3c123456789abc19db", "0x3c challenge 1");
     
     // 0x32 key transfer
     frame = {0x18, 0x00, 0xf0, 0x0f, 0x00, 0xfe, 0xef, 0xee, 0x32};
-    for (int i = 0; i < 16; i++) frame.push_back(encrypted_2W[i]);
-    crc = iohcCrypto::radioPacketComputeCrc(frame);
-    frame.push_back(crc & 0xff);
-    frame.push_back((crc >> 8) & 0xff);
-    printf("  %s\n", bytesToHexString(frame.data(), frame.size()).c_str());
-    TEST_ASSERT_EQUAL_STRING("1800f00f00feefee32102e49a16d3b69726f3192cf17534ad98043", bytesToHexString(frame.data(), frame.size()).c_str());
+    frame.insert(frame.end(), encrypted_2W, encrypted_2W + 16);
+    assertFrameEquals(frame, "1800f00f00feefee32102e49a16d3b69726f3192cf17534ad98043", "0x32 key transfer");
     
     // 0x3c challenge
     frame = {0x0e, 0x00, 0xf0, 0x0f, 0x00, 0xfe, 0xef, 0xee, 0x3c};
-    for (int i = 0; i < 6; i++) frame.push_back(challenge2[i]);
-    crc = iohcCrypto::radioPacketComputeCrc(frame);
-    frame.push_back(crc & 0xff);
-    frame.push_back((crc >> 8) & 0xff);
-    printf("  %s\n", bytesToHexString(frame.data(), frame.size()).c_str());
-    TEST_ASSERT_EQUAL_STRING("0e00f00f00feefee3c123456789abc19db", bytesToHexString(frame.data(), frame.size()).c_str());
+    frame.insert(frame.end(), challenge2, challenge2 + 6);
+    assertFrameEquals(frame, "0e00f00f00feefee3c123456789abc19db", "0x3c challenge 2");
     
     // 0x3d challenge answer
     frame = {0x0e, 0x00, 0xfe, 0xef, 0xee, 0xf0, 0x0f, 0x00, 0x3d};
-    for (int i = 0; i < 6; i++) frame.push_back(mac_2w32[i]);
-    crc = iohcCrypto::radioPacketComputeCrc(frame);
-    frame.push_back(crc & 0xff);
-    frame.push_back((crc >> 8) & 0xff);
-    printf("  %s\n", bytesToHexString(frame.data(), frame.size()).c_str());
-    TEST_ASSERT_EQUAL_STRING("0e00feefeef00f003d8dc9d40dc7a4f9e5", bytesToHexString(frame.data(), frame.size()).c_str());
+    frame.insert(frame.end(), mac_2w32, mac_2w32 + 6);
+    assertFrameEquals(frame, "0e00feefeef00f003d8dc9d40dc7a4f9e5", "0x3d challenge answer");
     
     // 0x33 key transfer complete
     frame = {0x88, 0x00, 0xf0, 0x0f, 0x00, 0xfe, 0xef, 0xee, 0x33};
-    crc = iohcCrypto::radioPacketComputeCrc(frame);
-    frame.push_back(crc & 0xff);
-    frame.push_back((crc >> 8) & 0xff);
-    printf("  %s\n", bytesToHexString(frame.data(), frame.size()).c_str());
-    TEST_ASSERT_EQUAL_STRING("8800f00f00feefee335bfb", bytesToHexString(frame.data(), frame.size()).c_str());
+    assertFrameEquals(frame, "8800f00f00feefee335bfb", "0x33 key transfer complete");
 }
 
 int main( int argc, char **argv) {
