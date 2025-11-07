@@ -124,9 +124,6 @@ public:
     bool isAutoPairMode() const { return autoPairMode; }
     Device2W* getCurrentPairingDevice();
     
-    // Debug/testing: Verify crypto implementation with known test vectors
-    void verifyCryptoImplementation();
-    
 private:
     // Auto-retry helper functions
     void scheduleRetry(std::function<bool()> retryFunc);

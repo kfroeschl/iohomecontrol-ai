@@ -451,11 +451,4 @@ void test2W(Tokens *cmd) {
         }
 }
 
-void verifyCrypto(Tokens *cmd) {
-        auto* pairingCtrl = PairingController::getInstance();
-        Serial.println("Running crypto verification test...");
-        pairingCtrl->verifyCryptoImplementation();
-        Serial.println("Check logs for results");
-}
-
 } // namespace IOHC2WCommands

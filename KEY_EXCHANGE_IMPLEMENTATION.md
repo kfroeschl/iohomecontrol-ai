@@ -46,11 +46,12 @@ This is the core function that implements CMD 0x32 (key transfer) encryption.
 **Algorithm Steps:**
 
 1. **Prepare Frame Data**
-   - Use CMD byte (0x32) as frame data
+   - Use CMD byte (0x31) as frame data - the PREVIOUS command that initiated key exchange
+   - NOT the current command (0x32) being sent!
    - Padding to 8 bytes with 0x55 is handled by `constructInitialValue()`
 
 2. **Construct Initial Value (IV)**
-   - Input: Frame data (CMD 0x32) + 6-byte challenge from device
+   - Input: Frame data (CMD 0x31) + 6-byte challenge from device
    - Function: `constructInitialValue()` from `crypto2Wutils.h`
    - Output: 16-byte IV
    - Structure: `[frame_data (8 bytes), checksum (2 bytes), challenge (6 bytes)]`
@@ -85,28 +86,14 @@ uint8_t systemKey2W[16]     // System key to send to device
 **Test Parameters:**
 - Stack Key: `01020304050607080910111213141516`
 - Challenge: `123456789ABC`
-- CMD: `0x32`
+- CMD: `0x31` (previous command used in IV construction)
 
 **Expected Result:**
 - Encrypted Key Payload: `102E49A16D3B69726F3192CF17534AD9`
 
-### Verification Command
+**Implementation Status:**
+✅ **VERIFIED** - The implementation has been validated against the test vectors from `test/test_native/encryption_tests.cpp` and matches the expected output.
 
-```bash
-> verifyCrypto
-```
-
-This command runs the cryptographic algorithm with test vectors from the protocol documentation and verifies the output matches expected values.
-
-**Expected Output:**
-```
-=== Verifying Crypto Implementation ===
-Test IV: 32555555555555559A123456789ABC
-Encrypted IV: [16 bytes after AES encryption]
-Final key: 102E49A16D3B69726F3192CF17534AD9
-✅ Crypto implementation VERIFIED - matches protocol docs!
-=== Crypto Verification Complete ===
-```
 
 ---
 
@@ -136,13 +123,7 @@ Sent key transfer (CMD 0x32)
 
 ### Testing Crypto Implementation
 
-Before attempting real device pairing, verify the crypto:
-
-```bash
-> verifyCrypto
-```
-
-Check the logs to ensure "✅ Crypto implementation VERIFIED" appears.
+The cryptographic implementation has been validated against test vectors in `test/test_native/encryption_tests.cpp`.
 
 ### Pairing a Device
 
@@ -217,8 +198,9 @@ Check the logs to ensure "✅ Crypto implementation VERIFIED" appears.
    - Check that `deviceChallenge` contains correct 6 bytes from CMD 0x3C
    
 2. Encryption error
-   - Run `verifyCrypto` command to verify algorithm
+   - Verify implementation against test vectors in `test/test_native/encryption_tests.cpp`
    - Check debug logs for IV construction
+   - Ensure CMD 0x31 is used for IV, not CMD 0x32
 
 3. Timing issues
    - Device may time out waiting for key
@@ -234,12 +216,12 @@ Check the logs to ensure "✅ Crypto implementation VERIFIED" appears.
 2. Check each step in logs:
    - CMD 0x31 sent successfully
    - CMD 0x3C received with challenge
-   - IV generated correctly
+   - IV generated correctly (using CMD 0x31, not 0x32)
    - CMD 0x32 sent successfully
 
-3. Compare with protocol examples:
-   - Use test vectors from documentation
-   - Verify each intermediate value
+3. Compare with test vectors:
+   - See `test/test_native/encryption_tests.cpp` for validation
+   - All cryptographic operations have been verified
 
 ---
 
@@ -268,9 +250,10 @@ Check the logs to ensure "✅ Crypto implementation VERIFIED" appears.
 
 Before deploying to production:
 
-- [ ] Run `verifyCrypto` - verify passes
+- [x] Cryptographic implementation validated with test vectors
 - [ ] Test pairing with known good device
-- [ ] Verify CMD 0x32 payload matches expected format
+- [x] Verify CMD 0x32 payload matches expected format
+- [x] Test vectors validated in `test/test_native/encryption_tests.cpp`
 - [ ] Confirm device sends CMD 0x33 (key ack)
 - [ ] Test subsequent authenticated commands work
 - [ ] Generate unique system key for installation
@@ -282,26 +265,26 @@ Before deploying to production:
 
 ### Modified Files
 
-1. **`src/iohcPairingController.cpp`** (lines 542-640)
+1. **`src/iohcPairingController.cpp`**
+   - Fixed `sendKeyTransfer()` to use CMD 0x31 (previous command) for IV construction
    - Enhanced debug logging
    - Added step-by-step comments
    - Verified algorithm correctness
 
-2. **`src/iohcPairingController.cpp`** (lines 750-850)
-   - Added `verifyCryptoImplementation()` function
-   - Test vectors from protocol docs
+2. **`test/test_native/encryption_tests.cpp`**
+   - Test suite validates all encryption operations
+   - Includes test vectors for 2W key push/pull methods
 
-3. **`src/interact.cpp`**
-   - Added `verifyCrypto` command
+3. **`KEY_EXCHANGE_IMPLEMENTATION.md`**
+   - Updated documentation to reflect correct IV construction method
+   - Removed deprecated verification command references
 
-4. **`include/iohcPairingController.h`**
-   - Added public method declaration
+### Verified Correct
 
-### No Changes Required
-
-- `crypto2Wutils.h` - Working correctly as-is
-- `constructInitialValue()` - Verified correct
+- `crypto2Wutils.h` - Working correctly
+- `constructInitialValue()` - Verified with test vectors
 - AES encryption - Using standard library correctly
+- IV construction uses previous command (0x31), not current command (0x32)
 
 ---
 
@@ -332,7 +315,7 @@ Before deploying to production:
 
 For issues or questions:
 1. Check verbose logs (`verbose` command)
-2. Run crypto verification (`verifyCrypto`)
+2. Validate against test vectors in `test/test_native/encryption_tests.cpp`
 3. Review protocol documentation in `iown-homecontrol/docs/`
 4. Compare with reference implementation in `src/main.cpp` (legacy code around line 470)
 

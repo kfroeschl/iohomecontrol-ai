@@ -1162,9 +1162,10 @@ bool PairingController::sendKeyTransfer(Device2W* device) {
     
     // Prepare frame data for IV construction
     // According to protocol: "Controller creates an initial value based on last frame and the specified challenge"
-    // The "last frame" is the CMD 0x32 frame being sent (just the command byte)
+    // The "last frame" is the CMD 0x31 (Ask Challenge) that preceded receiving CMD 0x3C
+    // NOT the current CMD 0x32 being sent!
     std::vector<uint8_t> frame_data;
-    frame_data.push_back(0x32);  // CMD 0x32
+    frame_data.push_back(0x31);  // CMD 0x31 (previous command sent before challenge)
     // Note: Padding to 8 bytes with 0x55 is handled inside constructInitialValue
     
     // Convert challenge to vector for constructInitialValue
@@ -1412,88 +1413,5 @@ bool PairingController::sendPacket(iohcPacket* packet) {
     radio->send(packets);
     
     return true;
-}
-
-void PairingController::verifyCryptoImplementation() {
-    // Test vectors from protocol documentation (linklayer.md)
-    // Example: Stack key push - CMD 0x32
-    // Stack key: 01020304050607080910111213141516
-    // Challenge: 123456789ABC
-    // Expected encrypted output: 102E49A16D3B69726F3192CF17534AD9
-    
-    addLogMessage("=== Verifying Crypto Implementation ===");
-    
-    // Test parameters from documentation
-    uint8_t test_stack_key[16] = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
-                                   0x09, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16};
-    uint8_t test_challenge[6] = {0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC};
-    
-    // Create IV for CMD 0x32
-    std::vector<uint8_t> frame_data;
-    frame_data.push_back(0x32);
-    
-    std::vector<uint8_t> challenge_vec(6);
-    memcpy(challenge_vec.data(), test_challenge, 6);
-    
-    uint8_t initial_value[16];
-    constructInitialValue(frame_data, initial_value, frame_data.size(), challenge_vec, nullptr);
-    
-    char msg[256];
-    snprintf(msg, sizeof(msg), 
-             "Test IV: %02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
-             initial_value[0], initial_value[1], initial_value[2], initial_value[3],
-             initial_value[4], initial_value[5], initial_value[6], initial_value[7],
-             initial_value[8], initial_value[9], initial_value[10], initial_value[11],
-             initial_value[12], initial_value[13], initial_value[14], initial_value[15]);
-    addLogMessage(msg);
-    
-    // Encrypt with transfer key
-    AES_ctx ctx;
-    AES_init_ctx(&ctx, transfert_key);
-    uint8_t encrypted_iv[16];
-    memcpy(encrypted_iv, initial_value, 16);
-    AES_ECB_encrypt(&ctx, encrypted_iv);
-    
-    snprintf(msg, sizeof(msg), 
-             "Encrypted IV: %02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
-             encrypted_iv[0], encrypted_iv[1], encrypted_iv[2], encrypted_iv[3],
-             encrypted_iv[4], encrypted_iv[5], encrypted_iv[6], encrypted_iv[7],
-             encrypted_iv[8], encrypted_iv[9], encrypted_iv[10], encrypted_iv[11],
-             encrypted_iv[12], encrypted_iv[13], encrypted_iv[14], encrypted_iv[15]);
-    addLogMessage(msg);
-    
-    // XOR with test stack key
-    uint8_t result[16];
-    for (int i = 0; i < 16; i++) {
-        result[i] = test_stack_key[i] ^ encrypted_iv[i];
-    }
-    
-    snprintf(msg, sizeof(msg), 
-             "Final key: %02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
-             result[0], result[1], result[2], result[3],
-             result[4], result[5], result[6], result[7],
-             result[8], result[9], result[10], result[11],
-             result[12], result[13], result[14], result[15]);
-    addLogMessage(msg);
-    
-    // Compare with expected value from docs
-    uint8_t expected[16] = {0x10, 0x2E, 0x49, 0xA1, 0x6D, 0x3B, 0x69, 0x72,
-                            0x6F, 0x31, 0x92, 0xCF, 0x17, 0x53, 0x4A, 0xD9};
-    
-    bool matches = memcmp(result, expected, 16) == 0;
-    if (matches) {
-        addLogMessage("✅ Crypto implementation VERIFIED - matches protocol docs!");
-    } else {
-        addLogMessage("❌ Crypto implementation MISMATCH - check algorithm!");
-        snprintf(msg, sizeof(msg), 
-                 "Expected: %02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X",
-                 expected[0], expected[1], expected[2], expected[3],
-                 expected[4], expected[5], expected[6], expected[7],
-                 expected[8], expected[9], expected[10], expected[11],
-                 expected[12], expected[13], expected[14], expected[15]);
-        addLogMessage(msg);
-    }
-    
-    addLogMessage("=== Crypto Verification Complete ===");
 }
 

@@ -33,7 +33,6 @@ namespace IOHC2WCommands {
     void off2W(Tokens *cmd);
     void status2W(Tokens *cmd);
     void test2W(Tokens *cmd);
-    void verifyCrypto(Tokens *cmd);
 }
 
 #endif // IOHC2WCOMMANDS_H

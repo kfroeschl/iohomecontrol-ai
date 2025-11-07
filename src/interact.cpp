@@ -340,7 +340,6 @@ void createCommands() {
     Cmd::addHandler((char*)"off2W", (char*)"Turn OFF 2W device <address>", IOHC2WCommands::off2W);
     Cmd::addHandler((char*)"status2W", (char*)"Query status of 2W device <address>", IOHC2WCommands::status2W);
     Cmd::addHandler((char*)"test2W", (char*)"Test command with custom payload <address> <cmd> <byte1> <byte2> <byte3> [byte4] [byte5] [byte6]", IOHC2WCommands::test2W);
-    Cmd::addHandler((char*)"verifyCrypto", (char*)"Verify crypto implementation with test vectors", IOHC2WCommands::verifyCrypto);
     
     // General commands (existing)
     Cmd::addHandler((char *) "scanDump", (char *) "Dump Scan Results", [](Tokens *cmd)-> void {
