@@ -596,4 +596,141 @@ namespace IOHC {
 
         return true;
     }
+
+    /**
+     * @brief FreeRTOS task function for discovery broadcasts
+     * Runs every 1 second and sends CMD 0x28 until device found or timeout
+     */
+    void iohcOtherDevice2W::discoveryTaskFunction(void* parameter) {
+        iohcOtherDevice2W* instance = static_cast<iohcOtherDevice2W*>(parameter);
+        
+        while (instance->discoveryActive && !instance->deviceFound) {
+            uint32_t elapsed = (millis() - instance->discoveryStartTime) / 1000;
+            
+            // Check for timeout (60 seconds)
+            if (elapsed >= 60) {
+                Serial.println();
+                Serial.println("⏱️  Discovery timeout (60 seconds elapsed)");
+                instance->stopDiscovery();
+                break;
+            }
+            
+            // Send discovery broadcast
+            instance->packets2send.clear();
+            instance->packets2send.push_back(new iohcPacket);
+
+            std::vector<uint8_t> toSend = {}; // NO payload data for discovery
+            instance->forgePacket(instance->packets2send.back(), toSend, 0x003B); // 0x003B = 2W broadcast address
+            instance->packets2send.back()->payload.packet.header.cmd = 0x28; // Discovery command
+            instance->packets2send.back()->payload.packet.header.CtrlByte1.asStruct.StartFrame = 1;
+            instance->packets2send.back()->payload.packet.header.CtrlByte1.asStruct.EndFrame = 1;
+            instance->packets2send.back()->repeatTime = 50;
+            instance->packets2send.back()->repeat = 2; // Send 3 times to improve reliability
+
+            // Set source address
+            memcpy(instance->packets2send.back()->payload.packet.header.source, fake_gateway, 3);
+
+            digitalWrite(RX_LED, digitalRead(RX_LED) ^ 1);
+            instance->_radioInstance->send(instance->packets2send);
+            
+            instance->discoveryCount++;
+            Serial.printf("📡 Discovery broadcast sent (%lu/%d seconds)\n", instance->discoveryCount, 60);
+            
+            // Wait 1 second before next broadcast
+            vTaskDelay(pdMS_TO_TICKS(1000));
+        }
+        
+        // Task is ending - clean up
+        if (instance->deviceFound) {
+            instance->stopDiscovery();
+        }
+        
+        // Delete the task (self-delete)
+        instance->discoveryTaskHandle = nullptr;
+        vTaskDelete(NULL);
+    }
+
+    /**
+     * @brief Start the discovery repeat mechanism
+     * Creates a FreeRTOS task that sends CMD 0x28 every second for up to 60 seconds
+     */
+    void iohcOtherDevice2W::startDiscoveryRepeat() {
+        // Stop any existing discovery task
+        if (discoveryTaskHandle != nullptr) {
+            stopDiscovery();
+        }
+        
+        discoveryActive = true;
+        deviceFound = false;
+        discoveryStartTime = millis();
+        discoveryCount = 0;
+        
+        Serial.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        Serial.println(" 🔍 DISCOVERY MODE ACTIVE");
+        Serial.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        Serial.println(" • Sending discovery broadcast every 1 second");
+        Serial.println(" • Will continue for up to 60 seconds");
+        Serial.println(" • Press device pairing button now");
+        Serial.println(" • Will stop automatically when device responds");
+        Serial.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        Serial.println();
+        
+        // Create FreeRTOS task for discovery broadcasts
+        // Stack size: 4096 bytes, Priority: 1 (low priority)
+        xTaskCreate(
+            discoveryTaskFunction,     // Task function
+            "DiscoveryTask",           // Task name
+            4096,                      // Stack size (bytes)
+            this,                      // Parameter (this instance)
+            1,                         // Priority (1 = low)
+            &discoveryTaskHandle       // Task handle
+        );
+        
+        if (discoveryTaskHandle == nullptr) {
+            Serial.println("❌ Failed to create discovery task!");
+            discoveryActive = false;
+        }
+    }
+
+    /**
+     * @brief Stop the discovery repeat mechanism and delete the task
+     */
+    void iohcOtherDevice2W::stopDiscovery() {
+        if (discoveryActive) {
+            discoveryActive = false;
+            uint32_t elapsed = (millis() - discoveryStartTime) / 1000;
+            
+            // Delete the FreeRTOS task if it exists
+            if (discoveryTaskHandle != nullptr) {
+                vTaskDelete(discoveryTaskHandle);
+                discoveryTaskHandle = nullptr;
+            }
+            
+            Serial.println();
+            Serial.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            if (deviceFound) {
+                Serial.println(" ✅ DISCOVERY STOPPED - Device Found!");
+            } else {
+                Serial.println(" ⏹️  DISCOVERY STOPPED");
+            }
+            Serial.printf(" • Duration: %lu seconds\n", elapsed);
+            Serial.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            Serial.println();
+        }
+    }
+
+
+
+    /**
+     * @brief Notify that a device has been found (CMD 0x29 received)
+     * Called from packet handler when discovery response is received
+     */
+    void iohcOtherDevice2W::notifyDeviceFound() {
+        if (discoveryActive && !deviceFound) {
+            deviceFound = true;
+            Serial.println();
+            Serial.println("✅ Device discovery response received!");
+            Serial.println("   Stopping discovery broadcasts...");
+        }
+    }
 }

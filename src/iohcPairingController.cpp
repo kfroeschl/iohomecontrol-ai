@@ -5,6 +5,7 @@
 #include "crypto2Wutils.h"
 #include "log_buffer.h"
 #include "user_config.h"
+#include "iohcOtherDevice2W.h"
 
 using namespace IOHC;
 
@@ -93,6 +94,9 @@ bool PairingController::handlePairingPacket(iohcPacket* packet) {
         // Device responded to discovery broadcast - automatically start pairing!
         address deviceAddr;
         memcpy(deviceAddr, packet->payload.packet.header.source, 3);
+        
+        // Stop discovery broadcasts since device was found
+        iohcOtherDevice2W::getInstance()->notifyDeviceFound();
         
         Serial.println();
         Serial.println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");

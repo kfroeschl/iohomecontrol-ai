@@ -313,11 +313,11 @@ void createCommands() {
     });
     // Other 2W
     Cmd::addHandler((char *) "discovery", (char *) "Send discovery on air", [](Tokens *cmd)-> void {
-        Serial.println("Sending 2W discovery broadcast...");
-        Serial.println("Listening for devices (press device pairing button now)...");
-        Serial.println("Device addresses will be shown when they respond.");
-        Serial.println("Use 'pair2W <address>' to pair a discovered device.");
-        IOHC::iohcOtherDevice2W::getInstance()->cmd(IOHC::Other2WButton::discovery, nullptr);
+        // Start the repeating discovery mechanism
+        IOHC::iohcOtherDevice2W::getInstance()->startDiscoveryRepeat();
+    });
+    Cmd::addHandler((char *) "stopDiscovery", (char *) "Stop discovery broadcasts", [](Tokens *cmd)-> void {
+        IOHC::iohcOtherDevice2W::getInstance()->stopDiscovery();
     });
     Cmd::addHandler((char *) "getName", (char *) "Name Of A Device", [](Tokens *cmd)-> void {
         IOHC::iohcOtherDevice2W::getInstance()->cmd(IOHC::Other2WButton::getName, cmd);

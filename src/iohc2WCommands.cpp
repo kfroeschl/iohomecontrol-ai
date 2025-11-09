@@ -57,8 +57,7 @@ void autoPair2W(Tokens *cmd) {
     Serial.println("║   AUTO-PAIRING MODE                        ║");
     Serial.println("╚════════════════════════════════════════════╝");
     Serial.println();
-    Serial.println("📡 Sending discovery broadcast...");
-    Serial.println("⏳ Waiting for device response...");
+    Serial.println("⏳ Starting repeated discovery (up to 60 seconds)...");
     Serial.println("🔔 Press the pairing button on your device NOW");
     Serial.println();
     Serial.println("The device will be paired automatically when");
@@ -70,8 +69,8 @@ void autoPair2W(Tokens *cmd) {
     auto* pairingCtrl = PairingController::getInstance();
     pairingCtrl->enableAutoPairMode();
     
-    // Send discovery broadcast (same as discovery command)
-    IOHC::iohcOtherDevice2W::getInstance()->cmd(IOHC::Other2WButton::discovery, nullptr);
+    // Start repeating discovery broadcasts (every 1 second for 60 seconds)
+    IOHC::iohcOtherDevice2W::getInstance()->startDiscoveryRepeat();
 }
 
 void cancelPair2W(Tokens *cmd) {

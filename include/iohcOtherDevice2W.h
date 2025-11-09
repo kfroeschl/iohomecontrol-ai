@@ -66,6 +66,12 @@ namespace IOHC {
         void initializeValid();
         void scanDump();
         std::map<uint8_t, int> mapValid;
+        
+        // Discovery repeat mechanism
+        void startDiscoveryRepeat();
+        void stopDiscovery();
+        bool isDiscoveryActive() const { return discoveryActive; }
+        void notifyDeviceFound(); // Called when CMD 0x29 is received
 //        void scanDump() override {}
 
         static void forgePacket(iohcPacket *packet, const std::vector<uint8_t> &vector, size_t typn);
@@ -89,6 +95,16 @@ namespace IOHC {
         // std::array<iohcPacket*, 25> packets2send{};
         std::vector<iohcPacket *> packets2send{};
         //            IOHC::iohcRadio *_radioInstance;
+        
+        // Discovery repeat state
+        TaskHandle_t discoveryTaskHandle = nullptr;
+        bool discoveryActive = false;
+        uint32_t discoveryStartTime = 0;
+        uint32_t discoveryCount = 0;
+        bool deviceFound = false;
+        
+        // Static task function for FreeRTOS
+        static void discoveryTaskFunction(void* parameter);
     };
 }
 #endif

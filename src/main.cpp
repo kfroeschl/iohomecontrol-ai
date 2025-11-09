@@ -312,6 +312,9 @@ bool msgRcvd(IOHC::iohcPacket *iohc) {
             break;
         }
         case iohcDevice::RECEIVED_DISCOVER_ANSWER_0x29: {
+            // Notify discovery mechanism that device was found
+            IOHC::iohcOtherDevice2W::getInstance()->notifyDeviceFound();
+            
             // Don't run legacy pairing if new pairing controller is active
             if (pairingController && pairingController->isPairingActive()) break;
             
