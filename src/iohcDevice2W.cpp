@@ -10,6 +10,93 @@ using namespace IOHC;
 // Static instance
 Device2WManager* Device2WManager::instance = nullptr;
 
+// DeviceCapabilities helper implementations
+
+String DeviceCapabilities::getManufacturerName() const {
+    switch (manufacturer) {
+        case 0x00: return "No Type";
+        case 0x01: return "Velux";
+        case 0x02: return "Somfy";
+        case 0x03: return "Honeywell";
+        case 0x04: return "Hörmann";
+        case 0x05: return "ASSA ABLOY";
+        case 0x06: return "Niko";
+        case 0x07: return "Window Master";
+        case 0x08: return "Renson";
+        case 0x09: return "CIAT";
+        case 0x0A: return "Secuyou";
+        case 0x0B: return "Overkiz";
+        case 0x0C: return "Atlantic Group";
+        case 0x0D: return "Zehnder Group";
+        default: return "Unknown";
+    }
+}
+
+String DeviceCapabilities::getNodeTypeName() const {
+    // Combine type and subtype into a 16-bit value for easier matching
+    uint16_t combined = (nodeType << 6) | nodeSubtype;
+    
+    switch (combined) {
+        case 0x0000: return "All Nodes except Controller";
+        case 0x0033: return "Smart Plug";
+        case 0x0040: return "Interior Venetian Blind (IVB)";
+        case 0x006A: return "Light Sensor";
+        case 0x0080: return "Roller Shutter";
+        case 0x0081: return "Roller Shutter with Adjustable Slats";
+        case 0x0082: return "Roller Shutter with Projection";
+        case 0x00C0: return "Vertical Exterior Awning (Terrace)";
+        case 0x00CA: return "Window Covering Device";
+        case 0x00CB: return "Window Covering Controller";
+        case 0x0100: return "Window Opener";
+        case 0x0101: return "Window Opener with Integrated Rain Sensor";
+        case 0x012E: return "Temp and Humidity Sensor";
+        case 0x0140: return "Garage Door Opener";
+        case 0x017A: return "Garage Door Opener: Open/Close Only";
+        case 0x0180: return "Light: On/Off + Dimming";
+        case 0x0192: return "IAS Zone";
+        case 0x01BA: return "Light: On/Off Only";
+        case 0x01C0: return "Gate Opener";
+        case 0x01FA: return "Gate Opener: Open/Close Only";
+        case 0x0200: return "Rolling Door Opener";
+        case 0x0240: return "Door Lock / Motorized Bolt";
+        case 0x0241: return "Window Lock";
+        case 0x0280: return "Vertical Interior Blind";
+        case 0x0290: return "Secure Configuration Device (SCD)";
+        case 0x0300: return "Beacon (Gateway/Repeater)";
+        case 0x0340: return "Dual Roller Shutter";
+        case 0x0380: return "Heating Temperature Interface";
+        case 0x03C0: return "Switch: On/Off";
+        case 0x0400: return "Horizontal Awning";
+        case 0x0401: return "Pergola Rail Guided Awning";
+        case 0x0440: return "Exterior Venetian Blind (EVB)";
+        case 0x0480: return "Louver Blind";
+        case 0x04C0: return "Curtain Track";
+        case 0x0500: return "Ventilation Point";
+        case 0x0501: return "Air Inlet";
+        case 0x0502: return "Air Transfer";
+        case 0x0503: return "Air Outlet";
+        case 0x0540: return "Exterior Heating";
+        case 0x057A: return "Exterior Heating: On/Off Only";
+        case 0x0580: return "Heat Pump";
+        case 0x05C0: return "Intrusion Alarm System";
+        case 0x0600: return "Swinging Shutter";
+        case 0x0601: return "Swinging Shutter with Independent Handling of Leaves";
+        case 0x06C0: return "Sliding Window";
+        case 0x0700: return "Zone Control Generator";
+        case 0x0740: return "Bioclimatic Pergola";
+        case 0x0780: return "Indoor Siren";
+        case 0x0CC0: return "Domestic Hot Water";
+        case 0x0D00: return "Electrical Heater";
+        case 0x0D40: return "Heat Recovery Ventilation";
+        case 0x3FC0: return "Central House Control";
+        case 0xFC00: return "Test and Evaluation (RD)";
+        case 0xFFC0: return "Remote Controller (RC)";
+        default:
+            // Return generic description with type and subtype
+            return "Type " + String(nodeType) + "." + String(nodeSubtype);
+    }
+}
+
 // Device2W implementation
 
 String Device2W::toJson() const {
@@ -23,10 +110,19 @@ String Device2W::toJson() const {
     // Capabilities
     doc["node_type"] = capabilities.nodeType;
     doc["node_subtype"] = capabilities.nodeSubtype;
+    doc["node_type_name"] = capabilities.getNodeTypeName();
     doc["manufacturer"] = capabilities.manufacturer;
+    doc["manufacturer_name"] = capabilities.getManufacturerName();
     doc["multi_info"] = capabilities.multiInfo;
     doc["timestamp"] = capabilities.timestamp;
     doc["name"] = capabilities.name;
+    
+    // Decoded multiInfo fields
+    doc["actuator_turnaround_time"] = capabilities.actuatorTurnaroundTime;
+    doc["sync_ctrl_grp"] = capabilities.syncCtrlGrp;
+    doc["rf_support"] = capabilities.rfSupport;
+    doc["io_membership"] = capabilities.ioMembership;
+    doc["power_save_mode"] = capabilities.powerSaveMode;
     
     // Keys (stored as hex strings)
     if (hasSystemKey) {
@@ -123,6 +219,13 @@ bool Device2W::fromJson(const String& addressKey, const String& jsonStr) {
     capabilities.multiInfo = doc["multi_info"] | 0;
     capabilities.timestamp = doc["timestamp"] | 0;
     capabilities.name = doc["name"] | "";
+    
+    // Decoded multiInfo fields (use defaults if not present)
+    capabilities.actuatorTurnaroundTime = doc["actuator_turnaround_time"] | 0;
+    capabilities.syncCtrlGrp = doc["sync_ctrl_grp"] | false;
+    capabilities.rfSupport = doc["rf_support"] | true;
+    capabilities.ioMembership = doc["io_membership"] | true;
+    capabilities.powerSaveMode = doc["power_save_mode"] | 0;
     
     // Keys
     if (doc.containsKey("system_key")) {
@@ -381,6 +484,14 @@ bool Device2WManager::updateFromDiscoveryAnswer(const address& addr, const uint8
     device->capabilities.manufacturer = data[5];
     device->capabilities.multiInfo = data[6];
     device->capabilities.timestamp = (data[7] << 8) | data[8];
+    
+    // Decode multiInfo byte
+    uint8_t multiInfo = data[6];
+    device->capabilities.actuatorTurnaroundTime = (multiInfo >> 6) & 0x03;  // bits 7-6
+    device->capabilities.syncCtrlGrp = (multiInfo & 0x20) != 0;             // bit 5
+    device->capabilities.rfSupport = (multiInfo & 0x08) == 0;               // bit 3 (inverted: 0=Yes, 1=No)
+    device->capabilities.ioMembership = (multiInfo & 0x04) == 0;            // bit 2 (inverted: 0=Yes, 1=No)
+    device->capabilities.powerSaveMode = multiInfo & 0x03;                  // bits 1-0
     
     device->touch();
     

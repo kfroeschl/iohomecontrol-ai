@@ -39,6 +39,13 @@ struct DeviceCapabilities {
     uint16_t timestamp;     // Device timestamp
     String name;            // Device name from CMD 0x51
     
+    // Decoded multiInfo fields (from multiInfo byte)
+    uint8_t actuatorTurnaroundTime; // bits 7-6: 0=5s, 1=10s, 2=20s, 3=40s
+    bool syncCtrlGrp;               // bit 5: Supports Sync Control Group
+    bool rfSupport;                 // bit 3: RF Support (inverted: 0=Yes, 1=No)
+    bool ioMembership;              // bit 2: io-Membership (inverted: 0=Yes, 1=No)
+    uint8_t powerSaveMode;          // bits 1-0: 0=Off (Always Alive), 1=On (Low Power)
+    
     // General Info 1 (14 bytes from CMD 0x55)
     uint8_t generalInfo1[14];
     bool hasGeneralInfo1;
@@ -49,7 +56,13 @@ struct DeviceCapabilities {
     
     DeviceCapabilities() : nodeType(0), nodeSubtype(0), manufacturer(0), 
                           multiInfo(0), timestamp(0), 
+                          actuatorTurnaroundTime(0), syncCtrlGrp(false), 
+                          rfSupport(true), ioMembership(true), powerSaveMode(0),
                           hasGeneralInfo1(false), hasGeneralInfo2(false) {}
+    
+    // Helper functions to decode IDs to human-readable names
+    String getManufacturerName() const;
+    String getNodeTypeName() const;
 };
 
 // Single 2W device representation
