@@ -89,6 +89,8 @@ Device2W* PairingController::getCurrentPairingDevice() {
 }
 
 bool PairingController::handlePairingPacket(iohcPacket* packet) {
+    ets_printf("[Pairing] handlePairingPacket() called, autoPairMode=%d, pairingActive=%d\n", autoPairMode, pairingActive);
+    
     // Check for auto-pair mode - CMD 0x29 (Discovery Response)
     if (autoPairMode && !pairingActive && packet->payload.packet.header.cmd == 0x29) {
         // Device responded to discovery broadcast - automatically start pairing!
@@ -118,6 +120,7 @@ bool PairingController::handlePairingPacket(iohcPacket* packet) {
     }
     
     if (!pairingActive) {
+        ets_printf("[Pairing] Ignoring packet - pairing not active\n");
         return false;
     }
 
@@ -125,37 +128,41 @@ bool PairingController::handlePairingPacket(iohcPacket* packet) {
     SimplePairingPacket simplePacket;
     simplePacket.fromIohcPacket(packet);
     
+    ets_printf("[Pairing] Packet from %02X%02X%02X, CMD 0x%02X\n", 
+               simplePacket.source[0], simplePacket.source[1], simplePacket.source[2],
+               simplePacket.command);
+    ets_printf("[Pairing] Current pairing address: %02X%02X%02X\n",
+               currentPairingAddr[0], currentPairingAddr[1], currentPairingAddr[2]);
+    
     // Check if packet is from device we're pairing
     if (memcmp(simplePacket.source, currentPairingAddr, 3) != 0) {
+        ets_printf("[Pairing] Address mismatch - ignoring packet\n");
         return false;
     }
     
     Device2W* device = getCurrentPairingDevice();
-    if (!device) return false;
+    if (!device) {
+        ets_printf("[Pairing] ERROR: No current pairing device for CMD 0x%02X!\n", simplePacket.command);
+        return false;
+    }
     
     bool handled = false;
 
-    Serial.printf("[Pairing] Current state: %s, CMD: 0x%02X\n", device->getPairingStateStr().c_str(), simplePacket.command);
+    ets_printf("[Pairing] Current state: %s, CMD: 0x%02X\n", device->getPairingStateStr().c_str(), simplePacket.command);
     switch (simplePacket.command) {
         case 0x29: // Discovery Response (device responds to CMD 0x28)
             if (device->pairingState == PairingState::DISCOVERING) {
                 addLogMessage("✅ Device responded to our CMD 0x28 broadcast");
-                // Send CMD 0x31 (Ask Challenge) to see what device responds with
-                addLogMessage("Sending CMD 0x31 (Ask Challenge)...");
+                addLogMessage("Scheduling CMD 0x31 (Ask Challenge) with retry mechanism...");
                 device->pairingState = PairingState::ASKING_CHALLENGE;
                 
-                if (sendAskChallenge(device)) {
-                    lastStepTime = millis();
-                    handled = true;
-                    clearRetry();  // Success, clear any pending retry
-                } else {
-                    addLogMessage("❌ Failed to send CMD 0x31 - scheduling auto-retry...");
-                    // Schedule auto-retry
-                    scheduleRetry([this, device]() {
-                        return sendAskChallenge(device);
-                    });
-                    handled = true;  // Mark as handled to prevent other code from interfering
-                }
+                // Schedule retry mechanism for CMD 0x31 (radio is usually busy when CMD 0x29 arrives)
+                scheduleRetry([this, device]() {
+                    return sendAskChallenge(device);
+                });
+                
+                lastStepTime = millis();
+                handled = true;
             }
             break;
             
@@ -216,15 +223,25 @@ bool PairingController::handlePairingPacket(iohcPacket* packet) {
                         errorCount = 0;
                     }
                 } else if (statusCode == 0x76) {
-                    // Status 0x76 - Key transfer rejected (wrong key/authentication failed)
-                    ets_printf("[Pairing] ❌ Device rejected key transfer (status 0x76)\n");
-                    ets_printf("[Pairing] This may indicate:\n");
-                    ets_printf("[Pairing]   - Wrong encryption key\n");
-                    ets_printf("[Pairing]   - Missing challenge (CMD 0x3C)\n");
-                    ets_printf("[Pairing]   - Device requires different pairing method\n");
-                    addLogMessage("Key transfer rejected by device (0x76)");
-                    // Cancel pairing - this won't succeed without correct key
-                    cancelPairing();
+                    // Status 0x76 - This can mean:
+                    // 1. Device is challenging our command (should receive CMD 0x3C next)
+                    // 2. Authentication failed (no CMD 0x3C will follow)
+                    // Don't cancel immediately - wait to see if we get a CMD 0x3C challenge
+                    if (device->pairingState == PairingState::CHALLENGE_RECEIVED) {
+                        // We just sent CMD 0x32 - device may be sending 0xFE + 0x3C
+                        // Wait for the CMD 0x3C challenge instead of canceling
+                        snprintf(logMsg, sizeof(logMsg), "⏳ Device sent status 0x76 - waiting for challenge (CMD 0x3C)");
+                        addLogMessage(logMsg);
+                    } else {
+                        // No challenge expected - this is a real rejection
+                        ets_printf("[Pairing] ❌ Device rejected operation (status 0x76)\n");
+                        ets_printf("[Pairing] This may indicate:\n");
+                        ets_printf("[Pairing]   - Wrong encryption key\n");
+                        ets_printf("[Pairing]   - Authentication failed\n");
+                        ets_printf("[Pairing]   - Device requires different pairing method\n");
+                        addLogMessage("Operation rejected by device (0x76)");
+                        // cancelPairing();
+                    }
                 } else {
                     snprintf(logMsg, sizeof(logMsg), "Device sent error status 0x%02X", statusCode);
                     addLogMessage(logMsg);
@@ -274,6 +291,7 @@ bool PairingController::handlePairingPacket(iohcPacket* packet) {
             break;
             
         case 0x3C: // Challenge from device (response to CMD 0x31 or challenging a sent command)
+            ets_printf("[Pairing] Processing CMD 0x3C in state: %s\n", device->getPairingStateStr().c_str());
             if (device->pairingState == PairingState::ASKING_CHALLENGE) {
                 if (simplePacket.payload_len >= 6) {
                     // Store the 6-byte challenge from the device
@@ -306,7 +324,8 @@ bool PairingController::handlePairingPacket(iohcPacket* packet) {
                 }
             }
             else if (device->pairingState == PairingState::CHALLENGE_RECEIVED || 
-                     device->pairingState == PairingState::KEY_EXCHANGED) {
+                     device->pairingState == PairingState::KEY_EXCHANGED ||
+                     device->pairingState == PairingState::WAITING_FINAL_CHALLENGE) {
                 // Device is challenging our CMD 0x32 (Key Transfer) or CMD 0x36 (Address Request)
                 if (simplePacket.payload_len >= 6) {
                     memcpy(deviceChallenge, simplePacket.payload, 6);
@@ -324,6 +343,18 @@ bool PairingController::handlePairingPacket(iohcPacket* packet) {
                     addLogMessage("Sending CMD 0x3D challenge response...");
                     if (sendChallengeResponse(device)) {
                         addLogMessage("✅ Sent CMD 0x3D authentication response");
+                        
+                        // If we're in WAITING_FINAL_CHALLENGE state, complete pairing now
+                        if (device->pairingState == PairingState::WAITING_FINAL_CHALLENGE) {
+                            addLogMessage("🎉 Challenge response sent - completing pairing!");
+                            if (!sendPriorityAddressRequest(device)) {
+                                addLogMessage("❌ Failed to send CMD 0x36");
+                            }
+                            deviceMgr->completePairing(currentPairingAddr);
+                            pairingActive = false;
+                            device->pairingState = PairingState::PAIRED;
+                        }
+                        
                         lastStepTime = millis();
                         handled = true;
                     } else {
@@ -332,7 +363,16 @@ bool PairingController::handlePairingPacket(iohcPacket* packet) {
                     }
                 } else {
                     addLogMessage("⚠️ CMD 0x3C received but payload too short");
+                    handled = true;  // Mark as handled even if payload is invalid
                 }
+            } else {
+                // CMD 0x3C received in unexpected state - log it but mark as handled
+                char logMsg[128];
+                snprintf(logMsg, sizeof(logMsg), 
+                         "⚠️ CMD 0x3C received in unexpected state: %s",
+                         device->getPairingStateStr().c_str());
+                addLogMessage(logMsg);
+                handled = true;  // Still consume the packet
             }
             break;
             
@@ -358,14 +398,8 @@ bool PairingController::handlePairingPacket(iohcPacket* packet) {
         case 0x33: // Key Transfer Ack
             addLogMessage("✅ Key transfer acknowledged (CMD 0x33)!");
             
-            // send device address request
-            
-            
-            // Mark pairing as completed
-            addLogMessage("🎉 Pairing completed successfully!");
-            if (!sendPriorityAddressRequest(device)) {
-                addLogMessage("❌ Failed to send CMD 0x36");
-            }
+            // DON'T complete pairing yet! Device may still send CMD 0x3C challenge
+            // We need to wait and respond with CMD 0x3D before completing
             
             // Store system key in device
             if (hasSystemKey) {
@@ -374,9 +408,13 @@ bool PairingController::handlePairingPacket(iohcPacket* packet) {
                 addLogMessage("✅ Stored system key in device");
             }
             
-            deviceMgr->completePairing(currentPairingAddr);
-            pairingActive = false;
-            device->pairingState = PairingState::PAIRED;
+            // Keep pairing active to handle CMD 0x3C if it arrives
+            // State remains CHALLENGE_RECEIVED to allow CMD 0x3C handler to process
+            addLogMessage("⏳ Waiting for any pending challenge (CMD 0x3C)...");
+            
+            // Set a timer to complete pairing if no challenge arrives within 2 seconds
+            lastStepTime = millis();
+            device->pairingState = PairingState::WAITING_FINAL_CHALLENGE;
             handled = true;
             break;
             
@@ -487,9 +525,6 @@ void PairingController::processRetry() {
 void PairingController::process() {
     if (!pairingActive) return;
     
-    // Process any pending retries first
-    processRetry();
-    
     Device2W* device = getCurrentPairingDevice();
     if (!device) {
         ets_printf("[Pairing] process(): No device found, cancelling\n");
@@ -504,6 +539,9 @@ void PairingController::process() {
         pairingActive = false;
         return;
     }
+    
+    // Process any pending retries (e.g., CMD 0x31 after CMD 0x29)
+    processRetry();
     
     // Auto-progress through pairing states (with delays to allow responses)
     uint32_t now = millis();
@@ -562,13 +600,13 @@ void PairingController::process() {
             // After alive check response (CMD 0x2D), send Priority Address Request (CMD 0x36)
             // Only send once, then wait for CMD 0x37 response
             if (now - lastStepTime > 100) {  // Small delay to ensure CMD 0x2D is fully processed
-                if (sendPriorityAddressRequest(device)) {
-                    device->pairingState = PairingState::LEARNING_MODE;  // Transition to wait for CMD 0x37
-                    lastStepTime = now;
-                } else {
-                    addLogMessage("❌ Failed to send CMD 0x36");
-                    cancelPairing();
-                }
+                // if (sendPriorityAddressRequest(device)) {
+                //     device->pairingState = PairingState::LEARNING_MODE;  // Transition to wait for CMD 0x37
+                //     lastStepTime = now;
+                // } else {
+                //     addLogMessage("❌ Failed to send CMD 0x36");
+                //     cancelPairing();
+                // }
             }
             break;
             
@@ -605,6 +643,20 @@ void PairingController::process() {
             if (now - lastStepTime > 5000) {
                 addLogMessage("Timeout in PAIRING_CONFIRMED state");
                 cancelPairing();
+            }
+            break;
+            
+        case PairingState::WAITING_FINAL_CHALLENGE:
+            // After CMD 0x33, wait briefly for CMD 0x3C challenge
+            // If no challenge arrives within 2 seconds, complete pairing
+            if (now - lastStepTime > 2000) {
+                addLogMessage("🎉 Pairing completed successfully!");
+                if (!sendPriorityAddressRequest(device)) {
+                    addLogMessage("❌ Failed to send CMD 0x36");
+                }
+                deviceMgr->completePairing(currentPairingAddr);
+                pairingActive = false;
+                device->pairingState = PairingState::PAIRED;
             }
             break;
             

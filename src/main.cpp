@@ -218,6 +218,24 @@ void IRAM_ATTR forgePacket(iohcPacket* packet, const std::vector<uint8_t> &toSen
 }
 
 bool msgRcvd(IOHC::iohcPacket *iohc) {
+    // Check if message is targeted to this controller
+    const uint8_t myAddress[] = CONTROLLER_ADDRESS;
+    bool isTargetedToMe = (memcmp(iohc->payload.packet.header.target, myAddress, 3) == 0);
+    
+    // Check for various broadcast patterns
+    bool isBroadcast = (iohc->payload.packet.header.target[0] == 0xFF && 
+                        iohc->payload.packet.header.target[1] == 0xFF && 
+                        iohc->payload.packet.header.target[2] == 0xFF) ||
+                       (iohc->payload.packet.header.target[0] == 0x00 &&
+                        iohc->payload.packet.header.target[1] == 0x00 &&
+                        iohc->payload.packet.header.target[2] >= 0x3B && 
+                        iohc->payload.packet.header.target[2] <= 0x3F);
+    
+    // Ignore messages not targeted to this controller (unless broadcast)
+    if (!isTargetedToMe && !isBroadcast) {
+        return false;
+    }
+    
     JsonDocument doc;
     doc["type"] = "Unk";
     memcpy(IOHC::lastFromAddress, iohc->payload.packet.header.source, sizeof(IOHC::lastFromAddress));
@@ -242,7 +260,9 @@ bool msgRcvd(IOHC::iohcPacket *iohc) {
       if (entry)
         deviceName = entry->name.c_str();
     }
-    // addLogMessage("Command received from " + deviceId + " (" + deviceName + ")");
+    // Log the received command with device information
+    addLogMessage("Command received from " + deviceId + " CMD 0x" +
+                  String(iohc->payload.packet.header.cmd, HEX).c_str());
     
     // First, try to handle with new pairing controller
     // Handle if pairing is active OR if we're in auto-pair mode waiting for a device
@@ -466,6 +486,7 @@ bool msgRcvd(IOHC::iohcPacket *iohc) {
             break;
         }
         case iohcDevice::RECEIVED_CHALLENGE_REQUEST_0x3C: {
+            printf("2W Challenge Asked after Command %2.2X\n", iohc->payload.packet.header.cmd);
             // Answer only to our gateway, not to others devices
             if (cozyDevice2W->isFake(iohc->payload.packet.header.source, iohc->payload.packet.header.target)) {
                 // (true) { //

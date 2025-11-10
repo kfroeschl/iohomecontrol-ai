@@ -43,9 +43,11 @@ bool IOHC2WResponseHandler::handleChallenge(IOHC::iohcPacket* iohc) {
     Device2W* device = devMgr->getDevice(iohc->payload.packet.header.source);
     
     if (!device || device->pairingState != PairingState::PAIRED) {
+        Serial.printf("Device not paired or not found for challenge handling.\n");
         return false; // Not a paired device
     }
     
+    Serial.println("� Received CMD 0x3C Challenge Request");
     // Store the challenge
     if (iohc->payload.buffer[8] >= 6) {  // Check payload length
         devMgr->storeChallenge(device->nodeAddress, &iohc->payload.buffer[9], 6);

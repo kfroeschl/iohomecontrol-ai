@@ -33,9 +33,41 @@ namespace IOHC {
     volatile bool iohcRadio::send_lock = false;
     volatile iohcRadio::RadioState iohcRadio::radioState = iohcRadio::RadioState::IDLE;
     volatile bool iohcRadio::txComplete = false;
-
+    
+    // RX callback queue and task handles
+    QueueHandle_t iohcRadio::rxCallbackQueue = nullptr;
+    TaskHandle_t iohcRadio::rxCallbackTaskHandle = nullptr;
 
     TaskHandle_t handle_interrupt;
+    /**
+     * RX Callback Task - Processes received packets in a separate thread
+     * This prevents blocking the radio interrupt handler when executing callbacks
+     */
+    void iohcRadio::rxCallbackTask(void *pvParameters) {
+        iohcRadio *radio = static_cast<iohcRadio *>(pvParameters);
+        iohcPacket *rxPacket = nullptr;
+        
+        while (true) {
+            // Wait for a packet to be queued
+            if (xQueueReceive(rxCallbackQueue, &rxPacket, portMAX_DELAY) == pdTRUE) {
+                if (rxPacket != nullptr) {
+                    // Decode and log the received packet
+                    rxPacket->decode(true);
+                    addLogMessage(String(rxPacket->decodeToString(true).c_str()));
+                    
+                    // Call the user's RX callback
+                    if (radio->rxCB) {
+                        radio->rxCB(rxPacket);
+                    }
+                    
+                    // Clean up the packet
+                    delete rxPacket;
+                    rxPacket = nullptr;
+                }
+            }
+        }
+    }
+
     /**
      * The function `handle_interrupt_task` waits for a notification and then calls the `tickerCounter`
      * function if certain conditions are met.
@@ -162,6 +194,24 @@ namespace IOHC {
         if (task_code != pdPASS) {
             printf("ERROR STATEMACHINE Can't create task %d\n", task_code);
             // sx127x_destroy(device);
+            return;
+        }
+        
+        // Create RX callback queue and task
+        printf("Starting RX Callback Handler...\n");
+        rxCallbackQueue = xQueueCreate(10, sizeof(iohcPacket*)); // Queue for 10 packets
+        if (rxCallbackQueue == nullptr) {
+            printf("ERROR: Can't create RX callback queue\n");
+            return;
+        }
+        
+        task_code = xTaskCreatePinnedToCore(rxCallbackTask, "rx_callback_task", 8192,
+                                           this, 3, // Priority 3 (lower than interrupt handler)
+                                           &rxCallbackTaskHandle, xPortGetCoreID());
+        if (task_code != pdPASS) {
+            printf("ERROR: Can't create RX callback task %d\n", task_code);
+            vQueueDelete(rxCallbackQueue);
+            rxCallbackQueue = nullptr;
             return;
         }
     }
@@ -726,21 +776,25 @@ void IRAM_ATTR iohcRadio::packetSender(iohcRadio *radio) {
         setRadioState(iohcRadio::RadioState::RX);
 
 #endif
-        if (rxPacket != nullptr) {
-            rxPacket->decode(true); //stats);
-        }    
-
-        // Radio::clearFlags();
-        // Call RX callback with the rxPacket (NOT the member variable 'iohc' which is for TX)
-        if (rxCB) rxCB(rxPacket);
         
-        // Decode and log the received packet
-        if (rxPacket != nullptr) {
-            addLogMessage(String(rxPacket->decodeToString(true).c_str()));
-            delete rxPacket;
+        // Queue the packet for processing in separate task
+        if (rxPacket != nullptr && rxCallbackQueue != nullptr) {
+            // Try to send to queue (non-blocking from ISR context)
+            if (xQueueSend(rxCallbackQueue, &rxPacket, 0) != pdTRUE) {
+                // Queue is full, drop the packet
+                Serial.println("[WARNING] RX callback queue full, dropping packet");
+                delete rxPacket;
+            }
+            // rxPacket will be deleted by the callback task
         } else {
-            Serial.println("[ERROR] rxPacket is NULL!");
+            if (rxPacket != nullptr) {
+                Serial.println("[ERROR] RX callback queue not initialized!");
+                delete rxPacket;
+            } else {
+                Serial.println("[ERROR] rxPacket is NULL!");
+            }
         }
+        
         digitalWrite(RX_LED, false);
         return true;
     }

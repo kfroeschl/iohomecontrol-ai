@@ -19,6 +19,7 @@
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "freertos/queue.h"
 
 #include <Delegate.h>
 #include <cstdint>
@@ -84,6 +85,11 @@ namespace IOHC {
             volatile static unsigned long _g_payload_millis;
             
             volatile static bool send_lock;
+            
+            // RX callback queue and task
+            static QueueHandle_t rxCallbackQueue;
+            static TaskHandle_t rxCallbackTaskHandle;
+            static void rxCallbackTask(void *pvParameters);
 
             volatile uint32_t tickCounter = 0;
             volatile uint32_t preCounter = 0;

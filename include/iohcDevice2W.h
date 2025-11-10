@@ -25,6 +25,7 @@ enum class PairingState {
     CHALLENGE_RECEIVED, // Challenge received (CMD 0x3C → need to send CMD 0x3D) - OLD FLOW
     PAIRING_CONFIRMED,  // Pairing confirmed (CMD 0x2F received) - OLD FLOW
     ASKING_CHALLENGE,   // CMD 0x31 sent → waiting for CMD 0x3C for key exchange - OLD FLOW
+    WAITING_FINAL_CHALLENGE, // CMD 0x33 received → wait for CMD 0x3C challenge before completing
     KEY_EXCHANGED,      // Challenge authenticated, ready to request device info
     PAIRED,             // Fully paired and operational
     PAIRING_FAILED      // Pairing process failed
@@ -153,11 +154,14 @@ public:
             case PairingState::UNPAIRED: return "UNPAIRED";
             case PairingState::DISCOVERING: return "DISCOVERING";
             case PairingState::ALIVE_CHECK: return "ALIVE_CHECK";
+            case PairingState::BROADCASTING_2A: return "BROADCASTING_2A";
             case PairingState::WAITING_BEFORE_LEARNING: return "WAITING_BEFORE_LEARNING";
             case PairingState::LEARNING_MODE: return "LEARNING_MODE";
+            case PairingState::CHALLENGE_SENT: return "CHALLENGE_SENT";
             case PairingState::CHALLENGE_RECEIVED: return "CHALLENGE_RECEIVED";
             case PairingState::PAIRING_CONFIRMED: return "PAIRING_CONFIRMED";
             case PairingState::ASKING_CHALLENGE: return "ASKING_CHALLENGE";
+            case PairingState::WAITING_FINAL_CHALLENGE: return "WAITING_FINAL_CHALLENGE";
             case PairingState::KEY_EXCHANGED: return "KEY_EXCHANGED";
             case PairingState::PAIRED: return "PAIRED";
             case PairingState::PAIRING_FAILED: return "PAIRING_FAILED";

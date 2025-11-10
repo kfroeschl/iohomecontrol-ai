@@ -75,7 +75,7 @@ private:
     uint8_t retryCount;
     uint32_t lastRetryTime;
     static const uint8_t MAX_RETRIES = 5;
-    static const uint32_t RETRY_DELAY_MS = 100;
+    static const uint32_t RETRY_DELAY_MS = 1000;  // 1 second delay between retries (radio needs time)
     
     PairingController() : deviceMgr(nullptr), radio(nullptr), 
                          pairingActive(false), lastStepTime(0), hasSystemKey(false),
